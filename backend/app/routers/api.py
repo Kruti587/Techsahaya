@@ -1,6 +1,8 @@
 from uuid import uuid4
 
+# pyrefly: ignore [missing-import]
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
+# pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
 
 from app.core.auth import get_current_user, get_user_role, require_document_access, require_role
@@ -96,7 +98,8 @@ def consent(payload: ConsentRequest, request: Request, user: User = Depends(get_
 
 @router.post("/chat")
 def chat(payload: ChatRequest, user: User = Depends(get_current_user)):
-    return chat_service.answer(payload.message, payload.language)
+    return chat_service.answer(payload.message, payload.language, payload.profile)
+
 
 
 @router.post("/voice-chat")

@@ -6,16 +6,24 @@ import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
 
-const fallbackSteps = ["Discover", "Eligibility", "Documents", "Apply", "Verification", "Approval", "Benefit", "Renewal"];
+const fallbackSteps: Record<string, string[]> = {
+  en: ["Discover", "Eligibility", "Documents", "Apply", "Verification", "Approval", "Benefit", "Renewal"],
+  hi: ["खोजें", "पात्रता", "दस्तावेज़", "आवेदन", "सत्यापन", "स्वीकृति", "लाभ", "नवीनीकरण"],
+  kn: ["ಹುಡುಕಿ", "ಅರ್ಹತೆ", "ದಾಖಲೆಗಳು", "ಅರ್ಜಿ", "ಪರಿಶೀಲನೆ", "ಮಂಜೂರಾತಿ", "ಪ್ರಯೋಜನ", "ನವೀಕರಣ"],
+};
 
 export function JourneyPage() {
   const { language } = useAppContext();
   const [journey, setJourney] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     setLoading(true);
     api.get("/api/journey").then((res) => setJourney(res.data)).catch(() => setJourney([])).finally(() => setLoading(false));
   }, []);
+
+  const steps = fallbackSteps[language] || fallbackSteps.en;
+
   return (
     <div className="space-y-5">
       <section className="rounded-3xl bg-white p-6 shadow-card">
@@ -31,10 +39,12 @@ export function JourneyPage() {
               <Clock3 className="mx-auto text-sahaya-green" size={36} />
               <h2 className="mt-3 text-xl font-semibold">{t(language, "noJourney")}</h2>
               <p className="mx-auto mt-2 max-w-xl text-sm text-slate-600">{t(language, "startJourneyHelp")}</p>
-              <Link to="/find-schemes" className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-4 font-semibold text-white">{t(language, "startWithSchemes")} <ArrowRight size={18} /></Link>
+              <Link to="/find-schemes" className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-4 font-semibold text-white">
+                {t(language, "startWithSchemes")} <ArrowRight size={18} />
+              </Link>
             </div>
             <div className="grid gap-3 md:grid-cols-4">
-              {fallbackSteps.map((step, index) => (
+              {steps.map((step, index) => (
                 <div key={step} className="rounded-2xl border bg-white p-4 text-center">
                   <Circle className="mx-auto text-slate-300" />
                   <div className="mt-2 text-sm font-semibold">{index + 1}. {step}</div>
@@ -56,7 +66,7 @@ export function JourneyPage() {
                 </div>
                 <div className="mt-3 grid gap-2 text-sm text-slate-700 md:grid-cols-3">
                   <div><b>{t(language, "nextAction")}:</b><br />{item.action}</div>
-                  <div><b>{t(language, "requiredDocument")}:</b><br />{item.required_document || "To be confirmed"}</div>
+                  <div><b>{t(language, "requiredDocument")}:</b><br />{item.required_document || (language === "hi" ? "पुष्टि की जाएगी" : language === "kn" ? "ದೃಢೀಕರಿಸಲಾಗುವುದು" : "To be confirmed")}</div>
                   <div><b>{t(language, "deadline")}:</b><br />{item.deadline}</div>
                 </div>
               </article>

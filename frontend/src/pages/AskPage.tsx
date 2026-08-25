@@ -1,10 +1,11 @@
-import { Mic, Send, Volume2 } from "lucide-react";
+import { Mic, Send } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { ChatAnswerCard } from "../components/ChatAnswerCard";
 import { SectionCard } from "../components/SectionCard";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
+import { cleanTextForSpeech } from "../utils/speechUtils";
 
 const languageCodes: Record<string, string> = {
   en: "en-IN",
@@ -27,6 +28,7 @@ export function AskPage() {
   const [recording, setRecording] = useState(false);
   const [voiceStatus, setVoiceStatus] = useState("");
   const [error, setError] = useState("");
+
   const ask = async (prompt = message) => {
     setLoading(true);
     setError("");
@@ -39,6 +41,7 @@ export function AskPage() {
       setLoading(false);
     }
   };
+
   const askVoice = async (prompt: string) => {
     setLoading(true);
     setVoiceStatus(t(language, "processingVoice"));
@@ -47,12 +50,16 @@ export function AskPage() {
       const res = await api.post("/api/voice-chat", { transcript: prompt, language });
       setResponse(res.data.response);
       setTranscript(res.data.transcript || prompt);
+
       if ("speechSynthesis" in window && res.data.response?.answer) {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(res.data.response.answer);
-        utterance.lang = languageCodes[language] || "en-IN";
-        utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
+        const speechText = cleanTextForSpeech(res.data.response.answer);
+        if (speechText) {
+          const utterance = new SpeechSynthesisUtterance(speechText);
+          utterance.lang = languageCodes[language] || "en-IN";
+          utterance.rate = 0.9;
+          window.speechSynthesis.speak(utterance);
+        }
       }
     } catch {
       setError(t(language, "chatError"));
@@ -61,6 +68,7 @@ export function AskPage() {
       setVoiceStatus("");
     }
   };
+
   const startVoice = () => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -96,18 +104,29 @@ export function AskPage() {
     };
     recognition.start();
   };
+
   const speakAnswer = () => {
     if (!response?.answer || !("speechSynthesis" in window)) {
       setError(t(language, "voiceUnavailable"));
       return;
     }
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(response.answer);
+    const speechText = cleanTextForSpeech(response.answer);
+
+    if (!speechText) {
+      setError("No answer text available to read.");
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(speechText);
     utterance.lang = languageCodes[language] || "en-IN";
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
   };
+
+
   const suggestions = suggestedQuestions[language] || suggestedQuestions.en;
+
   return (
     <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
       <SectionCard title={t(language, "askTitle")}>
@@ -137,43 +156,31 @@ export function AskPage() {
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           {suggestions.map((q) => (
-            <button key={q} onClick={() => { setMessage(q); ask(q); }} className="rounded-full border px-3 py-2 text-sm">{q}</button>
+            <button key={q} onClick={() => { setMessage(q); ask(q); }} className="rounded-full border px-3 py-2 text-sm hover:bg-emerald-50 hover:border-emerald-300 transition-colors">{q}</button>
           ))}
         </div>
         {offline && <p className="mt-4 text-sm text-amber-700">{t(language, "offlineChat")}</p>}
-        {loading && <p className="mt-4">{t(language, "loadingAnswer")}</p>}
-        {error && <p className="mt-4 text-red-700">{error}</p>}
-        {response && (
-          <div className="mt-6 space-y-4">
-            <div className="rounded-2xl bg-emerald-50 p-4">
-              <p className="font-semibold">{t(language, "answer")}</p>
-              <p className="mt-2">{response.answer}</p>
-              <p className="mt-2 text-sm text-slate-600">Verified Information | Verification: {response.verification_status} | Confidence: {response.confidence}</p>
-              <button onClick={speakAnswer} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl border bg-white px-4 text-sm font-semibold text-sahaya-green">
-                <Volume2 size={16} /> {t(language, "speakAnswer")}
-              </button>
-            </div>
-            <div className="grid gap-3">
-              {response.schemes.map((scheme: any) => (
-                <div key={scheme.id} className="rounded-2xl border p-4">
-                  <div className="font-semibold">{scheme.name}</div>
-                  <div className="mt-2 flex gap-2">
-                    <Link className="rounded-lg bg-sahaya-green px-3 py-2 text-sm text-white" to={`/schemes/${scheme.id}`}>{t(language, "viewScheme")}</Link>
-                    <Link className="rounded-lg border px-3 py-2 text-sm" to="/eligibility">{t(language, "checkEligibility")}</Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+
+        {/* Structured Citizen-Friendly AI Response Card */}
+        <div className="mt-6">
+          <ChatAnswerCard
+            response={response}
+            language={language}
+            loading={loading}
+            error={error}
+            onSpeakAnswer={speakAnswer}
+            onRetry={() => ask(message)}
+          />
+        </div>
       </SectionCard>
+
       <SectionCard title={t(language, "evidenceSource")}>
         <div className="space-y-3">
           {response?.evidence?.map((item: any, index: number) => (
-            <div key={`${item.scheme_name}-${index}`} className="rounded-xl border p-3">
-              <div className="font-medium">{item.scheme_name}</div>
-              <div className="text-sm text-slate-600">{item.evidence}</div>
-              <div className="mt-1 text-xs text-slate-500">Source: {item.source}</div>
+            <div key={`${item.scheme_name}-${index}`} className="rounded-xl border p-3 bg-white">
+              <div className="font-medium text-slate-900">{item.scheme_name}</div>
+              <div className="mt-1 text-sm text-slate-600 leading-relaxed">{item.evidence}</div>
+              <div className="mt-2 text-xs text-slate-500 font-medium">Source: {item.source}</div>
             </div>
           )) || <p className="text-sm text-slate-600">Every answer is grounded in local scheme chunks and cited source metadata.</p>}
         </div>
@@ -181,3 +188,4 @@ export function AskPage() {
     </div>
   );
 }
+

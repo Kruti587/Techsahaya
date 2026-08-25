@@ -6,17 +6,25 @@ import { SectionCard } from "../components/SectionCard";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
+import { getLocalizedScheme } from "../utils/schemeLocalization";
 
 export function EligibilityPage() {
   const { profile, setProfile, schemes, language } = useAppContext();
   const [schemeId, setSchemeId] = useState("pm-kisan");
   const [result, setResult] = useState<any | null>(null);
+
+  const localizedSchemes = schemes.map((s) => getLocalizedScheme(s, language));
+
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
       <SectionCard title={t(language, "eligibilityProfile")}>
         <div className="mb-4">
           <select className="min-h-12 w-full rounded-xl border p-3" value={schemeId} onChange={(e) => setSchemeId(e.target.value)}>
-            {schemes.map((scheme) => <option key={scheme.id} value={scheme.id}>{scheme.name}</option>)}
+            {localizedSchemes.map((scheme) => (
+              <option key={scheme.id} value={scheme.id}>
+                {scheme.name} ({scheme.category})
+              </option>
+            ))}
           </select>
         </div>
         <ProfileForm
@@ -29,31 +37,69 @@ export function EligibilityPage() {
           }}
         />
       </SectionCard>
+
       <SectionCard title={t(language, "result")}>
         {!result && <p className="text-sm text-slate-600">{t(language, "fillProfileRunCheck")}</p>}
         {result && (
           <div className="space-y-3">
-            <div className={`rounded-xl p-4 text-white ${result.status === "eligible" ? "bg-emerald-700" : result.status === "not_eligible" ? "bg-red-700" : "bg-amber-600"}`}>{result.status.toUpperCase().replaceAll("_", " ")}</div>
-            <p>{result.explanation}</p>
-            <p><span className="font-medium">{t(language, "nextAction")}:</span> {result.next_action}</p>
+            <div className={`rounded-xl p-4 font-bold text-white shadow-xs ${result.status === "eligible" ? "bg-emerald-700" : result.status === "not_eligible" ? "bg-red-700" : "bg-amber-600"}`}>
+              {result.status === "eligible"
+                ? (language === "hi" ? "✓ आप योग्य हैं" : language === "kn" ? "✓ ನೀವು ಅರ್ಹರಾಗಿದ್ದೀರಿ" : "ELIGIBLE")
+                : result.status === "not_eligible"
+                ? (language === "hi" ? "✕ आप योग्य नहीं हैं" : language === "kn" ? "✕ ನೀವು ಅರ್ಹರಾಗಿಲ್ಲ" : "NOT ELIGIBLE")
+                : (language === "hi" ? "ⓘ अधिक जानकारी की आवश्यकता है" : language === "kn" ? "ⓘ ಹೆಚ್ಚಿನ ಮಾಹಿತಿ ಅಗತ್ಯವಿದೆ" : "NEEDS MORE INFORMATION")}
+            </div>
+
+            <p className="text-sm leading-relaxed text-slate-800">{result.explanation}</p>
+            <p className="text-sm">
+              <span className="font-semibold text-slate-900">{t(language, "nextAction")}:</span> {result.next_action}
+            </p>
+
             <div className="grid gap-3">
               <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-3">
-                <div className="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><CheckCircle2 size={18} /> {t(language, "matched")}</div>
-                {result.matched.length ? result.matched.map((item: string) => <div key={item} className="text-sm text-emerald-900">✓ {item}</div>) : <div className="text-sm">{t(language, "none")}</div>}
+                <div className="mb-2 flex items-center gap-2 font-semibold text-emerald-900">
+                  <CheckCircle2 size={18} /> {t(language, "matched")}
+                </div>
+                {result.matched.length ? (
+                  result.matched.map((item: string) => <div key={item} className="text-sm text-emerald-900">✓ {item}</div>)
+                ) : (
+                  <div className="text-sm text-slate-500">{t(language, "none")}</div>
+                )}
               </div>
+
               <div className="rounded-2xl border border-red-100 bg-red-50 p-3">
-                <div className="mb-2 flex items-center gap-2 font-semibold text-red-900"><XCircle size={18} /> {t(language, "failed")}</div>
-                {result.failed.length ? result.failed.map((item: string) => <div key={item} className="text-sm text-red-900">✕ {item}</div>) : <div className="text-sm">{t(language, "none")}</div>}
+                <div className="mb-2 flex items-center gap-2 font-semibold text-red-900">
+                  <XCircle size={18} /> {t(language, "failed")}
+                </div>
+                {result.failed.length ? (
+                  result.failed.map((item: string) => <div key={item} className="text-sm text-red-900">✕ {item}</div>)
+                ) : (
+                  <div className="text-sm text-slate-500">{t(language, "none")}</div>
+                )}
               </div>
+
               <div className="rounded-2xl border border-amber-100 bg-amber-50 p-3">
-                <div className="mb-2 flex items-center gap-2 font-semibold text-amber-900"><AlertTriangle size={18} /> {t(language, "missing")}</div>
-                {result.missing.length ? result.missing.map((item: string) => <div key={item} className="text-sm text-amber-900">! {item}</div>) : <div className="text-sm">{t(language, "none")}</div>}
+                <div className="mb-2 flex items-center gap-2 font-semibold text-amber-900">
+                  <AlertTriangle size={18} /> {t(language, "missing")}
+                </div>
+                {result.missing.length ? (
+                  result.missing.map((item: string) => <div key={item} className="text-sm text-amber-900">! {item}</div>)
+                ) : (
+                  <div className="text-sm text-slate-500">{t(language, "none")}</div>
+                )}
+
                 {(result.failed.some((item: string) => item.toLowerCase().includes("document")) || result.missing.length > 0) && (
-                  <Link to="/documents" className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl bg-white px-3 text-sm font-semibold text-sahaya-green"><FileUp size={16} /> {t(language, "uploadThisDocument")}</Link>
+                  <Link to="/documents" className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl bg-white px-3 text-sm font-semibold text-sahaya-green border">
+                    <FileUp size={16} /> {t(language, "uploadThisDocument")}
+                  </Link>
                 )}
               </div>
             </div>
-            <div><span className="font-medium">{t(language, "alternativeSchemes")}:</span> {result.alternative_schemes.join(", ") || t(language, "none")}</div>
+
+            <div className="text-sm">
+              <span className="font-semibold text-slate-900">{t(language, "alternativeSchemes")}:</span>{" "}
+              {result.alternative_schemes.join(", ") || t(language, "none")}
+            </div>
           </div>
         )}
       </SectionCard>
