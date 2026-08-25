@@ -46,7 +46,101 @@ interface Message {
   audioMime?: string;
 }
 
+function FormattedMessageText({ text, isUser }: { text: string; isUser: boolean }) {
+  if (isUser) {
+    return <p className="whitespace-pre-line text-sm leading-relaxed">{text}</p>;
+  }
+
+  const lines = text.split("\n");
+
+  const renderInlineStyles = (str: string) => {
+    const parts = str.split(/(\[.*?\]\(https?:\/\/[^\s)]+\)|https?:\/\/[^\s)]+|\*\*.*?\*\*|\*.*?\*)/g);
+    return parts.map((part, i) => {
+      if (!part) return null;
+
+      const mdLinkMatch = part.match(/^\[(.*?)\]\((https?:\/\/[^\s)]+)\)$/);
+      if (mdLinkMatch) {
+        return (
+          <a
+            key={i}
+            href={mdLinkMatch[2]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-emerald-700 underline font-medium hover:text-emerald-900"
+          >
+            {mdLinkMatch[1]}
+          </a>
+        );
+      }
+
+      if (/^https?:\/\/[^\s)]+$/.test(part)) {
+        return (
+          <a
+            key={i}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-emerald-700 underline break-all font-medium hover:text-emerald-900"
+          >
+            {part}
+          </a>
+        );
+      }
+
+      if (part.startsWith("**") && part.endsWith("**") && part.length >= 4) {
+        return (
+          <strong key={i} className="font-bold text-slate-900">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+
+      if (part.startsWith("*") && part.endsWith("*") && part.length >= 2) {
+        return (
+          <em key={i} className="italic text-slate-500">
+            {part.slice(1, -1)}
+          </em>
+        );
+      }
+
+      return <span key={i}>{part}</span>;
+    });
+  };
+
+  return (
+    <div className="space-y-1 text-sm leading-relaxed text-slate-800">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={idx} className="h-0.5" />;
+        }
+
+        if (trimmed.startsWith("**") && trimmed.endsWith("**") && !trimmed.includes(":")) {
+          return (
+            <div key={idx} className="font-bold text-sm text-emerald-900 pb-1 pt-0.5 border-b border-stone-100">
+              {trimmed.replace(/\*\*/g, "")}
+            </div>
+          );
+        }
+
+        if (trimmed.startsWith("•") || trimmed.startsWith("-")) {
+          const content = trimmed.replace(/^[•\-]\s*/, "");
+          return (
+            <div key={idx} className="flex items-start gap-2 pl-0.5">
+              <span className="text-emerald-600 font-bold select-none text-xs mt-0.5">•</span>
+              <div className="flex-1">{renderInlineStyles(content)}</div>
+            </div>
+          );
+        }
+
+        return <p key={idx}>{renderInlineStyles(trimmed)}</p>;
+      })}
+    </div>
+  );
+}
+
 export function FloatingChatWidget() {
+
   const { language, setLanguage, user } = useAppContext();
   const { startTour } = useTour();
 
@@ -338,7 +432,8 @@ export function FloatingChatWidget() {
                       : "bg-white text-slate-800 border border-stone-200/80 rounded-bl-none shadow-sm"
                   }`}
                 >
-                  <p className="whitespace-pre-line">{msg.text}</p>
+                  <FormattedMessageText text={msg.text} isUser={msg.sender === "user"} />
+
 
                   {/* Audio Player Button for Assistant Voice */}
                   {msg.audioBase64 && msg.sender === "assistant" && (
