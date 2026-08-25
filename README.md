@@ -1,10 +1,10 @@
-# Tech Sahaya - Digital Citizen Welfare Platform
+# 🚀 Tech Sahaya - Digital Citizen Welfare Platform
 
 A production-style AI-assisted welfare navigation system that helps citizens discover government schemes, verify eligibility, prepare documents, and track benefit journeys through a secure multilingual platform.
 
 Tech Sahaya is built for real citizen workflows: farmers, women, students, workers, families, senior citizens, persons with disabilities, CSC operators, and administrators.
 
-## Overview
+## 🌟 Overview
 
 Tech Sahaya converts fragmented welfare discovery into a guided digital journey:
 
@@ -29,9 +29,9 @@ Benefit Tracking
 
 The platform combines deterministic eligibility logic, structured scheme data, RAG-based assistance, secure document handling, role-based access control, and privacy-first data management.
 
-## Core Capabilities
+## 🎯 Core Capabilities
 
-### Citizen Workflows
+### 👥 Citizen Workflows
 
 - Discover central and state government schemes.
 - Search schemes by category, state, occupation, income, age, and eligibility fit.
@@ -44,7 +44,7 @@ The platform combines deterministic eligibility logic, structured scheme data, R
 - Upload supporting documents securely.
 - Manage consent, privacy settings, account activity, and data deletion.
 
-### Intelligence Layer
+### 🧠 Intelligence Layer
 
 - Ask Sahaya chat interface for scheme explanation and guidance.
 - Retrieval-first RAG pipeline using local scheme chunks.
@@ -53,7 +53,7 @@ The platform combines deterministic eligibility logic, structured scheme data, R
 - AI explanation layer is separated from eligibility decisions.
 - Eligibility is always decided by deterministic rules.
 
-### Security And Governance
+### 🔐 Security And Governance
 
 - Secure signup, login, logout, and protected sessions.
 - Backend-enforced RBAC for `CITIZEN`, `CSC_OPERATOR`, and `ADMIN`.
@@ -63,7 +63,7 @@ The platform combines deterministic eligibility logic, structured scheme data, R
 - Audit logging for authentication, consent, document, profile, and authorization events.
 - Strict CORS, security headers, request validation, and safe error handling.
 
-## Architecture
+## 🏗️ Architecture
 
 ```text
 Frontend: React + Vite + TypeScript + Tailwind
@@ -88,7 +88,7 @@ Service Layer
 Data Layer: SQLite + JSON Schemes + JSON Rules + Retrieval Chunks
 ```
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Tools |
 | --- | --- |
@@ -109,7 +109,7 @@ Data Layer: SQLite + JSON Schemes + JSON Rules + Retrieval Chunks
 | DevOps | Docker, Docker Compose |
 | API Docs | Swagger/OpenAPI, ReDoc |
 
-## End-To-End Flow
+## 🔄 End-To-End Flow
 
 ```text
 User Action
@@ -125,7 +125,7 @@ User Action
   → Citizen-Friendly UI Result
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 Techsahaya/
@@ -164,7 +164,7 @@ Techsahaya/
 └── README.md
 ```
 
-## Government Scheme Catalogue
+## 🏛️ Government Scheme Catalogue
 
 The project uses a structured scheme architecture instead of hardcoded cards.
 
@@ -208,7 +208,7 @@ data/rules/*.json
 data/chunks/scheme_chunks.json
 ```
 
-## Eligibility Engine
+## ✅ Eligibility Engine
 
 Eligibility is calculated in `backend/app/services/eligibility_engine.py`.
 
@@ -242,7 +242,7 @@ Response format:
 
 This makes eligibility transparent, testable, and explainable.
 
-## Ask Sahaya RAG Flow
+## 💬 Ask Sahaya RAG Flow
 
 ```text
 Citizen Question
@@ -260,7 +260,7 @@ Evidence + Source + Confidence UI
 
 The AI layer explains retrieved information. It does not invent scheme rules and does not decide eligibility.
 
-## Document Security Flow
+## 📄 Document Security Flow
 
 ```text
 Document Selected
@@ -291,7 +291,7 @@ Security controls:
 - Backend ownership checks
 - Audit event creation
 
-## Role-Based Access Control
+## 🛡️ Role-Based Access Control
 
 | Role | Access |
 | --- | --- |
@@ -301,7 +301,7 @@ Security controls:
 
 RBAC is enforced in FastAPI dependencies before protected business logic runs.
 
-## Privacy Controls
+## 🔒 Privacy Controls
 
 Tech Sahaya includes:
 
@@ -314,7 +314,7 @@ Tech Sahaya includes:
 - Sensitive document handling policy
 - Environment-based secret management
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Clone
 
@@ -376,7 +376,7 @@ Frontend runs at:
 http://localhost:5173
 ```
 
-## Docker
+## 🐳 Docker
 
 Run the full system:
 
@@ -392,7 +392,7 @@ Services:
 | Backend | `http://127.0.0.1:8000` |
 | Swagger | `http://127.0.0.1:8000/docs` |
 
-## Environment Variables
+## ⚙️ Environment Variables
 
 ```env
 GEMINI_API_KEY=
@@ -411,7 +411,7 @@ CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 
 Keep real secrets in `backend/.env`. The `.env` file is ignored by Git.
 
-## Local Login Accounts
+## 🔑 Local Login Accounts
 
 | Role | Email | Password |
 | --- | --- | --- |
@@ -419,7 +419,7 @@ Keep real secrets in `backend/.env`. The `.env` file is ignored by Git.
 | CSC Operator | `csc@techsahaya.org` | `Csc@12345` |
 | Admin | `admin@techsahaya.org` | `Admin@12345` |
 
-## Frontend Routes
+## 🧭 Frontend Routes
 
 ### Public
 
@@ -465,7 +465,7 @@ Keep real secrets in `backend/.env`. The `.env` file is ignored by Git.
 | `/admin/users` | User management |
 | `/admin/audit` | Audit logs |
 
-## Backend API
+## 🔌 Backend API
 
 ### Public APIs
 
@@ -530,7 +530,7 @@ Keep real secrets in `backend/.env`. The `.env` file is ignored by Git.
 | GET | `/api/admin/users` |
 | GET | `/api/admin/audit` |
 
-## Testing
+## 🧪 Testing
 
 Backend:
 
@@ -547,7 +547,7 @@ npm run lint
 npm run build
 ```
 
-## Supabase Auth And RLS
+## 🗄️ Supabase Auth And RLS
 
 The project runs locally with `AUTH_ADAPTER=local`.
 
@@ -566,7 +566,7 @@ Reference SQL for database tables, RLS policies, roles, and private document-sto
 docs/supabase_rls.sql
 ```
 
-## Why Tech Sahaya Stands Out
+## 🏆 Why Tech Sahaya Stands Out
 
 - Workflow-first citizen experience instead of a generic chatbot.
 - Deterministic eligibility engine for transparent welfare decisions.
@@ -577,7 +577,7 @@ docs/supabase_rls.sql
 - Modular backend services that can run locally and integrate with managed providers.
 - Professional public-service UI designed for trust, accessibility, and clarity.
 
-## Useful Commands
+## 🧰 Useful Commands
 
 ```bash
 # Backend tests
@@ -597,7 +597,7 @@ npm run build
 docker compose up --build
 ```
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
 ### Backend Port Is Busy
 
@@ -630,7 +630,7 @@ AUTH_ADAPTER=local
 
 Restart the backend after changing environment variables.
 
-## Repository Safety
+## 🧼 Repository Safety
 
 The repository includes the source files required to run the project. Sensitive and generated files are excluded through `.gitignore`:
 
