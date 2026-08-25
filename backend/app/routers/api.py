@@ -1,11 +1,13 @@
+import base64
 from uuid import uuid4
 
 # pyrefly: ignore [missing-import]
-from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 # pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
 
-from app.core.auth import get_current_user, get_user_role, require_document_access, require_role
+from app.core.auth import get_current_user, get_optional_user, get_user_role, require_document_access, require_role
+
 from app.core.config import get_settings
 from app.core.db import get_db
 from app.models.db_models import AuditLog, AuthorizedSession, DocumentRecord, NotificationRecord, SavedScheme, User
@@ -21,20 +23,23 @@ from app.models.schemas import (
     SaveSchemeRequest,
     SignUpRequest,
     VoiceChatRequest,
+    VoiceChatResponse,
     WhatIfRequest,
 )
 from app.services.audit_service import audit_service
 from app.services.auth_service import auth_service
 from app.services.chat_service import chat_service
-from app.services.data_loader import load_personas, load_rules, load_schemes
+from app.services.data_loader import load_languages, load_personas, load_rules, load_schemes, load_tours
 from app.services.document_service import document_service
 from app.services.eligibility_engine import eligibility_engine
 from app.services.journey_service import journey_service
 from app.services.profile_service import profile_service
 from app.services.recommendation_service import recommendation_service
+from app.services.sarvam_service import SarvamAPIError, sarvam_service
 
 router = APIRouter(prefix="/api", tags=["api"])
 settings = get_settings()
+
 
 
 def _profile_from_current(db: Session, user: User):
@@ -103,12 +108,96 @@ def chat(payload: ChatRequest, user: User = Depends(get_current_user)):
 
 
 @router.post("/voice-chat")
-def voice_chat(payload: VoiceChatRequest, user: User = Depends(get_current_user)):
+async def voice_chat(payload: VoiceChatRequest, user: User = Depends(get_current_user)):
+    transcript = payload.transcript or ""
+    mode = "sarvam_ai"
+
+    # If base64 audio is provided, run Sarvam STT
+    if payload.audio_base64:
+        try:
+            audio_bytes = base64.b64decode(payload.audio_base64)
+            stt_res = await sarvam_service.speech_to_text(audio_bytes, language_code=payload.language)
+            transcript = stt_res.transcript
+        except SarvamAPIError as err:
+            mode = "text_fallback"
+            if not transcript:
+                raise HTTPException(status_code=err.status_code, detail=f"Voice STT Error: {err.message}")
+        except Exception:
+            mode = "text_fallback"
+
+    if not transcript.strip():
+        raise HTTPException(status_code=400, detail="Transcript or audio input is required")
+
+    # Run RAG chat answering
+    chat_response = chat_service.answer(transcript, payload.language, payload.profile)
+
+    # Synthesize audio with Sarvam TTS if enabled
+    audio_base64_out: str | None = None
+    if settings.sarvam_api_key and chat_response.answer:
+        try:
+            audio_bytes_out = await sarvam_service.text_to_speech(chat_response.answer, language_code=payload.language)
+            audio_base64_out = base64.b64encode(audio_bytes_out).decode("utf-8")
+        except Exception:
+            # Degrade gracefully to text if TTS fails
+            mode = "text_degraded"
+
     return {
-        "transcript": payload.transcript,
-        "response": chat_service.answer(payload.transcript, payload.language),
-        "mode": "browser_voice_fallback",
+        "transcript": transcript,
+        "response": chat_response,
+        "audio_base64": audio_base64_out,
+        "audio_mime": "audio/wav",
+        "mode": mode,
     }
+
+
+@router.post("/voice-chat/audio")
+async def voice_chat_audio(
+    file: UploadFile = File(...),
+    language: str = Form("en"),
+    user: User = Depends(get_current_user),
+):
+
+
+    content = await file.read()
+    if len(content) > settings.max_upload_size:
+        raise HTTPException(status_code=413, detail="Audio file too large")
+
+    try:
+        stt_res = await sarvam_service.speech_to_text(content, language_code=language)
+        transcript = stt_res.transcript
+    except SarvamAPIError as err:
+        raise HTTPException(status_code=err.status_code, detail=f"Sarvam STT failed: {err.message}")
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="Voice transcription failed")
+
+    chat_response = chat_service.answer(transcript, language)
+
+    audio_base64_out: str | None = None
+    if settings.sarvam_api_key and chat_response.answer:
+        try:
+            audio_bytes_out = await sarvam_service.text_to_speech(chat_response.answer, language_code=language)
+            audio_base64_out = base64.b64encode(audio_bytes_out).decode("utf-8")
+        except Exception:
+            pass
+
+    return {
+        "transcript": transcript,
+        "response": chat_response,
+        "audio_base64": audio_base64_out,
+        "audio_mime": "audio/wav",
+        "mode": "sarvam_ai",
+    }
+
+
+@router.get("/config/languages")
+def get_languages_config():
+    return load_languages()
+
+
+@router.get("/config/tours")
+def get_tours_config():
+    return load_tours()
+
 
 
 @router.post("/documents/upload")

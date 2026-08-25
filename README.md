@@ -242,23 +242,52 @@ Response format:
 
 This makes eligibility transparent, testable, and explainable.
 
-## 💬 Ask Sahaya RAG Flow
+## 💬 Ask Sahaya RAG & Sarvam Voice Flow
 
 ```text
-Citizen Question
+Citizen Voice / Text Question
       ↓
-Query Normalization
+[Sarvam AI STT] → Transcript
       ↓
-FAISS / Fallback Retrieval
+Input Sanitization & Injection Defense Pre-Check
       ↓
-Top Evidence Chunks
+Query Normalization & FAISS Semantic Retrieval
       ↓
-Answer Generation
+Top Verified Evidence Chunks
       ↓
-Evidence + Source + Confidence UI
+Gemini 2.5 Grounded Answer Generation (with XML Delimiters)
+      ↓
+Output Validation vs Deterministic Rule Engine
+      ↓
+Tour Action Allowlist Mapping & Validation
+      ↓
+[Sarvam AI TTS] → Multilingual Audio Stream + Evidence UI
 ```
 
 The AI layer explains retrieved information. It does not invent scheme rules and does not decide eligibility.
+
+## 🛡️ Security Hardening & Injection Defense
+
+- **System/User Role Separation**: System instructions are placed in top-level `systemInstruction` payloads, never concatenated with untrusted user input.
+- **XML Context Delimiters**: Content is strictly fenced inside `<untrusted_citizen_query>`, `<retrieved_scheme_evidence>`, and `<deterministic_rule_result>`.
+- **Output-vs-Rule Consistency Validation**: The platform cross-checks LLM output against the deterministic rule engine. If an LLM hallucinates an "eligible" claim for an ineligible citizen, the output is discarded and replaced with a structured template.
+- **Sliding-Window Rate Limiting**: Enforced via FastAPI middleware with dual tiers:
+  - `RATE_LIMIT_PER_MINUTE_AI=10` (expensive LLM, STT, and TTS endpoints)
+  - `RATE_LIMIT_PER_MINUTE_DEFAULT=60` (standard data endpoints)
+  - Returns `429 Too Many Requests` with `Retry-After` header and logs events via `AuditLog`.
+- **Adversarial Test Suite**: Validated by table-driven test cases in `backend/tests/test_prompt_injection.py`.
+
+## 🧭 Spotlight Guided Onboarding Tours
+
+Tech Sahaya includes an interactive SVG cutout spotlight tour engine that guides citizens step-by-step through:
+- Secure income proof upload and document masking (`upload_income_proof`)
+- Citizen profile completion (`complete_profile`)
+- Missed welfare gap discovery (`explore_welfare_gaps`)
+- Deterministic eligibility evaluation (`verify_eligibility`)
+- Household family entitlement optimization (`family_optimizer`)
+
+Tours are defined declaratively in `data/config/tours.json` and `frontend/src/data/tours.ts` and can be launched directly by Ask Sahaya via backend-allowlisted tour actions.
+
 
 ## 📄 Document Security Flow
 
@@ -395,21 +424,44 @@ Services:
 ## ⚙️ Environment Variables
 
 ```env
+# AI & Reasoning
 GEMINI_API_KEY=
 GOOGLE_API_KEY=
-BHASHINI_API_KEY=
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
+GEMINI_MODEL=gemini-2.5-flash
+GEMINI_FALLBACK_MODEL=gemini-1.5-flash
+
+# Multilingual Voice (Sarvam AI STT & TTS)
+SARVAM_API_KEY=
+SARVAM_API_BASE_URL=https://api.sarvam.ai
+SARVAM_STT_MODEL=saaras:v1
+SARVAM_TTS_MODEL=bulbul:v1
+SARVAM_TTS_VOICE=meera
+VOICE_PROVIDER=sarvam
+
+# Legacy external references
+BHASHINI_API_KEY= # Optional, superseded by Sarvam AI voice
+
+# Database & Auth
 AUTH_ADAPTER=local
 DATABASE_URL=sqlite:///./tech_sahaya_secure.db
 FAISS_INDEX_PATH=./data/faiss_index
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# Security & Rate Limiting
 MAX_UPLOAD_SIZE=5242880
-RATE_LIMIT_PER_MINUTE=10
+RATE_LIMIT_PER_MINUTE_DEFAULT=60
+RATE_LIMIT_PER_MINUTE_AI=10
+PROMPT_INJECTION_GUARD_ENABLED=true
+MAX_CHAT_INPUT_LENGTH=1000
+
+# Network
 CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
 
 Keep real secrets in `backend/.env`. The `.env` file is ignored by Git.
+
 
 ## 🔑 Local Login Accounts
 

@@ -18,8 +18,9 @@ export function EligibilityPage() {
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
       <SectionCard title={t(language, "eligibilityProfile")}>
-        <div className="mb-4">
-          <select className="min-h-12 w-full rounded-xl border p-3" value={schemeId} onChange={(e) => setSchemeId(e.target.value)}>
+        <div className="mb-4" data-tour="eligibility-scheme-select">
+          <label htmlFor="eligibility-scheme" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Select Scheme to Evaluate</label>
+          <select id="eligibility-scheme" className="min-h-12 w-full rounded-xl border p-3 bg-white" value={schemeId} onChange={(e) => setSchemeId(e.target.value)}>
             {localizedSchemes.map((scheme) => (
               <option key={scheme.id} value={scheme.id}>
                 {scheme.name} ({scheme.category})
@@ -27,16 +28,19 @@ export function EligibilityPage() {
             ))}
           </select>
         </div>
-        <ProfileForm
-          initialValue={profile}
-          submitLabel={t(language, "runEligibility")}
-          onSubmit={async (nextProfile) => {
-            setProfile(nextProfile);
-            const res = await api.post("/api/check-eligibility", { scheme_id: schemeId, profile: nextProfile });
-            setResult(res.data);
-          }}
-        />
+        <div data-tour="eligibility-check-btn">
+          <ProfileForm
+            initialValue={profile}
+            submitLabel={t(language, "runEligibility")}
+            onSubmit={async (nextProfile) => {
+              setProfile(nextProfile);
+              const res = await api.post("/api/check-eligibility", { scheme_id: schemeId, profile: nextProfile });
+              setResult(res.data);
+            }}
+          />
+        </div>
       </SectionCard>
+
 
       <SectionCard title={t(language, "result")}>
         {!result && <p className="text-sm text-slate-600">{t(language, "fillProfileRunCheck")}</p>}

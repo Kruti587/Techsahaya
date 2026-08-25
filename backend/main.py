@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 
 from app.core.config import get_settings
+from app.core.rate_limit import RateLimitMiddleware
 from app.routers.api import router as api_router
 from app.utils.seed import init_db
 
@@ -18,6 +19,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(RateLimitMiddleware)
+
 
 
 @app.on_event("startup")

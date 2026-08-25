@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000",
 });
 
 api.interceptors.request.use((config) => {
@@ -11,3 +11,14 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 401) {
+      sessionStorage.removeItem("tech-sahaya-token");
+      localStorage.removeItem("tech-sahaya-token");
+    }
+    return Promise.reject(error);
+  }
+);

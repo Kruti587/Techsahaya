@@ -84,8 +84,10 @@ class ChatRequest(BaseModel):
 
 
 class VoiceChatRequest(BaseModel):
-    transcript: str
+    transcript: str | None = None
+    audio_base64: str | None = None
     language: str = "en"
+    profile: EligibilityProfile | None = None
 
 
 class ChatResponse(BaseModel):
@@ -95,6 +97,20 @@ class ChatResponse(BaseModel):
     verification_status: str
     confidence: str
     offline_ready: bool = True
+    tour_id: str | None = None
+    suggested_action: dict[str, Any] | None = None
+    audio_base64: str | None = None
+    audio_mime: str | None = None
+
+
+class VoiceChatResponse(BaseModel):
+    transcript: str
+    response: ChatResponse
+    audio_base64: str | None = None
+    audio_mime: str = "audio/wav"
+    mode: str = "sarvam_ai"
+
+
 
 
 class ProfileUpdate(BaseModel):

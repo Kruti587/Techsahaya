@@ -131,7 +131,7 @@ export function DocumentsPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl bg-white p-5 shadow-card">
+        <div className="rounded-3xl bg-white p-5 shadow-card" data-tour="upload-section">
           <h2 className="mb-2 text-lg font-semibold">{t(language, "uploadDocument")}</h2>
           <p className="mb-4 text-sm text-slate-600">{t(language, "uploadHelp")}</p>
           <form
@@ -163,16 +163,38 @@ export function DocumentsPage() {
               await load();
             }}
           >
+            <div className="grid gap-1 text-sm font-semibold">
+              <label htmlFor="doc-type">{t(language, "chooseDocument")}</label>
+              <select
+                id="doc-type"
+                data-tour="doc-type-select"
+                className="min-h-12 rounded-xl border p-3 font-normal text-slate-700 bg-white"
+                defaultValue="income_certificate"
+              >
+                {commonDocuments.map((item) => (
+                  <option key={item.documentType} value={item.documentType}>
+                    {item.name[langKey]}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <label className="grid gap-1 text-sm font-semibold" htmlFor="upload">
-              {t(language, "chooseDocument")}
+              Select File (PDF, PNG, JPG)
               <input id="upload" aria-label={t(language, "uploadDocument")} className="min-h-12 rounded-xl border p-3 font-normal" type="file" accept=".pdf,.png,.jpg,.jpeg" />
             </label>
-            <button className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-4 font-semibold text-white">
-              <UploadCloud size={18} /> {t(language, "uploadDocument")}
-            </button>
-            <button type="button" onClick={() => load()} className="ml-2 inline-flex min-h-12 items-center gap-2 rounded-xl border px-4 font-semibold">
-              <RefreshCcw size={18} /> {t(language, "refreshDocuments")}
-            </button>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <button
+                type="submit"
+                data-tour="upload-button"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-4 font-semibold text-white shadow-sm hover:opacity-90 transition"
+              >
+                <UploadCloud size={18} /> {t(language, "uploadDocument")}
+              </button>
+              <button type="button" onClick={() => load()} className="inline-flex min-h-12 items-center gap-2 rounded-xl border px-4 font-semibold hover:bg-stone-50 transition">
+                <RefreshCcw size={18} /> {t(language, "refreshDocuments")}
+              </button>
+            </div>
           </form>
         </div>
       </section>

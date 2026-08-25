@@ -34,16 +34,17 @@ export function ProfileForm({
         <option value="female">{t(language, "female")}</option>
         <option value="male">{t(language, "male")}</option>
       </select>
-      <input className="min-h-12 rounded-xl border p-3" placeholder={t(language, "state")} value={form.state || ""} onChange={(e) => update("state", e.target.value)} />
-      <input className="min-h-12 rounded-xl border p-3" placeholder={t(language, "occupation")} value={form.occupation || ""} onChange={(e) => update("occupation", e.target.value)} />
-      <input className="min-h-12 rounded-xl border p-3" placeholder={t(language, "income")} type="number" value={form.income || ""} onChange={(e) => update("income", Number(e.target.value))} />
+      <input data-tour="profile-state-select" className="min-h-12 rounded-xl border p-3" placeholder={t(language, "state")} value={form.state || ""} onChange={(e) => update("state", e.target.value)} />
+      <input data-tour="profile-occupation-select" className="min-h-12 rounded-xl border p-3" placeholder={t(language, "occupation")} value={form.occupation || ""} onChange={(e) => update("occupation", e.target.value)} />
+      <input data-tour="profile-income-input" className="min-h-12 rounded-xl border p-3" placeholder={t(language, "income")} type="number" value={form.income || ""} onChange={(e) => update("income", Number(e.target.value))} />
       <input className="min-h-12 rounded-xl border p-3" placeholder={t(language, "landholding")} type="number" value={form.landholding || ""} onChange={(e) => update("landholding", Number(e.target.value))} />
       <label className="flex min-h-12 items-center gap-2 rounded-xl border p-3">
         <input type="checkbox" checked={form.disability || false} onChange={(e) => update("disability", e.target.checked)} />
         {t(language, "disability")}
       </label>
       <input className="min-h-12 rounded-xl border p-3 md:col-span-2" placeholder={t(language, "documentsList")} value={(form.available_documents || []).join(", ")} onChange={(e) => update("available_documents", e.target.value.split(",").map((item) => item.trim()).filter(Boolean) as never)} />
-      <button className="min-h-12 rounded-xl bg-sahaya-green px-4 text-white md:col-span-2" type="submit">{buttonText}</button>
+      <button data-tour="profile-save-button" className="min-h-12 rounded-xl bg-sahaya-green px-4 font-semibold text-white md:col-span-2 shadow-sm hover:opacity-90 transition" type="submit">{buttonText}</button>
+
     </form>
   );
 }

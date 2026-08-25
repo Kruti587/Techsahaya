@@ -18,7 +18,7 @@ export function WelfareGapsPage() {
 
   return (
     <div className="space-y-5">
-      <section className="rounded-3xl bg-white p-6 shadow-card">
+      <section className="rounded-3xl bg-white p-6 shadow-card" data-tour="welfare-gaps-header">
         <p className="text-sm font-semibold uppercase tracking-wide text-sahaya-saffron">{t(language, "missingBenefits")}</p>
         <h1 className="mt-1 text-3xl font-bold text-sahaya-ink">{t(language, "missingBenefits")}</h1>
         <p className="mt-2 max-w-3xl text-slate-600">{t(language, "welfareGapsUse")}</p>
@@ -33,7 +33,8 @@ export function WelfareGapsPage() {
       </section>
 
       <SectionCard title={t(language, "missingBenefits")}>
-        <div className="space-y-4">
+        <div className="space-y-4" data-tour="welfare-gaps-list">
+
           {loading && [1, 2, 3].map((item) => <div key={item} className="h-28 animate-pulse rounded-2xl bg-stone-100" />)}
           {!loading && gaps.length === 0 && (
             <div className="rounded-2xl border border-dashed p-6 text-center">

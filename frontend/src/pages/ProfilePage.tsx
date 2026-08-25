@@ -49,7 +49,7 @@ export function ProfilePage() {
   return (
     <div className="grid gap-4 xl:grid-cols-[1fr_0.9fr]">
       <SectionCard title={t(language, "profilePrivacy")}>
-        <div className="mb-5 rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+        <div data-tour="profile-header" className="mb-5 rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
           <div className="text-lg font-semibold text-sahaya-green">{t(language, "tellOnlyNeeded")}</div>
           <p className="mt-1 text-sm text-slate-700">{t(language, "profileHelp")}</p>
         </div>

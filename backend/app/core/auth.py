@@ -36,6 +36,31 @@ def get_current_user(
     return user
 
 
+def get_optional_user(
+    request: Request,
+    authorization: str | None = Header(default=None),
+    db: Session = Depends(get_db),
+) -> User | None:
+    if not authorization or not authorization.startswith("Bearer "):
+        return None
+    try:
+        token = authorization.split(" ", 1)[1]
+        session = db.query(SessionRecord).filter(SessionRecord.token_hash == hash_token(token)).first()
+        if session is None or session.revoked_at is not None or session.expires_at <= datetime.utcnow():
+            return None
+        user = db.query(User).filter(User.id == session.user_id, User.is_active.is_(True)).first()
+        if user is None:
+            return None
+        _validate_supabase_session_if_needed(user, token)
+        request.state.current_user = user
+        request.state.current_role = get_user_role(db, user.id)
+        request.state.session_id = session.id
+        return user
+    except Exception:
+        return None
+
+
+
 def _validate_supabase_session_if_needed(user: User, token: str) -> None:
     settings = get_settings()
     if settings.auth_adapter != "supabase" or user.auth_provider != "supabase":

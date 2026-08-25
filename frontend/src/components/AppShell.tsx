@@ -3,27 +3,30 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { t, type TranslationKey } from "../utils/i18n";
+import { FloatingChatWidget } from "./FloatingChatWidget";
+import { SpotlightOverlay } from "./SpotlightOverlay";
 
 type NavItem = {
   to: string;
   label?: string;
   labelKey?: TranslationKey;
   icon: typeof LayoutDashboard;
+  tourId?: string;
 };
 
 const citizenNav: NavItem[] = [
-  { to: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
-  { to: "/chat", labelKey: "askSahaya", icon: MessageSquareText },
-  { to: "/find-schemes", labelKey: "findBenefits", icon: Search },
-  { to: "/eligibility", labelKey: "eligibility", icon: WalletCards },
-  { to: "/welfare-gaps", labelKey: "welfareGaps", icon: ShieldCheck },
-  { to: "/family", labelKey: "family", icon: Users },
-  { to: "/what-if", labelKey: "whatIf", icon: GitCompareArrows },
-  { to: "/documents", labelKey: "documents", icon: Files },
-  { to: "/journey", labelKey: "welfareJourney", icon: Network },
-  { to: "/notifications", labelKey: "notifications", icon: Bell },
-  { to: "/profile", labelKey: "profile", icon: CircleUser },
-  { to: "/privacy", labelKey: "securityPrivacy", icon: UserCog }
+  { to: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard, tourId: "nav-dashboard" },
+  { to: "/chat", labelKey: "askSahaya", icon: MessageSquareText, tourId: "nav-chat" },
+  { to: "/find-schemes", labelKey: "findBenefits", icon: Search, tourId: "nav-schemes" },
+  { to: "/eligibility", labelKey: "eligibility", icon: WalletCards, tourId: "nav-eligibility" },
+  { to: "/welfare-gaps", labelKey: "welfareGaps", icon: ShieldCheck, tourId: "nav-welfare-gaps" },
+  { to: "/family", labelKey: "family", icon: Users, tourId: "nav-family" },
+  { to: "/what-if", labelKey: "whatIf", icon: GitCompareArrows, tourId: "nav-what-if" },
+  { to: "/documents", labelKey: "documents", icon: Files, tourId: "nav-documents" },
+  { to: "/journey", labelKey: "welfareJourney", icon: Network, tourId: "nav-journey" },
+  { to: "/notifications", labelKey: "notifications", icon: Bell, tourId: "nav-notifications" },
+  { to: "/profile", labelKey: "profile", icon: CircleUser, tourId: "nav-profile" },
+  { to: "/privacy", labelKey: "securityPrivacy", icon: UserCog, tourId: "nav-privacy" }
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -62,6 +65,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <NavLink
             key={item.to}
             to={item.to}
+            data-tour={item.tourId}
             title={collapsed ? label : undefined}
             onClick={() => setMobileOpen(false)}
             className={({ isActive }) => `flex min-h-12 items-center gap-3 rounded-lg px-3 text-[15px] font-medium transition ${collapsed ? "justify-center" : ""} ${isActive ? "bg-sahaya-green text-white shadow-sm" : "text-slate-700 hover:bg-stone-100 focus-visible:bg-stone-100"}`}
@@ -85,7 +89,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-stone-50 pb-20 lg:pb-0">
+    <div className="min-h-screen bg-stone-50 pb-20 lg:pb-0 relative">
+      <SpotlightOverlay />
+      {user?.role !== "admin" && <FloatingChatWidget />}
+
       <header className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
           <Link to="/dashboard" className="flex items-center gap-3 text-sahaya-green">
@@ -148,3 +155,4 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+

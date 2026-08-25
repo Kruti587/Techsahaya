@@ -34,3 +34,13 @@ def load_chunks() -> list[dict[str, Any]]:
 @lru_cache
 def load_personas() -> dict[str, Any]:
     return _load_json(DATA_DIR / "personas" / "personas.json")
+
+
+@lru_cache
+def load_languages() -> dict[str, Any]:
+    return _load_json(DATA_DIR / "config" / "languages.json")
+
+
+@lru_cache
+def load_tours() -> dict[str, Any]:
+    return _load_json(DATA_DIR / "config" / "tours.json")

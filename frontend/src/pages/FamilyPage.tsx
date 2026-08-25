@@ -16,7 +16,7 @@ export function FamilyPage() {
     <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
       <SectionCard title={t(language, "familyBenefits")}>
         <p className="mb-4 text-sm text-slate-600">{t(language, "familyOptimizerHelp")}</p>
-        <div className="space-y-3">
+        <div className="space-y-3" data-tour="family-members-section">
           {members.map((member, index) => (
             <div key={index} className="grid gap-2 rounded-2xl border p-3 md:grid-cols-2">
               <input
@@ -37,12 +37,13 @@ export function FamilyPage() {
             <button onClick={addMember} className="inline-flex min-h-12 items-center gap-2 rounded-xl border px-4 font-semibold">
               <Plus size={18} /> {t(language, "addMember")}
             </button>
-            <button onClick={async () => setResult((await api.post("/api/family/analyze", { members })).data)} className="min-h-12 rounded-xl bg-sahaya-green px-4 font-semibold text-white">
+            <button data-tour="family-analyze-btn" onClick={async () => setResult((await api.post("/api/family/analyze", { members })).data)} className="min-h-12 rounded-xl bg-sahaya-green px-4 font-semibold text-white shadow-sm hover:opacity-90 transition">
               {t(language, "analyzeFamily")}
             </button>
           </div>
         </div>
       </SectionCard>
+
 
       <SectionCard title={t(language, "familyBenefitMap")}>
         {!result && (

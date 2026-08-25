@@ -1,23 +1,51 @@
+import json
 from functools import lru_cache
-from typing import List
+from typing import List, Union
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    # Core Provider Keys
     gemini_api_key: str = ""
     google_api_key: str = ""
     bhashini_api_key: str = ""
+    sarvam_api_key: str = ""
+    sarvam_api_base_url: str = "https://api.sarvam.ai"
+    sarvam_stt_model: str = "saaras:v1"
+    sarvam_tts_model: str = "bulbul:v2"
+
+    sarvam_tts_voice: str = "anushka"
+
+    voice_provider: str = "sarvam"
+
+    # AI Model Selection
+    gemini_model: str = "gemini-2.5-flash"
+    gemini_fallback_model: str = "gemini-1.5-flash"
+
+    # Auth & Database
     supabase_url: str = ""
     supabase_anon_key: str = ""
     supabase_service_role_key: str = ""
     auth_adapter: str = "local"
     database_url: str = "sqlite:///./tech_sahaya_secure.db"
     faiss_index_path: str = "./data/faiss_index"
+
+    # Uploads & Rate Limiting
     max_upload_size: int = 5_242_880
-    rate_limit_per_minute: int = 10
-    cors_origins: List[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    rate_limit_per_minute_default: int = 60
+    rate_limit_per_minute_ai: int = 10
+    rate_limit_per_minute: int = 60  # legacy alias
+
+    # Security & Guardrails
+    prompt_injection_guard_enabled: bool = True
+    max_chat_input_length: int = 1000
+    cors_origins: Union[List[str], str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+    # Dynamic Config Paths
+    languages_config_path: str = "./data/config/languages.json"
+    tours_config_path: str = "./data/config/tours.json"
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -28,10 +56,20 @@ class Settings(BaseSettings):
 
     @field_validator("cors_origins", mode="before")
     @classmethod
-    def parse_cors_origins(cls, value: str | List[str]) -> List[str]:
+    def parse_cors_origins(cls, value: Union[str, List[str]]) -> List[str]:
         if isinstance(value, list):
             return value
-        return [item.strip() for item in value.split(",") if item.strip()]
+        if isinstance(value, str):
+            val = value.strip()
+            if val.startswith("[") and val.endswith("]"):
+                try:
+                    parsed = json.loads(val)
+                    if isinstance(parsed, list):
+                        return [str(item).strip() for item in parsed if str(item).strip()]
+                except Exception:
+                    pass
+            return [item.strip() for item in val.split(",") if item.strip()]
+        return ["http://localhost:5173", "http://127.0.0.1:5173"]
 
 
 @lru_cache
