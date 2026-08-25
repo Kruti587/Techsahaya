@@ -1,4 +1,4 @@
-# 🚀 Tech Sahaya  -  Digital Citizen Welfare Platform
+# 🚀 Tech Sahaya - Digital Citizen Welfare Platform
 
 A production-style AI-assisted welfare navigation system that helps citizens discover government schemes, verify eligibility, prepare documents, and track benefit journeys through a secure multilingual platform.
 
