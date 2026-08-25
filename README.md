@@ -1,43 +1,84 @@
 # Tech Sahaya
 
-Tech Sahaya is a secure, citizen-facing welfare navigation platform for discovering Indian government schemes, checking eligibility, preparing documents, and tracking the welfare application journey.
+Tech Sahaya is a full-stack Digital Citizen Assistant for welfare discovery, explainable eligibility, secure document handling, and guided government-scheme application journeys.
 
-The product is designed for rural and semi-urban citizens, women, students, farmers, senior citizens, persons with disabilities, CSC operators, and administrators who need a trustworthy way to move from scheme discovery to action.
-
-## What Tech Sahaya Does
-
-Tech Sahaya is not just a chatbot. It follows a practical citizen journey:
+It is built as a production-style platform with a React + TypeScript frontend, FastAPI backend, deterministic eligibility engine, local scheme knowledge base, evidence-first RAG flow, RBAC, audit logging, privacy controls, and Dockerized development.
 
 ```text
-Discover -> Understand -> Verify -> Prepare -> Apply -> Track
+Discover -> Understand -> Verify -> Prepare Documents -> Apply -> Track Benefits
 ```
 
-Key capabilities:
+## Platform Overview
 
-- Discover relevant central and state welfare schemes.
-- Understand scheme benefits, documents, and application steps in simple language.
-- Check eligibility using a deterministic rule engine, not an LLM.
-- See why a citizen is eligible, not eligible, or missing information.
-- Find alternative schemes when a rule fails.
-- Detect benefits a citizen may be missing.
-- Analyze welfare options for the whole family.
-- Upload documents safely with validation and sensitive-data minimization.
-- Use Ask Sahaya with evidence-first answers and local fallback retrieval.
-- Access citizen, CSC operator, and admin dashboards with backend-enforced RBAC.
-- Control consent, privacy, account activity, and data deletion.
+Tech Sahaya helps citizens navigate government benefits through a secure workflow-oriented interface instead of forcing them to search across disconnected portals.
 
-## Tech Stack
+The platform supports:
 
-- Frontend: React, Vite, TypeScript, Tailwind CSS, Lucide React
-- Backend: Python, FastAPI, Pydantic, SQLAlchemy
-- Local database: SQLite
-- Search/RAG: FAISS when available, keyword/vector fallback when unavailable
-- Authentication: Local development auth by default, Supabase Auth-ready adapter
-- State management: React Context and hooks
-- API client: Axios
-- PWA: Vite PWA plugin
-- Deployment support: Docker and Docker Compose
-- API docs: FastAPI Swagger/OpenAPI
+- Citizens who want to find benefits, check eligibility, prepare documents, and track actions.
+- Farmers, students, women, families, senior citizens, workers, and persons with disabilities.
+- CSC operators who assist citizens through authorized support sessions.
+- Admin users who manage schemes, rules, official sources, users, and audit events.
+
+## Highlights
+
+- Full-stack React + FastAPI application
+- Public landing page and public scheme explorer
+- Secure login, signup, protected routes, and role-based dashboards
+- Backend-enforced RBAC for `CITIZEN`, `CSC_OPERATOR`, and `ADMIN`
+- Deterministic eligibility engine with matched, failed, and missing rules
+- Evidence-first Ask Sahaya assistant powered by local RAG
+- FAISS-ready semantic search with fallback retrieval
+- Secure document upload flow with MIME and size validation
+- No raw Aadhaar, PAN, biometric, or identity-image storage
+- Consent, privacy center, audit events, and delete-my-data workflow
+- Welfare gap detection, family benefit analysis, and what-if simulation
+- English, Hindi, and Kannada language support
+- PWA-ready frontend with offline-friendly scheme browsing
+- Docker Compose setup for frontend and backend
+- Automated backend tests
+
+## System Architecture
+
+```text
+Frontend
+React + Vite + TypeScript + Tailwind
+        |
+        | Axios API client with auth token handling
+        v
+Backend API
+FastAPI + Pydantic + SQLAlchemy
+        |
+        | Services
+        |-- Auth + RBAC
+        |-- Eligibility Engine
+        |-- Scheme Catalogue
+        |-- RAG/Search Service
+        |-- Document Service
+        |-- Profile/Consent/Audit Services
+        v
+Local Data Layer
+SQLite + JSON Scheme Data + JSON Rule Files + Retrieval Chunks
+```
+
+## Technology Stack
+
+| Layer | Technology |
+| --- | --- |
+| Frontend | React, Vite, TypeScript |
+| Styling | Tailwind CSS |
+| Icons | Lucide React |
+| Routing | React Router |
+| State | React Context and hooks |
+| HTTP | Axios |
+| PWA | vite-plugin-pwa |
+| Backend | FastAPI |
+| Validation | Pydantic |
+| ORM | SQLAlchemy |
+| Database | SQLite for local development |
+| Retrieval | FAISS-ready search with fallback |
+| Testing | Pytest, TypeScript build checks |
+| Deployment | Docker, Docker Compose |
+| Auth-ready | Supabase Auth adapter |
 
 ## Repository Structure
 
@@ -45,22 +86,22 @@ Key capabilities:
 TechSahasya/
 ├── backend/
 │   ├── app/
-│   │   ├── core/
-│   │   ├── models/
-│   │   ├── routers/
-│   │   ├── services/
-│   │   └── utils/
-│   ├── tests/
-│   ├── main.py
+│   │   ├── core/          # config, db, auth, security helpers
+│   │   ├── models/        # SQLAlchemy and Pydantic models
+│   │   ├── routers/       # FastAPI route definitions
+│   │   ├── services/      # business logic and platform services
+│   │   └── utils/         # seed and helper utilities
+│   ├── tests/             # backend automated tests
+│   ├── main.py            # FastAPI application entrypoint
 │   ├── requirements.txt
 │   └── Dockerfile
 ├── data/
-│   ├── chunks/
-│   ├── personas/
-│   ├── rules/
-│   └── schemes/
+│   ├── chunks/            # RAG retrieval chunks
+│   ├── personas/          # local quick-start personas
+│   ├── rules/             # deterministic eligibility rules
+│   └── schemes/           # structured scheme catalogue
 ├── docs/
-│   └── supabase_rls.sql
+│   └── supabase_rls.sql   # Supabase table/RLS reference policies
 ├── frontend/
 │   ├── public/
 │   ├── src/
@@ -78,64 +119,84 @@ TechSahasya/
 └── README.md
 ```
 
-## Core Features
+## Application Modules
 
-### Public Experience
+### Public Website
 
-- Professional public landing page
-- Public scheme browsing
-- Scheme details with source and evidence sections
-- Security and privacy page
-- Login, signup, and forgot-password screens
+- Landing page with clear citizen journey
+- Public scheme catalogue
+- Scheme detail pages with benefits, eligibility, documents, evidence, and official source links
+- Security and privacy information
+- Login, signup, and forgot-password routes
 
-### Citizen Platform
+### Citizen Console
 
-- Citizen dashboard with welfare readiness score
-- Recommended schemes
+- Welfare readiness score
+- Personalized recommendations
 - Benefits the citizen may be missing
-- Pending actions and recent activity
-- Eligibility checker with visual rule results
-- Welfare gap detector
+- Pending actions and notifications
+- Eligibility checks with explainable results
 - Family benefit optimizer
 - What-if simulator
-- Welfare journey tracker
-- Notification center
-- Privacy and security center
+- Document upload and document status
+- Welfare journey tracking
+- Profile and privacy controls
 
-### Ask Sahaya
+### CSC Operator Console
 
-- Text-first and voice-oriented chat interface
-- Browser microphone support where available
-- English, Hindi, and Kannada language selection
-- Evidence-first responses
-- Source, verification status, and confidence indicators
-- Local retrieval fallback when external AI keys are unavailable
+- CSC dashboard
+- Authorized citizen assistance session flow
+- Consent-first support model
+- Guided scheme discovery and eligibility assistance
+- Session closure with privacy-aware cleanup
 
-### Document Handling
+### Admin Console
 
-- Upload support for PDF, PNG, JPG, and JPEG
-- Frontend and backend file validation
-- File size limits
-- MIME type checks
-- Aadhaar/PAN filename rejection for safer local handling
-- In-memory processing approach
-- Masked extracted metadata
-- No permanent raw identity document storage
-- Ownership checks before document access
+- Admin dashboard
+- Scheme, rule, source, and user views
+- Policy conflict monitoring
+- System health indicators
+- Security and audit event visibility
 
-### RBAC
+## Eligibility Engine
 
-Roles:
+Eligibility is calculated by a deterministic backend rule engine, not by the AI assistant.
 
-- `CITIZEN`
-- `CSC_OPERATOR`
-- `ADMIN`
+The engine supports:
 
-RBAC is enforced on the backend through authentication, role checks, and ownership checks. The frontend also uses protected routes and role-protected routes to prevent accidental access to restricted screens.
+- Age limits
+- Income limits
+- Occupation matching
+- Gender rules
+- State applicability
+- Landholding checks
+- Disability checks
+- Required document checks
 
-## Government Scheme Data
+Response shape:
 
-The current seed catalogue includes structured records and deterministic rule files for these schemes:
+```json
+{
+  "eligible": true,
+  "status": "eligible",
+  "matched": [],
+  "failed": [],
+  "missing": [],
+  "score": 100
+}
+```
+
+This keeps eligibility decisions transparent, auditable, and explainable.
+
+## Scheme Knowledge Base
+
+Scheme data is separated from application logic:
+
+- `data/schemes/schemes.json` stores scheme metadata.
+- `data/rules/*.json` stores deterministic eligibility rules.
+- `data/chunks/scheme_chunks.json` stores retrieval chunks for Ask Sahaya.
+
+Included catalogue:
 
 - PM-Kisan
 - Ayushman Bharat PM-JAY
@@ -150,37 +211,91 @@ The current seed catalogue includes structured records and deterministic rule fi
 - PM-SYM
 - UDID
 
-Scheme data is stored in `data/schemes`, eligibility rules are stored in `data/rules`, and retrieval chunks are stored in `data/chunks`.
+Each scheme supports structured fields for category, state scope, benefit details, eligibility, required documents, application steps, department, official source, last verification date, and alternative schemes.
 
-Important: the architecture is ready for larger official scheme ingestion, but scheme rules should only be expanded from verified official sources.
+## RAG And Ask Sahaya
 
-## Prerequisites
+Ask Sahaya uses a retrieval-first answer pipeline:
 
-Install:
+```text
+User query -> query normalization -> local search -> top evidence chunks -> verified response
+```
 
-- Python 3.11 or newer
-- Node.js 20 or newer
-- npm
-- Git
-- Docker Desktop, optional
+The assistant is designed to explain available evidence, not invent scheme rules. When external AI services are not configured, the local deterministic response layer keeps the application functional.
 
-## Environment Setup
+Every important response can include:
 
-Create backend environment variables from the template:
+- Scheme name
+- Evidence text
+- Source
+- Verification status
+- Last verified date
+- Confidence indicator
+
+## Security Model
+
+Tech Sahaya applies security controls across the frontend, backend, and data layer:
+
+- Backend authentication dependency for protected routes
+- Backend role dependency for citizen, CSC, and admin access
+- Ownership checks for profile, document, activity, and journey data
+- Request validation with Pydantic
+- Upload MIME validation
+- Upload size limits
+- Strict CORS through environment configuration
+- Security headers middleware
+- Safe error responses
+- Request IDs for debugging
+- Audit logging for sensitive account and access events
+- No secrets in frontend code
+- No public document URLs
+
+## Privacy Model
+
+Tech Sahaya follows data minimization and consent-first handling:
+
+- Collect only fields needed for welfare assistance.
+- Store consent metadata with version, language, timestamp, and purpose.
+- Process uploaded documents safely.
+- Store document metadata instead of raw identity files.
+- Mask extracted sensitive information.
+- Provide account activity visibility.
+- Provide user-controlled data deletion.
+
+The system is designed to align with DPDP Act principles such as consent, purpose limitation, data minimization, and erasure control.
+
+## Local Setup
+
+### 1. Clone
+
+```bash
+git clone https://github.com/chinmayee1096/TechSahasya.git
+cd TechSahasya
+```
+
+### 2. Configure Environment
+
+Windows:
 
 ```bash
 copy .env.example backend\.env
 ```
 
-On macOS/Linux:
+macOS/Linux:
 
 ```bash
 cp .env.example backend/.env
 ```
 
-The app runs without external API keys when `AUTH_ADAPTER=local`.
+Default local mode:
 
-Optional services can be configured later:
+```env
+AUTH_ADAPTER=local
+DATABASE_URL=sqlite:///./tech_sahaya_secure.db
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+```
+
+Optional provider variables:
 
 ```env
 GEMINI_API_KEY=
@@ -189,19 +304,16 @@ BHASHINI_API_KEY=
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
-AUTH_ADAPTER=local
-DATABASE_URL=sqlite:///./tech_sahaya_secure.db
 FAISS_INDEX_PATH=./data/faiss_index
 MAX_UPLOAD_SIZE=5242880
 RATE_LIMIT_PER_MINUTE=10
-CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
 
-Do not commit `backend/.env`. It is ignored by Git.
-
-## Run Locally
+## Run The Application
 
 ### Backend
+
+Windows:
 
 ```bash
 cd backend
@@ -211,7 +323,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-On macOS/Linux:
+macOS/Linux:
 
 ```bash
 cd backend
@@ -221,21 +333,15 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-Backend runs at:
+Backend URLs:
 
 ```text
-http://127.0.0.1:8000
-```
-
-Swagger API docs:
-
-```text
-http://127.0.0.1:8000/docs
+API: http://127.0.0.1:8000
+Swagger: http://127.0.0.1:8000/docs
+Health: http://127.0.0.1:8000/health
 ```
 
 ### Frontend
-
-Open a second terminal:
 
 ```bash
 cd frontend
@@ -243,15 +349,25 @@ npm install
 npm run dev
 ```
 
-Frontend runs at:
+Frontend URL:
 
 ```text
 http://localhost:5173
 ```
 
-## Local Accounts
+## Docker Compose
 
-These accounts are created for local development:
+```bash
+docker compose up --build
+```
+
+Docker services:
+
+- Frontend: `http://localhost:5173`
+- Backend: `http://127.0.0.1:8000`
+- Swagger: `http://127.0.0.1:8000/docs`
+
+## Local Access Accounts
 
 | Role | Email | Password |
 | --- | --- | --- |
@@ -259,94 +375,117 @@ These accounts are created for local development:
 | CSC Operator | `csc@techsahaya.org` | `Csc@12345` |
 | Admin | `admin@techsahaya.org` | `Admin@12345` |
 
-For deployed environments, configure Supabase Auth and replace local credentials with managed authentication.
+## Route Map
 
-## Docker
+### Public Routes
 
-Run the complete application:
+- `/`
+- `/how-it-works`
+- `/schemes`
+- `/schemes/:schemeId`
+- `/security`
+- `/about`
+- `/login`
+- `/signup`
+- `/forgot-password`
 
-```bash
-docker compose up --build
-```
+### Citizen Routes
 
-Services:
+- `/dashboard`
+- `/chat`
+- `/find-schemes`
+- `/eligibility`
+- `/welfare-gaps`
+- `/family`
+- `/what-if`
+- `/journey`
+- `/documents`
+- `/notifications`
+- `/profile`
+- `/privacy`
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://127.0.0.1:8000`
-- API docs: `http://127.0.0.1:8000/docs`
+### CSC Routes
 
-## API Endpoints
+- `/csc/dashboard`
+- `/csc/citizen-session`
+
+### Admin Routes
+
+- `/admin/dashboard`
+- `/admin/schemes`
+- `/admin/rules`
+- `/admin/sources`
+- `/admin/users`
+- `/admin/audit`
+
+## API Reference
 
 ### Public
 
-- `GET /`
-- `GET /health`
-- `GET /api/schemes`
-- `GET /api/schemes/{scheme_id}`
-- `GET /api/sources/{scheme_id}`
-- `GET /api/personas`
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| GET | `/` | API root metadata |
+| GET | `/health` | Health check |
+| GET | `/api/schemes` | List schemes |
+| GET | `/api/schemes/{scheme_id}` | Scheme detail |
+| GET | `/api/sources/{scheme_id}` | Scheme source evidence |
+| GET | `/api/personas` | Local profile presets |
 
-### Auth
+### Auth And Consent
 
-- `POST /api/auth/signup`
-- `POST /api/auth/login`
-- `POST /api/auth/logout`
-- `GET /api/auth/me`
-- `POST /api/auth/forgot-password`
-- `POST /api/consent`
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| POST | `/api/auth/signup` | Create account |
+| POST | `/api/auth/login` | Start session |
+| POST | `/api/auth/logout` | End session |
+| GET | `/api/auth/me` | Current user |
+| POST | `/api/auth/forgot-password` | Password reset request |
+| POST | `/api/consent` | Store consent metadata |
 
 ### Citizen Workflows
 
-- `POST /api/chat`
-- `POST /api/voice-chat`
-- `POST /api/check-eligibility`
-- `GET /api/recommendations`
-- `GET /api/welfare-gaps`
-- `POST /api/family/analyze`
-- `POST /api/what-if`
-- `GET /api/journey`
-- `GET /api/profile`
-- `PUT /api/profile`
-- `DELETE /api/profile`
-- `GET /api/notifications`
-- `GET /api/audit`
-- `POST /api/schemes/save`
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| POST | `/api/chat` | Ask Sahaya text chat |
+| POST | `/api/voice-chat` | Voice-oriented assistant request |
+| POST | `/api/check-eligibility` | Deterministic eligibility check |
+| GET | `/api/recommendations` | Personalized scheme recommendations |
+| GET | `/api/welfare-gaps` | Missing benefit analysis |
+| POST | `/api/family/analyze` | Family benefit analysis |
+| POST | `/api/what-if` | Eligibility simulation |
+| GET | `/api/journey` | Welfare journey checklist |
+| GET | `/api/notifications` | User notifications |
+| GET | `/api/audit` | User account activity |
+| POST | `/api/schemes/save` | Save a scheme |
 
-### Documents
+### Profile And Documents
 
-- `GET /api/documents`
-- `POST /api/documents/upload`
-- `GET /api/documents/{id}`
-- `DELETE /api/documents/{id}`
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| GET | `/api/profile` | Read own profile |
+| PUT | `/api/profile` | Update own profile |
+| DELETE | `/api/profile` | Delete own data |
+| GET | `/api/documents` | List own documents |
+| POST | `/api/documents/upload` | Upload and process a document |
+| GET | `/api/documents/{id}` | Read document metadata |
+| DELETE | `/api/documents/{id}` | Delete document metadata |
 
-### CSC Operator
+### CSC And Admin
 
-- `POST /api/csc/citizen-session`
-- `POST /api/csc/citizen-session/{session_id}/end`
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| POST | `/api/csc/citizen-session` | Start authorized assistance session |
+| POST | `/api/csc/citizen-session/{session_id}/end` | End assistance session |
+| GET | `/api/admin/dashboard` | Admin system overview |
+| GET | `/api/admin/schemes` | Scheme administration |
+| GET | `/api/admin/rules` | Rule administration |
+| GET | `/api/admin/sources` | Source administration |
+| GET | `/api/admin/users` | User administration |
+| GET | `/api/admin/audit` | Security audit events |
 
-### Admin
+## Supabase Configuration
 
-- `GET /api/admin/dashboard`
-- `GET /api/admin/schemes`
-- `GET /api/admin/rules`
-- `GET /api/admin/sources`
-- `GET /api/admin/users`
-- `GET /api/admin/audit`
-
-## Authentication Architecture
-
-The project supports two authentication modes:
-
-- Local mode: default mode for development and judging walkthroughs.
-- Supabase mode: optional adapter for Supabase Auth JWT validation.
-
-Set this in `backend/.env`:
-
-```env
-AUTH_ADAPTER=local
-```
-
-To prepare Supabase Auth:
+The app runs in local auth mode by default. To use Supabase Auth, set:
 
 ```env
 AUTH_ADAPTER=supabase
@@ -355,56 +494,18 @@ SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-Supabase RLS reference policies are available in:
+Use the SQL reference in `docs/supabase_rls.sql` for table structure, RLS policies, and private storage policy design.
 
-```text
-docs/supabase_rls.sql
-```
+## Quality Checks
 
-## Security And Privacy
-
-Tech Sahaya is built with privacy-by-design principles:
-
-- No API keys in frontend code
-- No raw Aadhaar number storage
-- No raw PAN number storage
-- No biometric data storage
-- No permanent raw identity document storage
-- Document metadata is user-scoped
-- Backend verifies authentication, role, and ownership
-- Security headers are applied by FastAPI middleware
-- Strict CORS is controlled through environment variables
-- Upload type and size are validated
-- Audit logs avoid sensitive document contents
-- User data deletion is available through the backend
-
-The project is designed to align with DPDP Act principles such as consent, purpose limitation, data minimization, and user-controlled erasure. This repository does not claim legal certification.
-
-## Testing
-
-### Backend
+Backend:
 
 ```bash
 cd backend
 pytest
 ```
 
-Backend tests cover:
-
-- Health endpoint
-- Auth flows
-- Protected route behavior
-- Scheme listing and details
-- Eligibility
-- Alternative schemes
-- Welfare gaps
-- Family analysis
-- What-if simulation
-- Profile update and deletion
-- Document security behavior
-- Admin RBAC checks
-
-### Frontend
+Frontend:
 
 ```bash
 cd frontend
@@ -414,67 +515,49 @@ npm run build
 
 ## Troubleshooting
 
-### Port 8000 Is Blocked Or Already In Use
-
-Run the backend on a different port:
+### Port 8000 Is Already In Use
 
 ```bash
 cd backend
 uvicorn main:app --reload --port 8011
 ```
 
-Then update the frontend API URL if needed:
+If you change the backend port, set the frontend API base URL:
 
 ```env
 VITE_API_BASE_URL=http://127.0.0.1:8011
 ```
 
-### Backend Shows `{"detail":"Not Found"}` At `/`
+### Frontend Cannot Reach Backend
 
-Make sure you are running from the backend folder:
+Check that:
 
-```bash
-cd backend
-uvicorn main:app --reload
+- FastAPI is running.
+- `CORS_ORIGINS` includes the frontend URL.
+- `VITE_API_BASE_URL` points to the correct backend address.
+
+### Authentication Does Not Start
+
+For local development, use:
+
+```env
+AUTH_ADAPTER=local
 ```
 
-Then open:
+Then restart the backend.
 
-```text
-http://127.0.0.1:8000/
-```
+## Git Hygiene
 
-### Signup Or Login Fails
+The repository includes source and configuration files needed to run the application. Generated and sensitive files are ignored:
 
-Check:
-
-- Backend is running on `127.0.0.1:8000`.
-- Frontend `VITE_API_BASE_URL` points to the backend.
-- `AUTH_ADAPTER=local` is set for local development.
-- Browser network tab does not show CORS errors.
-
-## Deployment Notes
-
-For a production deployment:
-
-- Use Supabase Auth instead of local auth.
-- Apply RLS policies from `docs/supabase_rls.sql`.
-- Use HTTPS.
-- Configure strict production CORS origins.
-- Store secrets only in backend/server environment variables.
-- Use private storage buckets for sensitive documents.
-- Disable development seed credentials.
-- Add monitoring and backup policies.
-- Expand scheme records only from verified official sources.
-
-## Known Limitations
-
-- The included scheme catalogue is a structured starter set, not a complete national database.
-- External Gemini, Bhashini, Google Vision OCR, STT/TTS, and Supabase services require separate configuration.
-- Voice support depends on browser speech APIs when external voice services are not configured.
-- Local SQLite is intended for development, not multi-user production deployment.
-- Document processing uses a safe local extraction simulation unless an OCR provider is integrated.
+- `backend/.env`
+- SQLite database files
+- Python virtual environments
+- `node_modules`
+- frontend build output
+- test caches
+- runtime logs
 
 ## Project Status
 
-Tech Sahaya is a working MVP with frontend, backend, local database, seed scheme data, deterministic eligibility rules, document handling, RBAC, privacy controls, tests, Docker support, and API documentation.
+Tech Sahaya is implemented as a working MVP with frontend, backend, local data, authentication, RBAC, deterministic eligibility, secure document workflows, citizen/CSC/admin experiences, RAG-ready assistant behavior, tests, Docker support, and API documentation.
