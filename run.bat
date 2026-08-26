@@ -11,6 +11,18 @@ echo        SIH 2026 / Team Aphelion - Multilingual Voice ^& AI
 echo =====================================================================
 echo.
 
+REM Add WinGet / Gyan.FFmpeg to PATH if present
+for /d %%D in ("%LOCALAPPDATA%\Microsoft\WinGet\Packages\Gyan.FFmpeg*") do (
+    for /d %%B in ("%%D\*\bin") do (
+        if exist "%%B\ffmpeg.exe" (
+            set "PATH=%%B;!PATH!"
+        )
+    )
+)
+if exist "%LOCALAPPDATA%\Microsoft\WinGet\Links\ffmpeg.exe" (
+    set "PATH=%LOCALAPPDATA%\Microsoft\WinGet\Links;!PATH!"
+)
+
 REM 1. Check Python installation
 echo [*] Checking Python installation...
 where python >nul 2>&1

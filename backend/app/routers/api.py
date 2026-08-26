@@ -1,5 +1,8 @@
 import base64
+import logging
 from uuid import uuid4
+
+logger = logging.getLogger("techsahaya.api")
 
 # pyrefly: ignore [missing-import]
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
@@ -119,10 +122,12 @@ async def voice_chat(payload: VoiceChatRequest, user: User = Depends(get_current
             stt_res = await sarvam_service.speech_to_text(audio_bytes, language_code=payload.language)
             transcript = stt_res.transcript
         except SarvamAPIError as err:
+            logger.warning("Voice STT SarvamAPIError: %s (status=%d)", err.message, err.status_code)
             mode = "text_fallback"
             if not transcript:
                 raise HTTPException(status_code=err.status_code, detail=f"Voice STT Error: {err.message}")
-        except Exception:
+        except Exception as exc:
+            logger.exception("Voice STT failed unexpectedly: %s", exc)
             mode = "text_fallback"
 
     if not transcript.strip():
@@ -166,8 +171,10 @@ async def voice_chat_audio(
         stt_res = await sarvam_service.speech_to_text(content, language_code=language)
         transcript = stt_res.transcript
     except SarvamAPIError as err:
+        logger.warning("Voice audio STT SarvamAPIError: %s", err.message)
         raise HTTPException(status_code=err.status_code, detail=f"Sarvam STT failed: {err.message}")
     except Exception as exc:
+        logger.exception("Voice audio STT failed unexpectedly: %s", exc)
         raise HTTPException(status_code=500, detail="Voice transcription failed")
 
     chat_response = chat_service.answer(transcript, language)

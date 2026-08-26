@@ -10,6 +10,10 @@ coverage/
 .DS_Store
 *.log
 .env
+*.env
+*.env.*
+backend/.env
+frontend/.env
 *.db
 *.sqlite
 *.sqlite3

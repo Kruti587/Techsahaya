@@ -13,7 +13,10 @@ class Settings(BaseSettings):
     bhashini_api_key: str = ""
     sarvam_api_key: str = ""
     sarvam_api_base_url: str = "https://api.sarvam.ai"
-    sarvam_stt_model: str = "saaras:v1"
+    # Sarvam Speech-to-Text Model: Use 'saarika:*' (verbatim transcription in spoken language)
+    # rather than 'saaras:*' (translation to English).
+    # Supported values change over time; refer to https://docs.sarvam.ai/api-reference/speech-to-text
+    sarvam_stt_model: str = "saarika:v2.5"
     sarvam_tts_model: str = "bulbul:v2"
 
     sarvam_tts_voice: str = "anushka"

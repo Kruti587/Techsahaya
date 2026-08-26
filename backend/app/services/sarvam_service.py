@@ -1,15 +1,84 @@
 import asyncio
 import base64
+import glob
+import io
 import logging
+import os
+import shutil
 import time
 from typing import NamedTuple
 import httpx
+from pydub import AudioSegment
 
 from app.core.config import get_settings
 from app.services.data_loader import load_languages
 
 logger = logging.getLogger("techsahaya.sarvam_service")
 settings = get_settings()
+
+
+def ensure_ffmpeg_on_path() -> bool:
+    """Ensure ffmpeg/ffprobe binary directory is added to system PATH and configured for pydub."""
+    if shutil.which("ffmpeg"):
+        return True
+
+    potential_patterns = [
+        os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\WinGet\Packages\*FFmpeg*\*\bin"),
+        os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\WinGet\Links"),
+        os.path.expandvars(r"%ProgramFiles%\ffmpeg\bin"),
+        os.path.expandvars(r"%ProgramFiles(x86)%\ffmpeg\bin"),
+        r"C:\ffmpeg\bin",
+        r"C:\ProgramData\chocolatey\bin",
+    ]
+    for pattern in potential_patterns:
+        for match in glob.glob(pattern):
+            if os.path.exists(os.path.join(match, "ffmpeg.exe")) or os.path.exists(os.path.join(match, "ffmpeg")):
+                os.environ["PATH"] = match + os.pathsep + os.environ.get("PATH", "")
+                try:
+                    AudioSegment.converter = os.path.join(match, "ffmpeg.exe") if os.name == "nt" else os.path.join(match, "ffmpeg")
+                    AudioSegment.ffprobe = os.path.join(match, "ffprobe.exe") if os.name == "nt" else os.path.join(match, "ffprobe")
+                except Exception:
+                    pass
+                return True
+    return bool(shutil.which("ffmpeg"))
+
+
+# Auto-discover ffmpeg location
+ensure_ffmpeg_on_path()
+
+
+def _transcode_to_wav(audio_bytes: bytes) -> bytes:
+    """Transcode incoming audio bytes (WebM/Opus, WAV, or other formats) to 16kHz mono 16-bit PCM WAV."""
+    ensure_ffmpeg_on_path()
+    audio = None
+    if audio_bytes.startswith(b"RIFF") and b"WAVE" in audio_bytes[:16]:
+        try:
+            audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="wav")
+        except Exception:
+            pass
+
+    if audio is None:
+        try:
+            audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="webm")
+        except (FileNotFoundError, OSError) as exc:
+            raise SarvamAPIError("ffmpeg is not installed or not on PATH — required for audio transcoding", status_code=500)
+        except Exception as exc:
+            try:
+                audio = AudioSegment.from_file(io.BytesIO(audio_bytes))
+            except (FileNotFoundError, OSError):
+                raise SarvamAPIError("ffmpeg is not installed or not on PATH — required for audio transcoding", status_code=500)
+            except Exception as inner_exc:
+                raise SarvamAPIError(f"Could not decode input audio: {inner_exc}", status_code=400)
+
+    try:
+        audio = audio.set_frame_rate(16000).set_channels(1).set_sample_width(2)
+        out = io.BytesIO()
+        audio.export(out, format="wav")
+        return out.getvalue()
+    except (FileNotFoundError, OSError):
+        raise SarvamAPIError("ffmpeg is not installed or not on PATH — required for audio transcoding", status_code=500)
+    except Exception as exc:
+        raise SarvamAPIError(f"Could not export transcoded WAV audio: {exc}", status_code=400)
 
 
 class STTResult(NamedTuple):
@@ -97,10 +166,13 @@ class SarvamVoiceService:
         if not self.circuit_breaker.can_attempt():
             raise SarvamAPIError("Sarvam STT service is temporarily unavailable (circuit open)", status_code=503)
 
+        wav_bytes = _transcode_to_wav(audio_bytes)
+        logger.debug("Sarvam STT audio ready: audio_bytes=%d, wav_bytes=%d", len(audio_bytes), len(wav_bytes))
+
         target_lang = self.resolve_sarvam_lang(language_code)
         url = f"{current_settings.sarvam_api_base_url.rstrip('/')}/speech-to-text"
         headers = {"api-subscription-key": api_key}
-        files = {"file": ("audio.wav", audio_bytes, "audio/wav")}
+        files = {"file": ("audio.wav", wav_bytes, "audio/wav")}
         data = {"model": current_settings.sarvam_stt_model, "language_code": target_lang}
 
         max_retries = 3

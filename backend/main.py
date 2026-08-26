@@ -1,3 +1,5 @@
+import logging
+import shutil
 from uuid import uuid4
 
 from fastapi import FastAPI, Request
@@ -7,8 +9,10 @@ from fastapi.responses import JSONResponse, Response
 from app.core.config import get_settings
 from app.core.rate_limit import RateLimitMiddleware
 from app.routers.api import router as api_router
+from app.services.sarvam_service import ensure_ffmpeg_on_path
 from app.utils.seed import init_db
 
+logger = logging.getLogger("techsahaya.main")
 settings = get_settings()
 app = FastAPI(title="Tech Sahaya API", version="1.0.0")
 
@@ -26,6 +30,10 @@ app.add_middleware(RateLimitMiddleware)
 @app.on_event("startup")
 def startup_event():
     init_db()
+    if not settings.sarvam_api_key:
+        logger.warning("SARVAM_API_KEY is not set — voice STT/TTS features will fail at runtime.")
+    if not ensure_ffmpeg_on_path():
+        logger.warning("ffmpeg/ffprobe is not found on PATH — audio transcoding (WebM -> WAV) requires ffmpeg.")
 
 
 @app.middleware("http")
