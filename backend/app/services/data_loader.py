@@ -44,3 +44,11 @@ def load_languages() -> dict[str, Any]:
 @lru_cache
 def load_tours() -> dict[str, Any]:
     return _load_json(DATA_DIR / "config" / "tours.json")
+
+
+@lru_cache
+def load_scheme_translations() -> dict[str, Any]:
+    path = DATA_DIR / "config" / "scheme_translations.json"
+    if path.exists():
+        return _load_json(path)
+    return {}

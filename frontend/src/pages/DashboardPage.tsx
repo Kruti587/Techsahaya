@@ -1,6 +1,7 @@
-import { ArrowRight, CheckCircle2, FileText, HeartHandshake, Languages, Mic, ShieldCheck, UserRoundCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, Languages, Mic, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { OnboardingChecklist, type OnboardingStep } from "../components/OnboardingChecklist";
 import { SectionCard } from "../components/SectionCard";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
@@ -38,6 +39,37 @@ export function DashboardPage() {
       label: language === "hi" ? "परिवार" : language === "kn" ? "ಕುಟುಂಬ" : "Family",
       ready: Boolean(profile.family_members?.length),
       action: language === "hi" ? "परिवार सदस्य जोड़ें" : language === "kn" ? "ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ" : "Add family members",
+    },
+  ];
+
+  const onboardingSteps: OnboardingStep[] = [
+    {
+      id: 1,
+      title: t(language, "completeProfile"),
+      description: language === "hi" ? "आयु, राज्य और व्यवसाय विवरण जोड़ें" : language === "kn" ? "ವಯಸ್ಸು, ರಾಜ್ಯ ಮತ್ತು ಉದ್ಯೋಗ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ" : "Add age, state and occupation details",
+      isCompleted: Boolean(profile.age && profile.state && profile.occupation),
+      route: "/profile",
+    },
+    {
+      id: 2,
+      title: t(language, "prepareDocuments"),
+      description: language === "hi" ? "पहचान और आय सत्यापन दस्तावेज़ जोड़ें" : language === "kn" ? "ಗುರುತು ಮತ್ತು ಆದಾಯ ಪರಿಶೀಲನಾ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ" : "Add identity and income verification documents",
+      isCompleted: Boolean(profile.available_documents?.length),
+      route: "/documents",
+    },
+    {
+      id: 3,
+      title: t(language, "checkEligibility"),
+      description: language === "hi" ? "योजनाओं के लिए अपनी पात्रता जाँचें" : language === "kn" ? "ಯೋಜನೆಗಳಿಗೆ ನಿಮ್ಮ ಅರ್ಹತೆಯನ್ನು ಪರಿಶೀಲಿಸಿ" : "Evaluate scheme rules against your profile",
+      isCompleted: recommendations.length > 0,
+      route: "/eligibility",
+    },
+    {
+      id: 4,
+      title: t(language, "familyBenefits"),
+      description: language === "hi" ? "परिवार के सदस्यों को जोड़कर लाभ बढ़ाएँ" : language === "kn" ? "ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ ಪ್ರಯೋಜನಗಳನ್ನು ಹೆಚ್ಚಿಸಿ" : "Add family members to unlock household benefits",
+      isCompleted: Boolean(profile.family_members?.length),
+      route: "/family",
     },
   ];
 
@@ -100,37 +132,11 @@ export function DashboardPage() {
           </div>
         </SectionCard>
 
-        <SectionCard title={t(language, "pendingActions")}>
-          <div className="space-y-3 text-sm">
-            <Link to="/profile" className="flex min-h-12 items-center justify-between rounded-xl border p-3 hover:bg-stone-50">
-              <span>
-                <UserRoundCheck className="mr-2 inline text-sahaya-green" size={18} />
-                {t(language, "completeProfile")}
-              </span>
-              <ArrowRight size={16} />
-            </Link>
-            <Link to="/documents" className="flex min-h-12 items-center justify-between rounded-xl border p-3 hover:bg-stone-50">
-              <span>
-                <FileText className="mr-2 inline text-sahaya-green" size={18} />
-                {t(language, "prepareDocuments")}
-              </span>
-              <ArrowRight size={16} />
-            </Link>
-            <Link to="/eligibility" className="flex min-h-12 items-center justify-between rounded-xl border p-3 hover:bg-stone-50">
-              <span>
-                <HeartHandshake className="mr-2 inline text-sahaya-green" size={18} />
-                {t(language, "checkEligibility")}
-              </span>
-              <ArrowRight size={16} />
-            </Link>
-            <Link to="/notifications" className="flex min-h-12 items-center justify-between rounded-xl border p-3 hover:bg-stone-50">
-              <span>
-                {notifications.length} {t(language, "activeNotifications")}
-              </span>
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </SectionCard>
+        <OnboardingChecklist
+          steps={onboardingSteps}
+          title={t(language, "gettingStarted")}
+          subtitle={language === "hi" ? "कल्याण लाभ प्राप्त करने के लिए महत्वपूर्ण चरण" : language === "kn" ? "ಕಲ್ಯಾಣ ಪ್ರಯೋಜನಗಳನ್ನು ಪಡೆಯಲು ಪ್ರಮುಖ ಹಂತಗಳು" : "Key steps to maximize your welfare entitlement"}
+        />
       </div>
 
       <div className="grid gap-4 xl:grid-cols-3">

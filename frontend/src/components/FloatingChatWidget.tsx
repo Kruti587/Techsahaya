@@ -360,7 +360,7 @@ export function FloatingChatWidget() {
     <>
       {/* Floating Action Button */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-40">
+        <div className="fixed bottom-6 right-6 z-[60]">
           <button
             type="button"
             onClick={() => setIsOpen(true)}
@@ -380,7 +380,7 @@ export function FloatingChatWidget() {
       {/* Floating Chat Drawer Panel */}
       {isOpen && (
         <div
-          className="fixed bottom-5 right-5 z-40 flex h-[600px] max-h-[88vh] w-[420px] max-w-[94vw] flex-col rounded-3xl border border-emerald-100 bg-white shadow-2xl overflow-hidden font-sans animate-in slide-in-from-bottom-6 duration-200"
+          className="fixed bottom-5 right-5 z-[60] flex h-[600px] max-h-[88vh] w-[420px] max-w-[94vw] flex-col rounded-3xl border border-emerald-100 bg-white shadow-2xl overflow-hidden font-sans animate-in slide-in-from-bottom-6 duration-200"
           role="region"
           aria-label="Ask Sahaya Chat Assistant"
         >
@@ -391,10 +391,10 @@ export function FloatingChatWidget() {
                 <Bot size={20} />
               </div>
               <div>
-                <div className="text-sm font-bold leading-tight">Ask Sahaya</div>
+                <div className="text-sm font-bold leading-tight">{t(language, "askSahaya")}</div>
                 <div className="text-[11px] text-emerald-200 flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 animate-pulse" />
-                  Voice & RAG Assisted
+                  {t(language, "voiceAndRagAssisted")}
                 </div>
               </div>
             </div>
@@ -448,11 +448,11 @@ export function FloatingChatWidget() {
                       >
                         {playingAudioId === msg.id ? (
                           <>
-                            <Square size={13} className="fill-emerald-700" /> Stop Audio
+                            <Square size={13} className="fill-emerald-700" /> {t(language, "stopAudio")}
                           </>
                         ) : (
                           <>
-                            <Volume2 size={14} /> Play Voice (Sarvam AI)
+                            <Volume2 size={14} /> {t(language, "playVoice")}
                           </>
                         )}
                       </button>
@@ -464,7 +464,7 @@ export function FloatingChatWidget() {
                     <div className="mt-2.5 pt-2 border-t border-stone-100 text-[11px] text-slate-500">
                       <div className="flex items-center gap-1.5 font-semibold text-emerald-700">
                         <FileCheck2 size={13} />
-                        Verified Source Evidence ({msg.confidence?.toUpperCase()} confidence)
+                        {t(language, "verifiedSourceEvidence")} ({msg.confidence?.toUpperCase()} {t(language, "confidenceLevel")})
                       </div>
                       <div className="mt-1 text-slate-600 line-clamp-2 italic">
                         "{msg.evidence[0].evidence}"
@@ -494,7 +494,7 @@ export function FloatingChatWidget() {
             {loading && (
               <div className="flex items-center gap-2 text-xs text-slate-500 bg-white p-3 rounded-2xl border w-fit">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                Sahaya is retrieving verified scheme evidence...
+                {t(language, "retrievingEvidence")}
               </div>
             )}
 
@@ -505,24 +505,24 @@ export function FloatingChatWidget() {
           <div className="px-3 py-1.5 bg-stone-100/80 border-t flex gap-1.5 overflow-x-auto text-[11px] no-scrollbar">
             <button
               type="button"
-              onClick={() => handleSend("What schemes are for farmers in Karnataka?")}
+              onClick={() => handleSend(t(language, "farmerSchemesQuery"))}
               className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
             >
-              🌾 Farmer Schemes
+              {t(language, "farmerSchemesChip")}
             </button>
             <button
               type="button"
-              onClick={() => handleSend("How do I upload income proof?")}
+              onClick={() => handleSend(t(language, "uploadDocsQuery"))}
               className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
             >
-              📄 Upload Documents
+              {t(language, "uploadDocsChip")}
             </button>
             <button
               type="button"
-              onClick={() => handleSend("Can I check my welfare gaps?")}
+              onClick={() => handleSend(t(language, "missedBenefitsQuery"))}
               className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
             >
-              🔍 Missed Benefits
+              {t(language, "missedBenefitsChip")}
             </button>
           </div>
 
@@ -532,7 +532,7 @@ export function FloatingChatWidget() {
               <div className="flex items-center justify-between gap-3 bg-rose-50 border border-rose-200 rounded-2xl p-2.5">
                 <div className="flex items-center gap-2 text-rose-700 text-xs font-semibold">
                   <span className="h-2.5 w-2.5 rounded-full bg-rose-600 animate-ping" />
-                  Listening... Speak clearly in {language.toUpperCase()}
+                  {t(language, "listeningPrompt")} {language.toUpperCase()}
                 </div>
                 <button
                   type="button"

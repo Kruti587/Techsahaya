@@ -43,6 +43,13 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
       .catch(() => undefined);
   }, []);
 
+  const endTour = useCallback(() => {
+    setActiveTour(null);
+    setCurrentStepIndex(0);
+    setTargetRect(null);
+    setIsElementFound(false);
+  }, []);
+
   const currentStep = activeTour && activeTour.steps[currentStepIndex] ? activeTour.steps[currentStepIndex] : null;
 
   const updateTargetPosition = useCallback(() => {
@@ -96,13 +103,25 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
         clearInterval(interval);
       } else if (attempts >= 15) {
         clearInterval(interval);
-        // If element never mounts after 3 seconds, gracefully end tour
-        console.warn(`Tour step target not found: ${currentStep.targetSelector}`);
+        // If element never mounts after 3 seconds, cleanly end tour
+        console.warn(`Tour step target not found: ${currentStep.targetSelector}. Ending tour.`);
+        endTour();
       }
     }, 200);
 
     return () => clearInterval(interval);
-  }, [activeTour, currentStep, location.pathname, navigate, updateTargetPosition]);
+  }, [activeTour, currentStep, location.pathname, navigate, updateTargetPosition, endTour]);
+
+  // Hard failsafe timeout: automatically end tour if active for > 15s
+  useEffect(() => {
+    if (!activeTour) return;
+    const failsafeTimer = setTimeout(() => {
+      console.warn(`Tour "${activeTour.id}" exceeded max total duration (15s). Auto-ending tour.`);
+      endTour();
+    }, 15000);
+
+    return () => clearTimeout(failsafeTimer);
+  }, [activeTour, endTour]);
 
   // Track window resize & scroll
   useEffect(() => {
@@ -144,20 +163,13 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     } else {
       endTour();
     }
-  }, [activeTour, currentStepIndex]);
+  }, [activeTour, currentStepIndex, endTour]);
 
   const prevStep = useCallback(() => {
     if (currentStepIndex > 0) {
       setCurrentStepIndex((prev) => prev - 1);
     }
   }, [currentStepIndex]);
-
-  const endTour = useCallback(() => {
-    setActiveTour(null);
-    setCurrentStepIndex(0);
-    setTargetRect(null);
-    setIsElementFound(false);
-  }, []);
 
   return (
     <TourContext.Provider

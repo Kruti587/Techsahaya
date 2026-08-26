@@ -49,7 +49,7 @@ export function SpotlightOverlay() {
   }, [targetRect]);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden font-sans">
+    <div className="fixed inset-0 z-50 overflow-hidden font-sans pointer-events-none">
       {/* SVG Backdrop Mask */}
       <svg className="absolute inset-0 h-full w-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
         <defs>

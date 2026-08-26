@@ -11,7 +11,7 @@ from app.core.prompts import (
     USER_PROMPT_TEMPLATE,
 )
 from app.models.schemas import ChatResponse, EligibilityProfile, EligibilityResult, Scheme
-from app.services.data_loader import load_rules, load_schemes, load_tours
+from app.services.data_loader import load_rules, load_schemes, load_scheme_translations, load_tours
 from app.services.eligibility_engine import eligibility_engine
 from app.services.search_service import search_service
 
@@ -320,21 +320,56 @@ class ChatService:
     ) -> str:
         system_instruction = SAHAYA_SYSTEM_INSTRUCTION.format(language=language)
 
-        schemes_payload = [
-            {
-                "name": s.name,
-                "category": s.category,
-                "state_scope": s.state_scope,
-                "benefits": s.benefits,
-                "eligibility": s.eligibility,
-                "required_documents": s.required_documents,
-                "application_steps": s.application_steps,
-                "department": s.department,
-                "official_link": str(s.official_link),
-                "source_name": s.source_name,
-            }
-            for s in schemes
-        ]
+        translations_map = load_scheme_translations()
+        lang_key = "hi" if language.startswith("hi") else "kn" if language.startswith("kn") else "en"
+
+        schemes_payload = []
+        for s in schemes:
+            trans = translations_map.get(s.id, {}).get(lang_key) if lang_key != "en" else None
+            if lang_key != "en":
+                if trans:
+                    schemes_payload.append({
+                        "name": s.name,  # Official scheme name preserved
+                        "category": s.category,
+                        "state_scope": s.state_scope,
+                        "description": trans.get("description", s.description),
+                        "benefits": trans.get("benefits", s.benefits),
+                        "eligibility": trans.get("eligibility", s.eligibility),
+                        "required_documents": trans.get("required_documents", s.required_documents),
+                        "application_steps": trans.get("application_steps", s.application_steps),
+                        "department": trans.get("department", s.department),
+                        "official_link": str(s.official_link),
+                        "source_name": s.source_name,
+                    })
+                else:
+                    logger.info("Scheme '%s' missing '%s' translation entry — falling back to LLM translation.", s.id, lang_key)
+                    schemes_payload.append({
+                        "name": s.name,
+                        "category": s.category,
+                        "state_scope": s.state_scope,
+                        "description": s.description,
+                        "benefits": s.benefits,
+                        "eligibility": s.eligibility,
+                        "required_documents": s.required_documents,
+                        "application_steps": s.application_steps,
+                        "department": s.department,
+                        "official_link": str(s.official_link),
+                        "source_name": s.source_name,
+                    })
+            else:
+                schemes_payload.append({
+                    "name": s.name,
+                    "category": s.category,
+                    "state_scope": s.state_scope,
+                    "description": s.description,
+                    "benefits": s.benefits,
+                    "eligibility": s.eligibility,
+                    "required_documents": s.required_documents,
+                    "application_steps": s.application_steps,
+                    "department": s.department,
+                    "official_link": str(s.official_link),
+                    "source_name": s.source_name,
+                })
 
         evidence_payload = [{"scheme": c["scheme_name"], "type": c["chunk_type"], "text": c["text"]} for c in chunks]
         eligibility_payload = eligibility_result.model_dump() if eligibility_result else "No profile evaluated"
@@ -498,24 +533,28 @@ class ChatService:
         primary = schemes[0]
         scheme_names = ", ".join(s.name for s in schemes)
         lang = language.lower()
+        lang_key = "hi" if lang.startswith("hi") else "kn" if lang.startswith("kn") else "en"
+        trans = load_scheme_translations().get(primary.id, {}).get(lang_key) if lang_key != "en" else None
+
+        desc = trans.get("description", primary.description) if trans else primary.description
+        benefits = trans.get("benefits", primary.benefits) if trans else primary.benefits
+        docs = trans.get("required_documents", primary.required_documents) if trans else primary.required_documents
+        steps = trans.get("application_steps", primary.application_steps) if trans else primary.application_steps
 
         if lang.startswith("hi"):
             lines = [f"**सत्यापित योजना जानकारी: {scheme_names}**\n"]
             if intent == "documents":
-                docs = ", ".join(primary.required_documents)
-                lines.append(f"• **आवश्यक दस्तावेज़**: {docs}")
+                lines.append(f"• **आवश्यक दस्तावेज़**: {', '.join(docs)}")
             elif intent == "benefits":
-                bens = "; ".join(primary.benefits)
-                lines.append(f"• **मुख्य लाभ**: {bens}")
+                lines.append(f"• **मुख्य लाभ**: {'; '.join(benefits)}")
             elif intent == "application":
-                steps = " -> ".join(primary.application_steps)
-                lines.append(f"• **आवेदन प्रक्रिया**: {steps}")
+                lines.append(f"• **आवेदन प्रक्रिया**: {' -> '.join(steps)}")
             elif intent == "website":
                 lines.append(f"• **आधिकारिक पोर्टल**: {primary.official_link}")
             else:
-                lines.append(f"• **विवरण**: {primary.description}")
+                lines.append(f"• **विवरण**: {desc}")
                 lines.append(f"• **श्रेणी व दायरा**: {primary.category} (राज्य: {', '.join(primary.state_scope)})")
-                lines.append(f"• **लाभ**: {'; '.join(primary.benefits)}")
+                lines.append(f"• **लाभ**: {'; '.join(benefits)}")
 
             if eligibility_result:
                 status_hi = "पात्र (Eligible)" if eligibility_result.status == "eligible" else "अपात्र (Not Eligible)" if eligibility_result.status == "not_eligible" else "अधिक जानकारी चाहिए"
@@ -535,20 +574,17 @@ class ChatService:
         elif lang.startswith("kn"):
             lines = [f"**ಪರಿಶೀಲಿತ ಯೋಜನೆ ಮಾಹಿತಿ: {scheme_names}**\n"]
             if intent == "documents":
-                docs = ", ".join(primary.required_documents)
-                lines.append(f"• **ಅಗತ್ಯ ದಾಖಲೆಗಳು**: {docs}")
+                lines.append(f"• **ಅಗತ್ಯ ದಾಖಲೆಗಳು**: {', '.join(docs)}")
             elif intent == "benefits":
-                bens = "; ".join(primary.benefits)
-                lines.append(f"• **ಮುಖ್ಯ ಪ್ರಯೋಜನಗಳು**: {bens}")
+                lines.append(f"• **ಮುಖ್ಯ ಪ್ರಯೋಜನಗಳು**: {'; '.join(benefits)}")
             elif intent == "application":
-                steps = " -> ".join(primary.application_steps)
-                lines.append(f"• **ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ವಿಧಾನ**: {steps}")
+                lines.append(f"• **ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ವಿಧಾನ**: {' -> '.join(steps)}")
             elif intent == "website":
                 lines.append(f"• **ಅಧಿಕೃತ ಪೋರ್ಟಲ್**: {primary.official_link}")
             else:
-                lines.append(f"• **ವಿವರಣೆ**: {primary.description}")
+                lines.append(f"• **ವಿವರಣೆ**: {desc}")
                 lines.append(f"• **ವರ್ಗ ಮತ್ತು ವ್ಯಾಪ್ತಿ**: {primary.category} (ರಾಜ್ಯ: {', '.join(primary.state_scope)})")
-                lines.append(f"• **ಪ್ರಯೋಜನಗಳು**: {'; '.join(primary.benefits)}")
+                lines.append(f"• **ಪ್ರಯೋಜನಗಳು**: {'; '.join(benefits)}")
 
             if eligibility_result:
                 status_kn = "ಅರ್ಹರಾಗಿದ್ದೀರಿ (Eligible)" if eligibility_result.status == "eligible" else "ಅರ್ಹರಲ್ಲ (Not Eligible)" if eligibility_result.status == "not_eligible" else "ಹೆಚ್ಚಿನ ಮಾಹಿತಿ ಬೇಕಾಗಿದೆ"
