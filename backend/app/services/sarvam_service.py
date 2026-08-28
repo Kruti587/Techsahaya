@@ -4,6 +4,7 @@ import glob
 import io
 import logging
 import os
+import re
 import shutil
 import time
 from typing import NamedTuple
@@ -48,8 +49,17 @@ ensure_ffmpeg_on_path()
 
 
 def _transcode_to_wav(audio_bytes: bytes) -> bytes:
-    """Transcode incoming audio bytes (WebM/Opus, WAV, or other formats) to 16kHz mono 16-bit PCM WAV."""
-    ensure_ffmpeg_on_path()
+    """Transcode incoming audio bytes (WebM/Opus, WAV, or other formats) to 16kHz mono 16-bit PCM WAV.
+
+    Sarvam STT natively accepts WebM/Opus and other codecs (auto-detected), so transcoding only
+    happens to normalize when ffmpeg is available. If ffmpeg is unavailable, the original bytes are
+    passed through unchanged so STT still works instead of hard-failing.
+    """
+    ffmpeg_available = ensure_ffmpeg_on_path()
+    if not ffmpeg_available:
+        logger.warning("ffmpeg not found on PATH — passing original audio bytes to Sarvam STT unchanged (Sarvam auto-detects codec).")
+        return audio_bytes
+
     audio = None
     if audio_bytes.startswith(b"RIFF") and b"WAVE" in audio_bytes[:16]:
         try:
@@ -79,6 +89,88 @@ def _transcode_to_wav(audio_bytes: bytes) -> bytes:
         raise SarvamAPIError("ffmpeg is not installed or not on PATH — required for audio transcoding", status_code=500)
     except Exception as exc:
         raise SarvamAPIError(f"Could not export transcoded WAV audio: {exc}", status_code=400)
+
+
+def _prepare_stt_upload(audio_bytes: bytes) -> tuple[bytes, str, str]:
+    """Return (upload_bytes, mime_type, filename) for the given audio payload.
+
+    Browser MediaRecorder produces WebM/Opus audio. Sarvam STT accepts WebM/Opus
+    natively (auto-detecting the codec), so we pass it through unchanged with the
+    correct MIME type — this removes the hard dependency on ffmpeg for voice input.
+    WAV is passed through directly. Any other format only requires ffmpeg transcoding.
+    """
+    if audio_bytes.startswith(b"RIFF") and b"WAVE" in audio_bytes[:16]:
+        return audio_bytes, "audio/wav", "audio.wav"
+    if audio_bytes.startswith(b"\x1a\x45\xdf\xa3"):
+        return audio_bytes, "audio/webm", "audio.webm"
+    if not ensure_ffmpeg_on_path():
+        raise SarvamAPIError(
+            "Unsupported audio format and ffmpeg is not installed or not on PATH — required for audio transcoding",
+            status_code=500,
+        )
+    wav_bytes = _transcode_to_wav(audio_bytes)
+    return wav_bytes, "audio/wav", "audio.wav"
+
+
+def clean_text_for_speech(raw_text: str) -> str:
+    """Convert a formatted (Markdown) answer into naturally spoken text for TTS.
+
+    The formatted display answer is never modified — this produces a separate,
+    cleaned speech representation that reads naturally (no literal formatting
+    symbols such as '**', '*', '#', backticks, bullets or raw URLs). The language
+    and content of the underlying text are preserved (no translation performed).
+    """
+    if not raw_text or not raw_text.strip():
+        return ""
+
+    text = raw_text
+
+    # 1. Drop fenced code blocks entirely, then inline code backticks.
+    text = re.sub(r"```[\s\S]*?```", "", text)
+    text = re.sub(r"`([^`]+)`", r"\1", text)
+    text = text.replace("`", "")
+
+    # 2. Strip any HTML tags.
+    text = re.sub(r"<[^>]*>", "", text)
+
+    # 3. Markdown links: keep readable text, drop the URL.
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+
+    # 4. Raw URLs become short readable labels.
+    text = re.sub(r"\bhttps?://(?:www\.)?([^\s/)]+)", r"\1", text, flags=re.IGNORECASE)
+
+    # 5. Headings (# .. -> label ending in a period).
+    text = re.sub(r"^#{1,6}\s+(.*)$", r"\1.", text, flags=re.MULTILINE)
+
+    # 6. Bold and italic spans (both * and _ delimiters).
+    text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
+    text = re.sub(r"__([^_]+)__", r"\1", text)
+    text = re.sub(r"\*([^*\n]+)\*", r"\1", text)
+    text = re.sub(r"_([^_\n]+)_", r"\1", text)
+
+    # 7. Bullets / list markers become sentence boundaries.
+    text = re.sub(r"(?:^|\n)\s*[•\-\*]\s+", ". ", text)
+    text = re.sub(r"\s+•\s+", ". ", text)
+    text = re.sub(r"(?:^|\n)\s*\d+[.)]\s+", ". ", text)
+
+    # 8. "Label:" -> natural pause ("Label."). Supports Latin + Indic scripts.
+    text = re.sub(r"([A-Za-z0-9\u0900-\u097F\u0C80-\u0CFF][A-Za-z0-9\u0900-\u097F\u0C80-\u0CFF\s]*):", r"\1.", text)
+
+    # 9. Remove remaining decorative markdown characters and stray backticks.
+    text = re.sub(r"[\\#{}[\]()<>~^|=`*_]", " ", text)
+
+    # 10. Collapse runs of punctuation/space and blank lines.
+    text = re.sub(r"[ \t\r\n]+", " ", text)
+    text = re.sub(r"\.\s*\.", ".", text)
+    text = re.sub(r"\s*\.\s*", ". ", text)
+    text = re.sub(r"\s*,\s*", ", ", text)
+    text = text.strip()
+
+    # 11. Ensure a natural sentence ending (Latin + Indic scripts).
+    if text and not re.search(r"[.!?\u0964\u0965\u3002\uff01\uff1f]$", text):
+        text += "."
+
+    return text
 
 
 class STTResult(NamedTuple):
@@ -166,13 +258,20 @@ class SarvamVoiceService:
         if not self.circuit_breaker.can_attempt():
             raise SarvamAPIError("Sarvam STT service is temporarily unavailable (circuit open)", status_code=503)
 
-        wav_bytes = _transcode_to_wav(audio_bytes)
-        logger.debug("Sarvam STT audio ready: audio_bytes=%d, wav_bytes=%d", len(audio_bytes), len(wav_bytes))
-
         target_lang = self.resolve_sarvam_lang(language_code)
+
+        # Determine the upload format/SIGNATURE. The browser records MediaRecorder
+        # audio as WebM/Opus, which Sarvam STT supports natively (it auto-detects the
+        # codec), so no ffmpeg transcoding is required for the common voice-input path.
+        # Only fall back to ffmpeg transcoding for other/non-native formats.
+        upload_bytes, upload_mime, upload_name = _prepare_stt_upload(audio_bytes)
+        logger.info(
+            "Sarvam STT request: language=%s resolved_lang=%s mime=%s audio_bytes=%d upload_bytes=%d",
+            language_code, target_lang, upload_mime, len(audio_bytes), len(upload_bytes),
+        )
         url = f"{current_settings.sarvam_api_base_url.rstrip('/')}/speech-to-text"
         headers = {"api-subscription-key": api_key}
-        files = {"file": ("audio.wav", wav_bytes, "audio/wav")}
+        files = {"file": (upload_name, upload_bytes, upload_mime)}
         data = {"model": current_settings.sarvam_stt_model, "language_code": target_lang}
 
         max_retries = 3
@@ -232,8 +331,12 @@ class SarvamVoiceService:
             "Content-Type": "application/json",
         }
 
-        # Truncate to reasonable TTS chunk limit
-        cleaned_text = text[:500].strip()
+        # Clean Markdown/symbols for natural speech, then truncate to the TTS chunk limit.
+        # The original formatted answer is left untouched for the UI.
+        cleaned_text = clean_text_for_speech(text)
+        if not cleaned_text:
+            raise SarvamAPIError("Text input for TTS cannot be empty after cleaning", status_code=400)
+        cleaned_text = cleaned_text[:500]
         payload = {
             "inputs": [cleaned_text],
             "target_language_code": target_lang,

@@ -29,6 +29,7 @@ export type EligibilityProfile = {
   disability?: boolean;
   family_members?: Record<string, unknown>[];
   available_documents: string[];
+  onboarding_completed?: boolean;
 };
 
 export type User = {
@@ -36,6 +37,7 @@ export type User = {
   full_name: string;
   email: string;
   preferred_language: string;
+  onboarding_completed?: boolean;
   role: Role;
   auth_adapter?: string;
 };

@@ -19,6 +19,7 @@ from app.models.schemas import (
     CheckEligibilityRequest,
     CitizenSessionRequest,
     ConsentRequest,
+    EligibleSummaryRequest,
     FamilyAnalysisRequest,
     ForgotPasswordRequest,
     LoginRequest,
@@ -72,6 +73,25 @@ def login(payload: LoginRequest, request: Request, db: Session = Depends(get_db)
     return auth_service.login(db, payload, request)
 
 
+@router.post("/onboarding/welcome-audio")
+async def onboarding_welcome_audio(
+    language: str = "en",
+    user: User = Depends(get_current_user),
+):
+    welcome_messages = {
+        "hi": "टेक सहाय में आपका स्वागत है। कृपया अपनी प्रोफ़ाइल पूरी करें ताकि हम आपके लिए उपयुक्त सरकारी योजनाएं खोज सकें।",
+        "kn": "ಟೆಕ್ ಸಹಾಯಕ್ಕೆ ಸ್ವಾಗತ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಪೂರ್ಣಗೊಳಿಸಿ, ಇದರಿಂದ ನಿಮಗೆ ಸೂಕ್ತವಾದ ಸರ್ಕಾರಿ ಯೋಜನೆಗಳನ್ನು ಹುಡುಕಲು ನಮಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.",
+        "en": "Welcome to Tech Sahaya. Please complete your profile so we can find government schemes that you may be eligible for.",
+    }
+    language_key = language[:2].lower()
+    message = welcome_messages.get(language_key, welcome_messages["en"])
+    try:
+        audio_bytes = await sarvam_service.text_to_speech(message, language_code=language_key)
+    except SarvamAPIError as err:
+        raise HTTPException(status_code=err.status_code, detail=err.message) from err
+    return {"audio_base64": base64.b64encode(audio_bytes).decode("utf-8"), "audio_mime": "audio/wav"}
+
+
 @router.post("/auth/logout")
 def logout(request: Request, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     auth_header = request.headers.get("authorization", "")
@@ -82,11 +102,13 @@ def logout(request: Request, user: User = Depends(get_current_user), db: Session
 
 @router.get("/auth/me")
 def me(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    profile = profile_service.get_or_create(db, user)
     return {
         "id": user.id,
         "full_name": user.full_name,
         "email": user.email,
         "preferred_language": user.preferred_language,
+        "onboarding_completed": profile.onboarding_completed,
         "role": get_user_role(db, user.id),
         "auth_adapter": settings.auth_adapter,
     }
@@ -105,8 +127,16 @@ def consent(payload: ConsentRequest, request: Request, user: User = Depends(get_
 
 
 @router.post("/chat")
-def chat(payload: ChatRequest, user: User = Depends(get_current_user)):
-    return chat_service.answer(payload.message, payload.language, payload.profile)
+async def chat(payload: ChatRequest, user: User = Depends(get_current_user)):
+    chat_response = chat_service.answer(payload.message, payload.language, payload.profile)
+    if chat_response.schemes and settings.sarvam_api_key and chat_response.answer:
+        try:
+            audio_bytes = await sarvam_service.text_to_speech(chat_response.answer, language_code=payload.language)
+            chat_response.audio_base64 = base64.b64encode(audio_bytes).decode("utf-8")
+            chat_response.audio_mime = "audio/wav"
+        except SarvamAPIError:
+            pass
+    return chat_response
 
 
 
@@ -119,8 +149,10 @@ async def voice_chat(payload: VoiceChatRequest, user: User = Depends(get_current
     if payload.audio_base64:
         try:
             audio_bytes = base64.b64decode(payload.audio_base64)
+            logger.info("Voice-chat STT: language=%s audio_base64_bytes=%d", payload.language, len(payload.audio_base64))
             stt_res = await sarvam_service.speech_to_text(audio_bytes, language_code=payload.language)
             transcript = stt_res.transcript
+            logger.info("Voice-chat STT success: transcript=%r (lang=%s)", transcript, stt_res.language_code)
         except SarvamAPIError as err:
             logger.warning("Voice STT SarvamAPIError: %s (status=%d)", err.message, err.status_code)
             mode = "text_fallback"
@@ -324,6 +356,46 @@ def save_scheme(payload: SaveSchemeRequest, user: User = Depends(get_current_use
 @router.get("/recommendations")
 def recommendations(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     return recommendation_service.recommendations(_profile_from_current(db, user))
+
+
+@router.get("/eligible-schemes")
+def eligible_schemes(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    return recommendation_service.eligible_schemes(_profile_from_current(db, user))
+
+
+@router.post("/eligible-schemes/summary-audio")
+async def eligible_schemes_summary_audio(
+    payload: EligibleSummaryRequest,
+    user: User = Depends(get_current_user),
+):
+    language_key = payload.language[:2].lower()
+    names = payload.scheme_names
+    if not names:
+        scheme_text = "no matching schemes"
+    elif len(names) == 1:
+        scheme_text = names[0]
+    elif language_key == "hi":
+        scheme_text = ", ".join(names[:-1]) + f" और {names[-1]}"
+    elif language_key == "kn":
+        scheme_text = ", ".join(names[:-1]) + f" ಮತ್ತು {names[-1]}"
+    else:
+        scheme_text = ", ".join(names[:-1]) + f" and {names[-1]}"
+    messages = {
+        "en": f"Hi {payload.user_name}, the schemes you are eligible for are {scheme_text}. Please read the details carefully.",
+        "hi": f"नमस्ते {payload.user_name}, आप इन योजनाओं के लिए पात्र हैं: {scheme_text}। कृपया विवरण ध्यान से पढ़ें।",
+        "kn": f"ನಮಸ್ಕಾರ {payload.user_name}, ನೀವು ಈ ಯೋಜನೆಗಳಿಗೆ ಅರ್ಹರಾಗಿದ್ದೀರಿ: {scheme_text}. ದಯವಿಟ್ಟು ವಿವರಗಳನ್ನು ಗಮನವಾಗಿ ಓದಿ.",
+    }
+    message = messages.get(language_key, messages["en"])
+    try:
+        audio_bytes = await sarvam_service.text_to_speech(message, language_code=language_key)
+    except SarvamAPIError as err:
+        logger.warning("Eligible scheme summary TTS unavailable: %s", err.message)
+        return {"summary": message, "audio_base64": None, "audio_mime": "audio/wav"}
+    return {
+        "summary": message,
+        "audio_base64": base64.b64encode(audio_bytes).decode("utf-8"),
+        "audio_mime": "audio/wav",
+    }
 
 
 @router.get("/welfare-gaps")

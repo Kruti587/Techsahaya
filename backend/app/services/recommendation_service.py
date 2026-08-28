@@ -4,6 +4,16 @@ from app.services.eligibility_engine import eligibility_engine
 
 
 class RecommendationService:
+    def eligible_schemes(self, profile: EligibilityProfile):
+        rules = load_rules()
+        return [
+            scheme
+            for scheme in load_schemes()
+            if eligibility_engine.evaluate(
+                scheme.id, profile, rules[scheme.id], scheme.alternative_scheme_ids
+            ).status == "eligible"
+        ]
+
     def recommendations(self, profile: EligibilityProfile) -> list[RecommendationItem]:
         rules = load_rules()
         items: list[RecommendationItem] = []

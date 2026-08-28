@@ -72,6 +72,7 @@ class ProfileRecord(Base):
     available_documents: Mapped[list] = mapped_column(JSON, default=list)
     recently_viewed_schemes: Mapped[list] = mapped_column(JSON, default=list)
     digital_literacy: Mapped[str] = mapped_column(String(20), default="guided")
+    onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

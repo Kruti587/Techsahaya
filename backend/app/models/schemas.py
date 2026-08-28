@@ -90,6 +90,12 @@ class VoiceChatRequest(BaseModel):
     profile: EligibilityProfile | None = None
 
 
+class EligibleSummaryRequest(BaseModel):
+    user_name: str = "Citizen"
+    scheme_names: list[str] = Field(default_factory=list)
+    language: str = "en"
+
+
 class ChatResponse(BaseModel):
     answer: str
     schemes: list[Scheme] = Field(default_factory=list)
@@ -180,6 +186,7 @@ class SessionUser(BaseModel):
     full_name: str
     email: EmailStr
     preferred_language: str
+    onboarding_completed: bool = False
     role: RoleName
 
 

@@ -1,21 +1,82 @@
-import { ArrowRight, CheckCircle2, Languages, Mic, ShieldCheck } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, CheckCircle2, Languages, Mic, Play, ShieldCheck, Square, Volume2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { OnboardingChecklist, type OnboardingStep } from "../components/OnboardingChecklist";
+import { SchemeCard } from "../components/SchemeCard";
 import { SectionCard } from "../components/SectionCard";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
+import type { Scheme } from "../types";
 
 export function DashboardPage() {
   const { profile, user, notifications, language } = useAppContext();
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [gaps, setGaps] = useState<any[]>([]);
+  const [eligibleSchemes, setEligibleSchemes] = useState<Scheme[]>([]);
+  const [eligibleError, setEligibleError] = useState("");
+  const [summaryAudio, setSummaryAudio] = useState<{ summary: string; base64: string | null; mime: string } | null>(null);
+  const [summaryPlaying, setSummaryPlaying] = useState(false);
+  const [summaryAutoplayBlocked, setSummaryAutoplayBlocked] = useState(false);
+  const summaryAudioRef = useRef<HTMLAudioElement | null>(null);
+  const summaryRequestedKeys = useRef(new Set<string>());
+  const summaryPlayedKeys = useRef(new Set<string>());
+
+  const profileKey = JSON.stringify(profile);
+  const eligibilityKey = `${profileKey}:${language}`;
 
   useEffect(() => {
+    if (summaryRequestedKeys.current.has(eligibilityKey)) return;
+    summaryRequestedKeys.current.add(eligibilityKey);
     api.get("/api/recommendations").then((res) => setRecommendations(res.data)).catch(() => setRecommendations([]));
     api.get("/api/welfare-gaps").then((res) => setGaps(res.data)).catch(() => setGaps([]));
-  }, [profile]);
+    setEligibleError("");
+    setSummaryAudio(null);
+    api.get("/api/eligible-schemes")
+      .then((res) => {
+        const schemes = res.data as Scheme[];
+        setEligibleSchemes(schemes);
+        if (!schemes.length) return;
+        return api.post("/api/eligible-schemes/summary-audio", {
+          user_name: user?.full_name || "Citizen",
+          scheme_names: schemes.map((scheme) => scheme.name),
+          language,
+        });
+      })
+      .then((res) => {
+        if (!res) return;
+        const nextAudio = { summary: res.data.summary, base64: res.data.audio_base64, mime: res.data.audio_mime || "audio/wav" };
+        setSummaryAudio(nextAudio);
+        if (summaryPlayedKeys.current.has(eligibilityKey)) return;
+        summaryPlayedKeys.current.add(eligibilityKey);
+        if (!nextAudio.base64) return;
+        const player = new Audio(`data:${nextAudio.mime};base64,${nextAudio.base64}`);
+        summaryAudioRef.current = player;
+        player.onended = () => setSummaryPlaying(false);
+        setSummaryPlaying(true);
+        player.play().catch(() => {
+          setSummaryPlaying(false);
+          setSummaryAutoplayBlocked(true);
+        });
+      })
+      .catch(() => setEligibleError(t(language, "eligibleSchemesError")));
+  }, [eligibilityKey, profile, language, user?.full_name]);
+
+  const playSummary = () => {
+    if (!summaryAudio?.base64) return;
+    const player = new Audio(`data:${summaryAudio.mime};base64,${summaryAudio.base64}`);
+    summaryAudioRef.current = player;
+    setSummaryPlaying(true);
+    setSummaryAutoplayBlocked(false);
+    player.onended = () => setSummaryPlaying(false);
+    player.onerror = () => setSummaryPlaying(false);
+    player.play().catch(() => setSummaryPlaying(false));
+  };
+
+  const stopSummary = () => {
+    summaryAudioRef.current?.pause();
+    setSummaryPlaying(false);
+  };
 
   const readiness = Math.min(100, (profile.available_documents?.length || 0) * 15 + (profile.age ? 20 : 0) + (profile.occupation ? 20 : 0) + (profile.state ? 20 : 0));
 
@@ -140,6 +201,18 @@ export function DashboardPage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-3">
+        <SectionCard title={t(language, "eligibleSchemes")}>
+          {eligibleError && <p className="text-sm text-red-700">{eligibleError}</p>}
+          {!eligibleError && eligibleSchemes.length === 0 && <p className="text-sm text-slate-600">{t(language, "noEligibleSchemes")}</p>}
+          {eligibleSchemes.length > 0 && (
+            <div className="space-y-3">
+              <p className="text-sm text-slate-600">{summaryAudio?.summary}</p>
+              {summaryAudio && summaryAutoplayBlocked && <button type="button" onClick={playSummary} className="inline-flex min-h-10 items-center gap-2 rounded-xl border px-3 text-sm font-semibold text-sahaya-green"><Volume2 size={16} /> {t(language, "playSummary")}</button>}
+              {summaryAudio && !summaryAutoplayBlocked && <button type="button" onClick={summaryPlaying ? stopSummary : playSummary} className="inline-flex min-h-10 items-center gap-2 rounded-xl border px-3 text-sm font-semibold text-sahaya-green">{summaryPlaying ? <Square size={16} /> : <Play size={16} />} {summaryPlaying ? t(language, "stopAudio") : t(language, "playSummary")}</button>}
+              <div className="grid gap-3">{eligibleSchemes.map((scheme) => <SchemeCard key={scheme.id} scheme={scheme} />)}</div>
+            </div>
+          )}
+        </SectionCard>
         <SectionCard title={t(language, "benefitsForYou")}>
           <div className="space-y-3">
             {recommendations.slice(0, 3).map((item) => (

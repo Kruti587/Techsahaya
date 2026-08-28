@@ -22,6 +22,7 @@ class ProfileService:
             email=user.email,
             phone_number=user.phone_number,
             role=get_user_role(db, user.id),
+            onboarding_completed=profile.onboarding_completed,
             preferred_language=profile.preferred_language,
             accessibility_preference=profile.accessibility_preference,
             consent_given=profile.consent_given,
@@ -70,6 +71,7 @@ class ProfileService:
         profile = self.get_or_create(db, user)
         for key, value in payload.model_dump().items():
             setattr(profile, key, value)
+        profile.onboarding_completed = bool(profile.age and profile.state and profile.occupation)
         db.add(profile)
         db.add(
             NotificationRecord(

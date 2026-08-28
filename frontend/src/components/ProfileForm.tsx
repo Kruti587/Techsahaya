@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import type { EligibilityProfile } from "../types";
 import { t } from "../utils/i18n";
@@ -16,6 +16,9 @@ export function ProfileForm({
 }) {
   const { language } = useAppContext();
   const [form, setForm] = useState<EligibilityProfile>(initialValue || defaults);
+  useEffect(() => {
+    setForm(initialValue || defaults);
+  }, [initialValue]);
   const update = (key: keyof EligibilityProfile, value: string | number | boolean) => setForm((prev) => ({ ...prev, [key]: value }));
 
   const buttonText = submitLabel || t(language, "save");

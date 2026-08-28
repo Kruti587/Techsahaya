@@ -172,7 +172,7 @@ export function AskPage() {
         } else if (err?.response?.status === 401) {
           setError("Your session has expired or authentication is required. Please log in to continue.");
         } else {
-          setError(t(language, "chatError"));
+          setError(t(language, "voiceUnderstandingError"));
         }
       } finally {
 

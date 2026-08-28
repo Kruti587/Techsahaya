@@ -1,19 +1,69 @@
+import { useEffect, useRef, useState } from "react";
+import { Volume2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ProfileForm } from "../components/ProfileForm";
 import { api } from "../services/api";
 import { useAppContext } from "../context/AppContext";
+import { t } from "../utils/i18n";
 
 export function ProfileSetupPage() {
-  const { profile, setProfile, language } = useAppContext();
+  const { profile, setProfile, language, setLanguage, user } = useAppContext();
   const navigate = useNavigate();
+  const [audio, setAudio] = useState<{ base64: string; mime: string } | null>(null);
+  const [audioError, setAudioError] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const welcomeAudioRequested = useRef(false);
+  const welcomeAudioPlayStarted = useRef(false);
+  const welcomeAudioSessionKey = `tech-sahaya-welcome-audio:${user?.id || "unknown"}`;
+
+  useEffect(() => {
+    if (welcomeAudioRequested.current || sessionStorage.getItem(welcomeAudioSessionKey)) return;
+    welcomeAudioRequested.current = true;
+    sessionStorage.setItem(welcomeAudioSessionKey, "requested");
+    api.post("/api/onboarding/welcome-audio", null, { params: { language } })
+      .then((response) => {
+        const nextAudio = { base64: response.data.audio_base64, mime: response.data.audio_mime || "audio/wav" };
+        setAudio(nextAudio);
+        const player = new Audio(`data:${nextAudio.mime};base64,${nextAudio.base64}`);
+        audioRef.current = player;
+        welcomeAudioPlayStarted.current = true;
+        player.play().catch(() => {
+          welcomeAudioPlayStarted.current = false;
+          setAudioError(true);
+        });
+      })
+      .catch(() => setAudioError(true));
+  }, [language, welcomeAudioSessionKey]);
+
+  const playWelcome = () => {
+    if (!audio || welcomeAudioPlayStarted.current) return;
+    welcomeAudioPlayStarted.current = true;
+    const player = new Audio(`data:${audio.mime};base64,${audio.base64}`);
+    audioRef.current = player;
+    setAudioError(false);
+    player.play().catch(() => {
+      welcomeAudioPlayStarted.current = false;
+      setAudioError(true);
+    });
+  };
+
   return (
     <div className="rounded-3xl bg-white p-6 shadow-card">
-      <h1 className="text-3xl font-bold">Profile Setup</h1>
-      <p className="mt-2 text-slate-600">Complete only the information needed for eligibility and recommendations.</p>
+      <h1 className="text-3xl font-bold">{t(language, "welcomeTitle")}</h1>
+      <p className="mt-2 text-slate-600">{t(language, "welcomeSubtitle")}</p>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <label className="text-sm font-semibold" htmlFor="onboarding-language">{t(language, "preferredLanguage")}</label>
+        <select id="onboarding-language" className="min-h-12 rounded-xl border p-3" value={language} onChange={(e) => setLanguage(e.target.value)}>
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          <option value="kn">Kannada</option>
+        </select>
+        {audio && audioError && <button type="button" onClick={playWelcome} className="inline-flex min-h-12 items-center gap-2 rounded-xl border px-4 font-semibold text-sahaya-green"><Volume2 size={18} /> {t(language, "playWelcome")}</button>}
+      </div>
       <div className="mt-6">
-        <ProfileForm initialValue={profile} submitLabel="Save and continue" onSubmit={async (nextProfile) => {
-          setProfile(nextProfile);
-          await api.put("/api/profile", { ...nextProfile, preferred_language: language, consent_given: true });
+        <ProfileForm initialValue={profile} submitLabel={t(language, "saveAndContinue")} onSubmit={async (nextProfile) => {
+          const response = await api.put("/api/profile", { ...nextProfile, preferred_language: language, consent_given: true });
+          setProfile({ ...nextProfile, onboarding_completed: response.data.onboarding_completed });
           navigate("/dashboard");
         }} />
       </div>

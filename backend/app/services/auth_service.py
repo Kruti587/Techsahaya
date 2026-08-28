@@ -99,6 +99,7 @@ class AuthService:
         )
         db.commit()
         role = get_user_role(db, user.id)
+        profile = db.query(ProfileRecord).filter(ProfileRecord.user_id == user.id).first()
         audit_service.log(db, "login", "Login successful", user.id, role, "auth", request)
         return AuthResponse(
             token=token,
@@ -108,6 +109,7 @@ class AuthService:
                 full_name=user.full_name,
                 email=user.email,
                 preferred_language=user.preferred_language,
+                onboarding_completed=bool(profile and profile.onboarding_completed),
                 role=role,
             ),
         )
@@ -239,12 +241,20 @@ class AuthService:
         db.add(SessionRecord(user_id=user.id, token_hash=hash_token(access_token), remember_session=payload.remember_session, expires_at=expires_at))
         db.commit()
         role = get_user_role(db, user.id)
+        profile = db.query(ProfileRecord).filter(ProfileRecord.user_id == user.id).first()
         audit_service.log(db, "login", "Login successful with Supabase Auth", user.id, role, "auth", request)
         return AuthResponse(
             token=access_token,
             expires_at=expires_at.isoformat(),
             auth_adapter="supabase",
-            user=SessionUser(id=user.id, full_name=user.full_name, email=user.email, preferred_language=user.preferred_language, role=role),
+            user=SessionUser(
+                id=user.id,
+                full_name=user.full_name,
+                email=user.email,
+                preferred_language=user.preferred_language,
+                onboarding_completed=bool(profile and profile.onboarding_completed),
+                role=role,
+            ),
         )
 
 

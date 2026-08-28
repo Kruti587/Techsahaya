@@ -92,7 +92,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         landholding: response.data.landholding,
         disability: response.data.disability,
         family_members: response.data.family_members,
-        available_documents: response.data.available_documents || []
+        available_documents: response.data.available_documents || [],
+        onboarding_completed: response.data.onboarding_completed
       });
       setLanguage(response.data.preferred_language || language);
     } catch {

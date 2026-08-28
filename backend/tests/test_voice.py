@@ -109,7 +109,7 @@ def test_sarvam_tts_happy_path():
     with patch("app.services.sarvam_service.get_settings") as mock_settings:
         mock_settings.return_value.sarvam_api_key = "test-key"
         mock_settings.return_value.sarvam_api_base_url = "https://api.sarvam.ai"
-        mock_settings.return_value.sarvam_tts_model = "bulbul:v1"
+        mock_settings.return_value.sarvam_tts_model = "bulbul:v3"
         mock_settings.return_value.sarvam_tts_voice = "meera"
 
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_post:

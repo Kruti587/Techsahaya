@@ -17,9 +17,9 @@ class Settings(BaseSettings):
     # rather than 'saaras:*' (translation to English).
     # Supported values change over time; refer to https://docs.sarvam.ai/api-reference/speech-to-text
     sarvam_stt_model: str = "saarika:v2.5"
-    sarvam_tts_model: str = "bulbul:v2"
+    sarvam_tts_model: str = "bulbul:v3"
 
-    sarvam_tts_voice: str = "anushka"
+    sarvam_tts_voice: str = "ishita"
 
     voice_provider: str = "sarvam"
 

@@ -2,6 +2,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { api } from "../services/api";
 
 export function LoginPage() {
   const { login } = useAppContext();
@@ -19,7 +20,16 @@ export function LoginPage() {
           <p className="mt-3 text-emerald-50">Secure citizen access for personalized benefits, welfare gaps, documents, and journey tracking.</p>
           <div className="mt-6 text-sm">Authorized access is available for citizen, CSC, and admin roles.</div>
         </div>
-        <form className="space-y-4" onSubmit={async (e) => { e.preventDefault(); const result = await login(form); if (result) setError(result); else navigate(redirect); }}>
+        <form className="space-y-4" onSubmit={async (e) => {
+          e.preventDefault();
+          const result = await login(form);
+          if (result) {
+            setError(result);
+            return;
+          }
+          const profileResponse = await api.get("/api/profile");
+          navigate(profileResponse.data.onboarding_completed ? redirect : "/profile-setup");
+        }}>
           <input className="min-h-12 w-full rounded-xl border px-4" placeholder="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           <div className="relative">
             <input className="min-h-12 w-full rounded-xl border px-4 pr-12" placeholder="Password" type={showPassword ? "text" : "password"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
