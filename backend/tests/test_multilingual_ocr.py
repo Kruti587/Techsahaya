@@ -1,5 +1,6 @@
 import pytest
-from app.services.document_service import document_service, _normalize_indic_digits
+from app.services.document_service import document_service, _normalize_indic_digits, _get_field_keywords
+
 
 
 def test_indic_digits_normalization():
@@ -168,5 +169,39 @@ def test_degraded_skewed_creased_ocr_ranking_and_confidence():
     assert extracted.get("landholding") == 2.5, f"Expected landholding 2.5 (not noise 0), got {extracted.get('landholding')}"
     assert extracted.get("field_confidences", {}).get("age") == "high"
     assert extracted.get("field_confidences", {}).get("income") == "high"
+
+
+def test_language_specific_keyword_isolation():
+    """
+    Asserts that _get_field_keywords prioritizes the requested language
+    and isolates language-specific variants (e.g. Kannada vs Tamil) while sharing standard English keywords.
+    """
+    kn_keywords = _get_field_keywords("age", "kn")
+    ta_keywords = _get_field_keywords("age", "ta")
+    hi_keywords = _get_field_keywords("age", "hi")
+
+    # Kannada contains Kannada terms but not Tamil or Hindi terms
+    assert "ವಯಸ್ಸು" in kn_keywords
+    assert "வயது" not in kn_keywords
+    assert "उम्र" not in kn_keywords
+
+    # Tamil contains Tamil terms but not Kannada or Hindi terms
+    assert "வயது" in ta_keywords
+    assert "ವಯಸ್ಸು" not in ta_keywords
+    assert "उम्र" not in ta_keywords
+
+    # Hindi contains Hindi terms but not Kannada or Tamil terms
+    assert "उम्र" in hi_keywords
+    assert "ವಯಸ್ಸು" not in hi_keywords
+    assert "வயது" not in hi_keywords
+
+    # All share standard English keywords for bilingual document headers
+    assert "age" in kn_keywords
+    assert "age" in ta_keywords
+    assert "age" in hi_keywords
+
+    # Kannada and Tamil return different keyword lists
+    assert kn_keywords != ta_keywords
+
 
 

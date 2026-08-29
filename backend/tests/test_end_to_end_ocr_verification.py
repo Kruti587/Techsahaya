@@ -250,7 +250,7 @@ def test_ocr_quality_gate_clean_fixture_is_good():
     fields = document_service._extract_ephemeral_fields(content, "image/png", "income_certificate", language="kn")
     assert fields.get("ocr_quality") == "good"
     assert fields.get("ocr_confidence_score") is not None
-    assert fields.get("ocr_confidence_score") >= 40.0
+    assert fields.get("ocr_confidence_score") >= 55.0
     assert fields.get("age") == 34
     assert fields.get("income") == 85000.0
 
@@ -264,16 +264,31 @@ def test_ocr_quality_gate_degraded_creased_fixture_is_poor_and_unmerged():
     # 1. Direct extraction asserts
     fields = document_service._extract_ephemeral_fields(content, "image/png", "income_certificate", language="kn")
     assert fields.get("ocr_quality") == "poor"
-    assert (fields.get("ocr_confidence_score") is None) or (fields.get("ocr_confidence_score") < 40.0)
+    assert (fields.get("ocr_confidence_score") is None) or (fields.get("ocr_confidence_score") < 55.0)
+
+
+def test_ocr_quality_gate_real_creased_skewed_fixture_is_poor():
+    """
+    Regression test asserting the real crease/skew fixture (creased_income_certificate_dsih.png)
+    is classified ocr_quality == 'poor' and its wrong values are NOT merged into the profile.
+    """
+    creased_path = Path(__file__).parent / "fixtures" / "creased_income_certificate_dsih.png"
+    assert creased_path.exists(), f"Missing fixture: {creased_path}"
+    content = creased_path.read_bytes()
+
+    # 1. Direct extraction asserts
+    fields = document_service._extract_ephemeral_fields(content, "image/png", "income_certificate", language="kn")
+    assert fields.get("ocr_quality") == "poor"
+    assert (fields.get("ocr_confidence_score") is None) or (fields.get("ocr_confidence_score") < 55.0)
 
     # 2. Upload through service & test chat rejection
     db: Session = SessionLocal()
     try:
-        user = db.query(User).filter(User.email == "degraded_ocr_test@example.com").first()
+        user = db.query(User).filter(User.email == "creased_real_test@example.com").first()
         if not user:
             user = User(
-                email="degraded_ocr_test@example.com",
-                full_name="Degraded Tester",
+                email="creased_real_test@example.com",
+                full_name="Creased Real Tester",
                 password_hash="mock",
                 preferred_language="kn",
             )
@@ -283,7 +298,7 @@ def test_ocr_quality_gate_degraded_creased_fixture_is_poor_and_unmerged():
 
         file = UploadFile(
             file=io.BytesIO(content),
-            filename="degraded_cert.png",
+            filename="creased_income_certificate_dsih.png",
             headers={"content-type": "image/png"},
         )
 
@@ -296,17 +311,15 @@ def test_ocr_quality_gate_degraded_creased_fixture_is_poor_and_unmerged():
             language="kn",
         )
 
-        # Ephemeral cache contains poor quality annotation
         cached = ephemeral_store.get(f"doc:{doc.id}")
         assert cached is not None
         assert cached.get("ocr_quality") == "poor"
 
-        # 3. Chat query MUST NOT state numbers, must prompt re-upload in Kannada
-        kn_chat_resp = chat_service.answer("ನನ್ನ ವಯಸ್ಸು ಏನು?", language="kn", user=user, db=db)
+        # 3. Chat query MUST NOT state numbers, must prompt re-upload
+        kn_chat_resp = chat_service.answer("ನನ್ನ ಆದಾಯ ಎಷ್ಟು?", language="kn", user=user, db=db)
         assert "ಮರು-ಅಪ್‌ಲೋಡ್" in kn_chat_resp.answer or "ಸ್ಪಷ್ಟವಾದ" in kn_chat_resp.answer or "ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ" in kn_chat_resp.answer
 
-        # 4. Chat query in English must prompt re-upload in English
-        en_chat_resp = chat_service.answer("What is my age?", language="en", user=user, db=db)
+        en_chat_resp = chat_service.answer("What is my income?", language="en", user=user, db=db)
         assert "re-upload" in en_chat_resp.answer.lower() or "clearer photo" in en_chat_resp.answer.lower()
 
         # Clean up
@@ -315,5 +328,79 @@ def test_ocr_quality_gate_degraded_creased_fixture_is_poor_and_unmerged():
         ephemeral_store.delete(f"doc:{doc.id}")
     finally:
         db.close()
+
+
+def test_medium_confidence_hedged_chat_response():
+    """
+    Asserts that medium-confidence age and income extractions produce hedged phrasing
+    ('approximately', 'please confirm') and NOT 'verified' in chat response.
+    """
+    db: Session = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == "medium_conf_test@example.com").first()
+        if not user:
+            user = User(
+                email="medium_conf_test@example.com",
+                full_name="Medium Conf User",
+                password_hash="mock",
+                preferred_language="en",
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+        doc = DocumentRecord(
+            user_id=user.id,
+            document_type="income_certificate",
+            status="processed",
+            verification_state="processed_in_memory",
+            masked_fields={"document_type": "income_certificate"},
+            file_name="income_cert.png",
+            mime_type="image/png",
+            file_size=1024,
+            retained_in_storage=False,
+        )
+        db.add(doc)
+        db.commit()
+        db.refresh(doc)
+
+        ephemeral_payload = {
+            "document_id": doc.id,
+            "user_id": user.id,
+            "document_type": "income_certificate",
+            "extracted_fields": {
+                "age": 34,
+                "income": 85000.0,
+                "_age_confidence": "medium",
+                "_income_confidence": "medium",
+                "field_confidences": {"age": "medium", "income": "medium"},
+            },
+            "field_confidences": {"age": "medium", "income": "medium"},
+            "ocr_quality": "good",
+            "created_at": "2026-08-29T12:00:00",
+        }
+        ephemeral_store.set(f"doc:{doc.id}", ephemeral_payload, ttl_seconds=300)
+
+        # 1. Ask age in English -> hedged phrasing, NOT verified
+        age_resp = chat_service.answer("What is my age?", language="en", user=user, db=db)
+        assert "approximately" in age_resp.answer.lower() or "confirm" in age_resp.answer.lower()
+        assert "verified age is" not in age_resp.answer.lower()
+        assert age_resp.verification_status == "requires_official_verification"
+        assert age_resp.confidence == "medium"
+
+        # 2. Ask income in English -> hedged phrasing, NOT verified
+        inc_resp = chat_service.answer("What is my income?", language="en", user=user, db=db)
+        assert "approximately" in inc_resp.answer.lower() or "confirm" in inc_resp.answer.lower()
+        assert "verified annual income is" not in inc_resp.answer.lower()
+        assert inc_resp.verification_status == "requires_official_verification"
+        assert inc_resp.confidence == "medium"
+
+        # Clean up
+        db.delete(doc)
+        db.commit()
+        ephemeral_store.delete(f"doc:{doc.id}")
+    finally:
+        db.close()
+
 
 

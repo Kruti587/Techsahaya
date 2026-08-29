@@ -112,7 +112,13 @@ def _preprocess_image_for_ocr(image: Image.Image) -> Image.Image:
         return image
 
 
-OCR_QUALITY_THRESHOLD = 40.0
+# Calibrated OCR Quality Threshold:
+# Empirically calibrated against real test images:
+# - Clean official certificate: scores ~76.5 (classified "good")
+# - Real-world creased/shadowed/skewed photo: scores ~46.1 with degraded extractions (classified "poor")
+# - Synthetic noise/blur image: scores None / < 20 (classified "poor")
+# Setting the threshold to 55.0 safely gates skewed/creased real-world mobile photos while allowing clean uploads.
+OCR_QUALITY_THRESHOLD = 55.0
 
 REUPLOAD_PROMPTS = {
     "en": "We couldn't read this document clearly enough to verify your details. Please try re-uploading a clearer photo — flat, well-lit, and without creases or heavy shadows.",
@@ -139,6 +145,8 @@ def _build_keyword_regex(keywords: list[str]) -> str:
             patterns.append(r"(?<![आ\w])आय(?![ु\w])")
         elif kw == "वय":
             patterns.append(r"(?<![\w])वय(?![\w])")
+        elif kw in {"yr", "dob"}:
+            patterns.append(r"(?<![\w])" + re.escape(kw) + r"(?![\w])")
         else:
             parts = re.split(r"\s+", kw.strip())
             patterns.append(r"\s*".join(re.escape(p) for p in parts))
@@ -146,14 +154,31 @@ def _build_keyword_regex(keywords: list[str]) -> str:
 
 
 def _get_field_keywords(field: str, language: str = "en") -> list[str]:
+    """Returns keyword variants for the specified field, prioritizing the requested language
+    plus English keywords (for standard bilingual government certificates), falling back to all languages if needed."""
     cfg = load_ocr_keywords()
     field_cfg = cfg.get(field, {})
-    lang_key = language[:2].lower()
-    variants: list[str] = list(field_cfg.get(lang_key, []))
-    for k, v in field_cfg.items():
-        if k != "_comment" and isinstance(v, list):
-            variants.extend(v)
-    return variants
+    lang_normalized = (language or "en").strip().lower()
+
+    if lang_normalized in {"all", "*"}:
+        all_variants: list[str] = []
+        for k, v in field_cfg.items():
+            if k != "_comment" and isinstance(v, list):
+                all_variants.extend(v)
+        return list(dict.fromkeys(all_variants))
+
+    lang_key = lang_normalized[:2]
+    # Priority: requested language keywords first, followed by English keywords for bilingual certificates
+    lang_variants = list(field_cfg.get(lang_key, []))
+    en_variants = list(field_cfg.get("en", [])) if lang_key != "en" else []
+    combined = lang_variants + en_variants
+
+    if not combined:
+        for k, v in field_cfg.items():
+            if k != "_comment" and isinstance(v, list):
+                combined.extend(v)
+
+    return list(dict.fromkeys(combined))
 
 
 class DocumentService:
@@ -291,11 +316,15 @@ class DocumentService:
         normalized_text = _normalize_indic_digits(text)
         fields = self._parse_structured_fields(normalized_text, language=language)
 
-        # Evaluate OCR Quality Gate
+        # Multi-signal OCR Quality Gate:
+        # Mark as 'poor' if:
+        # 1. OCR confidence score is None (no readable text tokens found)
+        # 2. OCR confidence score < OCR_QUALITY_THRESHOLD (mean token confidence < 55.0)
+        # 3. Any extracted field is low or medium confidence (a single degraded field is enough to cause harm)
         field_confs = fields.get("field_confidences", {})
-        all_fields_low = bool(field_confs) and all(v == "low" for v in field_confs.values())
+        has_low_or_medium_field = any(conf in {"low", "medium"} for conf in field_confs.values())
 
-        if ocr_confidence_score is None or ocr_confidence_score < OCR_QUALITY_THRESHOLD or all_fields_low:
+        if ocr_confidence_score is None or ocr_confidence_score < OCR_QUALITY_THRESHOLD or has_low_or_medium_field:
             ocr_quality = "poor"
         else:
             ocr_quality = "good"
@@ -327,16 +356,6 @@ class DocumentService:
         if not lines:
             return fields
 
-        age_keywords = _get_field_keywords("age", language)
-        dob_keywords = _get_field_keywords("dob", language)
-        income_keywords = _get_field_keywords("income", language)
-        land_keywords = _get_field_keywords("landholding", language)
-
-        age_kw_pattern = _build_keyword_regex(age_keywords)
-        dob_kw_pattern = _build_keyword_regex(dob_keywords)
-        income_kw_pattern = _build_keyword_regex(income_keywords)
-        land_kw_pattern = _build_keyword_regex(land_keywords)
-
         # Helper to get search text for a match in lines:
         # returns list of tuples: (scope_text, distance_in_lines, line_index)
         def _get_search_scopes(kw_regex: str) -> list[tuple[str, int, int]]:
@@ -363,9 +382,19 @@ class DocumentService:
                             scopes.append((next2_segment, 2, idx))
             return scopes
 
+        def _get_scopes_for_field(field_name: str) -> list[tuple[str, int, int]]:
+            # First search with requested language keywords (prioritized)
+            primary_kws = _get_field_keywords(field_name, language)
+            scopes = _get_search_scopes(_build_keyword_regex(primary_kws))
+            # If no match found, fallback to all-languages keyword patterns for mixed-language/undeclared documents
+            if not scopes and language != "all":
+                fallback_kws = _get_field_keywords(field_name, "all")
+                scopes = _get_search_scopes(_build_keyword_regex(fallback_kws))
+            return scopes
+
         # 1. Extract Age with Plausibility Scoring
         age_candidates: list[tuple[int, float, str]] = []  # (value, score, confidence)
-        for scope, dist, _ in _get_search_scopes(age_kw_pattern):
+        for scope, dist, _ in _get_scopes_for_field("age"):
             # Explicit age unit matches e.g. "34 yrs", "34 years", "34 ವರ್ಷ", "34 वर्ष"
             for um in re.finditer(r"\b(\d{1,3})\s*(?:yrs?|years?|ವರ್ಷ|ವರ್ಷಗಳು|साल|वर्ष)\b", scope, re.IGNORECASE):
                 try:
@@ -404,7 +433,7 @@ class DocumentService:
 
         # 2. Extract DOB (and derive age if not yet present)
         dob_candidates: list[tuple[str, int, float, str]] = []
-        for scope, dist, _ in _get_search_scopes(dob_kw_pattern):
+        for scope, dist, _ in _get_scopes_for_field("dob"):
             dob_matches = list(re.finditer(r"\b(\d{1,2})[./\-\s](\d{1,2})[./\-\s](\d{4})\b", scope))
             for m in dob_matches:
                 try:
@@ -431,7 +460,7 @@ class DocumentService:
 
         # 3. Extract Income with Plausibility Scoring
         income_candidates: list[tuple[float, float, str]] = []  # (value, score, confidence)
-        for scope, dist, _ in _get_search_scopes(income_kw_pattern):
+        for scope, dist, _ in _get_scopes_for_field("income"):
             for m in re.finditer(r"(?:(?:rs\.?|inr|₹|రూ|ரூ|ರೂ|रु|%)\s*)?([\d,]+(?:\.\d+)?)\b", scope, re.IGNORECASE):
                 raw = m.group(1).replace(",", "").strip()
                 if not raw:
@@ -475,7 +504,7 @@ class DocumentService:
 
         # 4. Extract Landholding with Plausibility Scoring
         land_candidates: list[tuple[float, float, str]] = []  # (value, score, confidence)
-        for scope, dist, _ in _get_search_scopes(land_kw_pattern):
+        for scope, dist, _ in _get_scopes_for_field("landholding"):
             for m in re.finditer(r"([\d.]+)\s*(acres?|acre|एकड़|ఎకరాలు|ஏக்கர்|ഏക്കർ|একর|हेक्टर|guntha|bigha|cents?|hectares?)?", scope, re.IGNORECASE):
                 raw = m.group(1).strip()
                 if not raw or raw == ".":

@@ -240,7 +240,7 @@ def test_document_upload_ocr_quality_gate():
         assert res.status_code == 200
         data = res.json()
         assert data["ocr_quality"] == "good"
-        assert data["ocr_confidence_score"] >= 40.0
+        assert data["ocr_confidence_score"] >= 55.0
 
     degraded_path = Path(__file__).parent / "fixtures" / "degraded_skewed_creased_cert.png"
     if degraded_path.exists():

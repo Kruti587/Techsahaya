@@ -397,7 +397,7 @@ class ChatService:
         if is_age_query:
             if profile.age is not None:
                 age_conf = live_ocr_confidences.get('age', live_ocr_fields.get('_age_confidence', 'high'))
-                if age_conf == 'low':
+                if age_conf in ('low', 'medium'):
                     if lang.startswith('kn'):
                         ans = f"ನಿಮ್ಮ ದಾಖಲೆಯ ಪ್ರಕಾರ ನಿಮ್ಮ ವಯಸ್ಸು ಅಂದಾಜು **{profile.age} ವರ್ಷಗಳು** ಎಂದು ಓದಲಾಗಿದೆ (ದಯವಿಟ್ಟು ಇದು ಸರಿಯಾಗಿದೆಯೇ ಎಂದು ಖಚಿತಪಡಿಸಿ)."
                     elif lang.startswith('hi'):
@@ -415,8 +415,8 @@ class ChatService:
                     answer=ans,
                     schemes=[],
                     evidence=[],
-                    verification_status='verified_from_source_data' if age_conf != 'low' else 'requires_official_verification',
-                    confidence='high' if age_conf != 'low' else 'medium',
+                    verification_status='verified_from_source_data' if age_conf == 'high' else 'requires_official_verification',
+                    confidence='high' if age_conf == 'high' else 'medium',
                     offline_ready=True,
                 )
             elif has_user_docs and has_expired_docs and not has_live_docs:
@@ -441,7 +441,7 @@ class ChatService:
         if is_income_query:
             if profile.income is not None:
                 inc_conf = live_ocr_confidences.get('income', live_ocr_fields.get('_income_confidence', 'high'))
-                if inc_conf == 'low':
+                if inc_conf in ('low', 'medium'):
                     if lang.startswith('kn'):
                         ans = f"ನಿಮ್ಮ ದಾಖಲೆಯ ಪ್ರಕಾರ ನಿಮ್ಮ ವಾರ್ಷಿಕ ಆದಾಯ ಅಂದಾಜು **ರೂ {profile.income:,.0f}** ಎಂದು ಓದಲಾಗಿದೆ (ದಯವಿಟ್ಟು ಇದು ಸರಿಯಾಗಿದೆಯೇ ಎಂದು ಖಚಿತಪಡಿಸಿ)."
                     elif lang.startswith('hi'):
@@ -459,8 +459,8 @@ class ChatService:
                     answer=ans,
                     schemes=[],
                     evidence=[],
-                    verification_status='verified_from_source_data' if inc_conf != 'low' else 'requires_official_verification',
-                    confidence='high' if inc_conf != 'low' else 'medium',
+                    verification_status='verified_from_source_data' if inc_conf == 'high' else 'requires_official_verification',
+                    confidence='high' if inc_conf == 'high' else 'medium',
                     offline_ready=True,
                 )
             elif has_user_docs and has_expired_docs and not has_live_docs:
