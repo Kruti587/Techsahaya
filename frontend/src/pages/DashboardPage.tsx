@@ -132,6 +132,13 @@ export function DashboardPage() {
       isCompleted: Boolean(profile.family_members?.length),
       route: "/family",
     },
+    {
+      id: 5,
+      title: t(language, "missingBenefits"),
+      description: language === "hi" ? "पात्र योजनाओं की पहचान करें जो आपसे छूट गई हैं" : language === "kn" ? "ನೀವು ಪಡೆಯಬಹುದಾದ ಕಲ್ಯಾಣ ಯೋಜನೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ" : "Find welfare schemes you qualify for but haven't claimed",
+      isCompleted: gaps.length === 0 && Boolean(profile.age && profile.occupation),
+      route: "/welfare-gaps",
+    },
   ];
 
   return (
@@ -239,6 +246,9 @@ export function DashboardPage() {
               </div>
             ))}
             {gaps.length === 0 && <p className="text-sm text-slate-600">{t(language, "noGapsYet")}</p>}
+            <Link to="/welfare-gaps" className="mt-2 inline-flex min-h-10 items-center gap-1.5 font-semibold text-sahaya-green hover:underline text-sm">
+              {t(language, "missingBenefits")} <ArrowRight size={16} />
+            </Link>
           </div>
         </SectionCard>
 
