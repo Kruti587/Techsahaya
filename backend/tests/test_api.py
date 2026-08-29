@@ -187,15 +187,15 @@ def test_document_upload_rejects_aadhaar_or_pan_names():
     assert "Aadhaar" in response.json()["detail"]
 
 
-def test_student_id_upload_satisfies_nsp_document_rule():
+def test_document_upload_satisfies_nsp_document_rule():
     headers = auth_headers()
     upload = client.post(
         "/api/documents/upload",
         headers=headers,
-        files={"file": ("student-id-card.pdf", b"safe bytes", "application/pdf")},
+        files={"file": ("income-certificate.pdf", b"safe bytes", "application/pdf")},
     )
     assert upload.status_code == 200
-    assert upload.json()["document_type"] == "student_id"
+    assert upload.json()["document_type"] == "income_certificate"
 
     profile = {
         "age": 20,

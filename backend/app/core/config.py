@@ -43,6 +43,8 @@ class Settings(BaseSettings):
     auth_adapter: str = "local"
     database_url: str = "sqlite:///./tech_sahaya_secure.db"
     faiss_index_path: str = "./data/faiss_index"
+    redis_url: str = "redis://localhost:6379/0"
+    redis_ephemeral_ttl: int = 300
 
     # Uploads & Rate Limiting
     max_upload_size: int = 5_242_880

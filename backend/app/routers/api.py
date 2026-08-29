@@ -264,7 +264,9 @@ async def upload_document(
         "document": document.id,
         "document_type": document.document_type,
         "available_documents": profile.available_documents,
-        "message": "Processed in memory and discarded. Only masked metadata is retained.",
+        "ephemeral_extracted": getattr(document, "ephemeral_extracted", {}),
+        "ephemeral_ttl": settings.redis_ephemeral_ttl,
+        "message": "Processed in memory and discarded. Only masked metadata is retained in DB; ephemeral OCR cached in Redis with short TTL.",
     }
 
 
@@ -321,12 +323,22 @@ def delete_document(document_id: str, request: Request, user: User = Depends(get
 
 
 @router.post("/check-eligibility")
-def check_eligibility(payload: CheckEligibilityRequest, user: User = Depends(get_current_user)):
+def check_eligibility(payload: CheckEligibilityRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     scheme = next((item for item in load_schemes() if item.id == payload.scheme_id), None)
     if not scheme:
         raise HTTPException(status_code=404, detail="Scheme not found")
     rule = load_rules().get(payload.scheme_id)
-    return eligibility_engine.evaluate(payload.scheme_id, payload.profile, rule, scheme.alternative_scheme_ids)
+    result = eligibility_engine.evaluate(payload.scheme_id, payload.profile, rule, scheme.alternative_scheme_ids)
+
+    db.add(NotificationRecord(
+        user_id=user.id,
+        title=f"Eligibility checked: {scheme.name}",
+        message=(f"You are eligible for {scheme.name}." if result.eligible
+                  else f"You are not eligible for {scheme.name}. Reason: {result.failed[0] if result.failed else 'criteria not met'}."),
+        level="success" if result.eligible else "info",
+    ))
+    db.commit()
+    return result
 
 
 @router.get("/schemes")
@@ -356,6 +368,13 @@ def scheme_details(scheme_id: str):
 def save_scheme(payload: SaveSchemeRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if db.query(SavedScheme).filter(SavedScheme.user_id == user.id, SavedScheme.scheme_id == payload.scheme_id).first() is None:
         db.add(SavedScheme(user_id=user.id, scheme_id=payload.scheme_id))
+        scheme = next((s for s in load_schemes() if s.id == payload.scheme_id), None)
+        db.add(NotificationRecord(
+            user_id=user.id,
+            title="Scheme saved",
+            message=f"{scheme.name if scheme else payload.scheme_id} was added to your saved schemes.",
+            level="info",
+        ))
         db.commit()
     return {"status": "saved"}
 

@@ -1,10 +1,21 @@
+import io
 import re
-from typing import Optional
+from datetime import datetime
+from typing import Any, Optional
 
 from fastapi import HTTPException, UploadFile, status
+from PIL import Image
+try:
+    import pytesseract
+except ImportError:
+    pytesseract = None
 from sqlalchemy.orm import Session
 
+from app.core.config import get_settings
+from app.core.redis_client import ephemeral_store
 from app.models.db_models import DocumentRecord, User
+
+settings = get_settings()
 
 
 class DocumentService:
@@ -48,6 +59,9 @@ class DocumentService:
 
         doc_type = declared_type if (declared_type and declared_type in self.canonical_types) else self._classify(file.filename or "document")
 
+        # In-memory ephemeral OCR (never saved to disk)
+        extracted_fields = self._extract_ephemeral_fields(content, content_type, doc_type)
+
         masked_fields = {
             "document_type": doc_type,
             "mime_type": content_type,
@@ -68,7 +82,76 @@ class DocumentService:
         db.add(document)
         db.commit()
         db.refresh(document)
+
+        # Store derived structured data in Redis with short ephemeral TTL (e.g. 5 minutes)
+        ephemeral_payload = {
+            "document_id": document.id,
+            "user_id": user.id,
+            "document_type": doc_type,
+            "extracted_fields": extracted_fields,
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        ephemeral_store.set(f"doc:{document.id}", ephemeral_payload, ttl_seconds=settings.redis_ephemeral_ttl)
+        setattr(document, "ephemeral_extracted", extracted_fields)
+
         return document
+
+    def _extract_ephemeral_fields(self, content: bytes, content_type: str, doc_type: str) -> dict[str, Any]:
+        """Runs in-memory OCR / text extraction without writing bytes to disk."""
+        text = ""
+        if content_type in {"image/png", "image/jpeg"}:
+            try:
+                image = Image.open(io.BytesIO(content))
+                if pytesseract:
+                    try:
+                        text = pytesseract.image_to_string(image)
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+
+        if not text:
+            # In-memory byte stream heuristic / text extraction
+            printable = re.findall(rb"[\x20-\x7E]{3,}", content)
+            text = " ".join([chunk.decode("latin1", errors="ignore") for chunk in printable])
+
+        fields: dict[str, Any] = {}
+        text_lower = text.lower()
+
+        # Extract age or DOB
+        age_match = re.search(r"\b(?:age|age in years)[:\s]*(\d{1,3})\b", text_lower)
+        if age_match:
+            try:
+                fields["age"] = int(age_match.group(1))
+            except ValueError:
+                pass
+        else:
+            dob_match = re.search(r"\b(?:dob|date of birth|birth date)[:\s]*(\d{1,2})[/-](\d{1,2})[/-](\d{4})\b", text_lower)
+            if dob_match:
+                try:
+                    birth_year = int(dob_match.group(3))
+                    fields["age"] = max(0, datetime.now().year - birth_year)
+                    fields["dob"] = f"{dob_match.group(1)}/{dob_match.group(2)}/{dob_match.group(3)}"
+                except ValueError:
+                    pass
+
+        # Extract income hint
+        income_match = re.search(r"\b(?:income|annual income|total income|salary)[:\s]*(?:rs\.?|inr)?\s*([\d,]+)\b", text_lower)
+        if income_match:
+            try:
+                fields["income"] = float(income_match.group(1).replace(",", ""))
+            except ValueError:
+                pass
+
+        # Extract landholding hint
+        land_match = re.search(r"\b(?:land|acres|extent)[:\s]*([\d.]+)\b", text_lower)
+        if land_match:
+            try:
+                fields["landholding"] = float(land_match.group(1))
+            except ValueError:
+                pass
+
+        return fields
 
     def _classify(self, file_name: str) -> str:
         name = file_name.lower()

@@ -208,7 +208,13 @@ const dictionary = {
     workersGroup: "Workers",
     familiesGroup: "Families",
     requiredDocuments: "Required documents",
-    applicationSteps: "Application steps"
+    applicationSteps: "Application steps",
+    docIncomeCertificate: "Income Certificate",
+    docLandRecord: "Land Record / RTC",
+    docRationCard: "Ration Card",
+    docDisabilityCertificate: "Disability / UDID Certificate",
+    docCasteCertificate: "Caste Certificate",
+    docGenericSample: "Generic Sample Document"
   },
   hi: {
     login: "लॉगिन",
@@ -419,7 +425,13 @@ const dictionary = {
     workersGroup: "श्रमिक",
     familiesGroup: "परिवार",
     requiredDocuments: "आवश्यक दस्तावेज़",
-    applicationSteps: "आवेदन प्रक्रिया"
+    applicationSteps: "आवेदन प्रक्रिया",
+    docIncomeCertificate: "आय प्रमाण पत्र (Income Certificate)",
+    docLandRecord: "भूमि रिकॉर्ड / खतौनी (Land Record)",
+    docRationCard: "राशन कार्ड (Ration Card)",
+    docDisabilityCertificate: "दिव्यांग / UDID प्रमाण पत्र (Disability Certificate)",
+    docCasteCertificate: "जाति प्रमाण पत्र (Caste Certificate)",
+    docGenericSample: "सामान्य नमूना दस्तावेज़ (Generic Document)"
   },
   kn: {
     login: "ಲಾಗಿನ್",
@@ -630,7 +642,13 @@ const dictionary = {
     workersGroup: "ಕಾರ್ಮಿಕರು",
     familiesGroup: "ಕುಟುಂಬಗಳು",
     requiredDocuments: "ಅಗತ್ಯ ದಾಖಲೆಗಳು",
-    applicationSteps: "ಅರ್ಜಿ ವಿಧಾನ"
+    applicationSteps: "ಅರ್ಜಿ ವಿಧಾನ",
+    docIncomeCertificate: "ಆದಾಯ ಪ್ರಮಾಣಪತ್ರ (Income Certificate)",
+    docLandRecord: "ಭೂ ದಾಖಲೆ / ಪಹಣಿ / RTC (Land Record)",
+    docRationCard: "ಪಡಿತರ ಚೀಟಿ (Ration Card)",
+    docDisabilityCertificate: "ವಿಕಲಾಂಗತೆ / UDID ಪ್ರಮಾಣಪತ್ರ (Disability Certificate)",
+    docCasteCertificate: "ಜಾತಿ ಪ್ರಮಾಣಪತ್ರ (Caste Certificate)",
+    docGenericSample: "ಸಾಮಾನ್ಯ ಮಾದರಿ ದಾಖಲೆ (Generic Document)"
   },
   te: {
     login: "లాగిన్",
@@ -841,7 +859,13 @@ const dictionary = {
     workersGroup: "కార్మికులు",
     familiesGroup: "కుటుంబాలు",
     requiredDocuments: "అవసరమైన పత్రాలు",
-    applicationSteps: "దరఖాస్తు విధానం"
+    applicationSteps: "దరఖాస్తు విధానం",
+    docIncomeCertificate: "ఆదాయ ధృవీకరణ పత్రం (Income Certificate)",
+    docLandRecord: "భూమి రికార్డు / పట్టాదారు పాస్‌బుక్ (Land Record)",
+    docRationCard: "రేషన్ కార్డు (Ration Card)",
+    docDisabilityCertificate: "దివ్యాంగుల / UDID ధృవీకరణ పత్రం (Disability Certificate)",
+    docCasteCertificate: "కులం ధృవీకరణ పత్రం (Caste Certificate)",
+    docGenericSample: "సాధారణ నమూనా పత్రం (Generic Document)"
   },
   ta: {
     login: "உள்நுழை",
@@ -1052,7 +1076,13 @@ const dictionary = {
     workersGroup: "தொழிலாளர்கள்",
     familiesGroup: "குடும்பங்கள்",
     requiredDocuments: "தேவையான ஆவணங்கள்",
-    applicationSteps: "விண்ணப்பிக்கும் முறைகள்"
+    applicationSteps: "விண்ணப்பிக்கும் முறைகள்",
+    docIncomeCertificate: "வருமானச் சான்றிதழ் (Income Certificate)",
+    docLandRecord: "நில ஆவணம் / பட்டா (Land Record)",
+    docRationCard: "குடும்ப அட்டை / ரேஷன் கார்டு (Ration Card)",
+    docDisabilityCertificate: "மாற்றுத்திறனாளி / UDID சான்றிதழ் (Disability Certificate)",
+    docCasteCertificate: "சாதிச் சான்றிதழ் (Caste Certificate)",
+    docGenericSample: "பொது மாதிரி ஆவணம் (Generic Document)"
   },
   ml: {
     login: "ലോഗിൻ",
@@ -1263,7 +1293,13 @@ const dictionary = {
     workersGroup: "തൊഴിലാളികൾ",
     familiesGroup: "കുടുംബങ്ങൾ",
     requiredDocuments: "ആവശ്യമായ രേഖകൾ",
-    applicationSteps: "അപേക്ഷാ നടപടികൾ"
+    applicationSteps: "അപേക്ഷാ നടപടികൾ",
+    docIncomeCertificate: "വരുമാന സർട്ടിഫിക്കറ്റ് (Income Certificate)",
+    docLandRecord: "ഭൂമി രേഖ / പട്ടയം (Land Record)",
+    docRationCard: "റേഷൻ കാർഡ് (Ration Card)",
+    docDisabilityCertificate: "ഭിന്നശേഷി / UDID സർട്ടിഫിക്കറ്റ് (Disability Certificate)",
+    docCasteCertificate: "ജാതി സർട്ടിഫിക്കറ്റ് (Caste Certificate)",
+    docGenericSample: "സാധാരണ മാതൃകാ രേഖ (Generic Document)"
   },
   bn: {
     login: "লগইন",
@@ -1474,7 +1510,13 @@ const dictionary = {
     workersGroup: "শ্রমিক",
     familiesGroup: "পরিবার",
     requiredDocuments: "প্রয়োজনীয় নথিপত্র",
-    applicationSteps: "আবেদনের ধাপসমূহ"
+    applicationSteps: "আবেদনের ধাপসমূহ",
+    docIncomeCertificate: "আয় শংসাপত্র (Income Certificate)",
+    docLandRecord: "জমির রেকর্ড / পর্চা (Land Record)",
+    docRationCard: "রেশন কার্ড (Ration Card)",
+    docDisabilityCertificate: "প্রতিবন্ধী / UDID শংসাপত্র (Disability Certificate)",
+    docCasteCertificate: "জাতি শংসাপত্র (Caste Certificate)",
+    docGenericSample: "সাধারণ নমুনা নথি (Generic Document)"
   },
   mr: {
     login: "लॉगिन",
@@ -1685,7 +1727,13 @@ const dictionary = {
     workersGroup: "कामगार",
     familiesGroup: "कुटुंब",
     requiredDocuments: "आवश्यक कागदपत्रे",
-    applicationSteps: "अर्ज प्रक्रिया"
+    applicationSteps: "अर्ज प्रक्रिया",
+    docIncomeCertificate: "उत्पन्न दाखला (Income Certificate)",
+    docLandRecord: "जमीन महसूल / ७/१२ उतारा (Land Record)",
+    docRationCard: "रेशन कार्ड (Ration Card)",
+    docDisabilityCertificate: "दिव्यांग / UDID प्रमाणपत्र (Disability Certificate)",
+    docCasteCertificate: "जात प्रमाणपत्र (Caste Certificate)",
+    docGenericSample: "सामान्य नमुना दस्तऐवज (Generic Document)"
   },
   gu: {
     login: "લૉગિન",
@@ -1896,7 +1944,13 @@ const dictionary = {
     workersGroup: "શ્રમિકો",
     familiesGroup: "પરિવારો",
     requiredDocuments: "જરૂરી દસ્તાવેજો",
-    applicationSteps: "અરજીના પગલાં"
+    applicationSteps: "અરજીના પગલાં",
+    docIncomeCertificate: "આવકનું પ્રમાણપત્ર (Income Certificate)",
+    docLandRecord: "જમીન રેકોર્ડ / ૭/૧૨ (Land Record)",
+    docRationCard: "રેશન કાર્ડ (Ration Card)",
+    docDisabilityCertificate: "દિવ્યાંગ / UDID પ્રમાણપત્ર (Disability Certificate)",
+    docCasteCertificate: "જાતિ પ્રમાણપત્ર (Caste Certificate)",
+    docGenericSample: "સામાન્ય નમૂના દસ્તાવેજ (Generic Document)"
   }
 } as const;
 
