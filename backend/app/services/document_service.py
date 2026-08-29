@@ -1,5 +1,8 @@
 import io
+import logging
+import os
 import re
+import shutil
 from datetime import datetime
 from typing import Any, Optional
 
@@ -16,6 +19,7 @@ from app.core.redis_client import ephemeral_store
 from app.models.db_models import DocumentRecord, User
 from app.services.data_loader import load_ocr_keywords
 
+logger = logging.getLogger("techsahaya.ocr")
 settings = get_settings()
 
 _TESS_LANG_MAP = {
@@ -29,6 +33,45 @@ _TESS_LANG_MAP = {
     "mr": "mar",
     "gu": "guj",
 }
+
+
+def _configure_tesseract():
+    """Auto-detects Tesseract binary and tessdata directory across Windows, Scoop, Linux, and Docker."""
+    if not pytesseract:
+        return
+    # 1. Resolve executable
+    if not shutil.which("tesseract"):
+        possible_bins = [
+            os.path.expanduser(r"~\scoop\apps\tesseract\current\tesseract.exe"),
+            os.path.expanduser(r"~\scoop\shims\tesseract.exe"),
+            r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+            r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
+            os.path.expandvars(r"%LOCALAPPDATA%\Programs\Tesseract-OCR\tesseract.exe"),
+        ]
+        for p in possible_bins:
+            if os.path.exists(p):
+                pytesseract.pytesseract.tesseract_cmd = p
+                logger.info("Configured Tesseract binary at %s", p)
+                break
+
+    # 2. Resolve tessdata prefix if needed
+    if "TESSDATA_PREFIX" not in os.environ:
+        possible_tessdata = [
+            os.path.expanduser(r"~\scoop\apps\tesseract-languages\current"),
+            os.path.expanduser(r"~\scoop\apps\tesseract\current\tessdata"),
+            r"C:\Program Files\Tesseract-OCR\tessdata",
+            r"/usr/share/tesseract-ocr/5/tessdata",
+            r"/usr/share/tesseract-ocr/4.00/tessdata",
+            r"/usr/share/tesseract-ocr/tessdata",
+        ]
+        for td in possible_tessdata:
+            if os.path.exists(td):
+                os.environ["TESSDATA_PREFIX"] = td
+                logger.info("Configured TESSDATA_PREFIX at %s", td)
+                break
+
+
+_configure_tesseract()
 
 _INDIC_DIGITS = {
     # Devanagari (Hindi, Marathi)
@@ -179,6 +222,7 @@ class DocumentService:
     def _extract_ephemeral_fields(self, content: bytes, content_type: str, doc_type: str, language: str = "en") -> dict[str, Any]:
         """Runs in-memory local OCR / text extraction without writing bytes to disk or calling third-party vision APIs."""
         text = ""
+        used_lang = "fallback"
         if content_type in {"image/png", "image/jpeg"}:
             try:
                 raw_image = Image.open(io.BytesIO(content))
@@ -192,11 +236,13 @@ class DocumentService:
                             extracted = pytesseract.image_to_string(image, lang=lang_attempt)
                             if extracted and extracted.strip():
                                 text = extracted
+                                used_lang = lang_attempt
                                 break
-                        except Exception:
+                        except Exception as ocr_err:
+                            logger.debug("Tesseract attempt with lang=%s failed: %s", lang_attempt, ocr_err)
                             continue
-            except Exception:
-                pass
+            except Exception as img_err:
+                logger.warning("Image preprocessing for OCR failed: %s", img_err)
 
         if not text:
             # In-memory byte stream heuristic / text extraction fallback
@@ -205,68 +251,171 @@ class DocumentService:
 
         # Normalize Indic numerals (e.g., ೧, ೨, ३, ৪ to 1, 2, 3, 4)
         normalized_text = _normalize_indic_digits(text)
-        return self._parse_structured_fields(normalized_text, language=language)
+        fields = self._parse_structured_fields(normalized_text, language=language)
+
+        logger.info(
+            "OCR DIAGNOSTICS: OCR INVOKED=%s | TESSERACT LANG=%s | OCR TEXT FOUND=%s (len=%d) | EXTRACTED=%s",
+            "YES" if bool(pytesseract) else "NO (pytesseract missing)",
+            used_lang,
+            "YES" if bool(text.strip()) else "NO",
+            len(text),
+            fields,
+        )
+        return fields
 
     def _parse_structured_fields(self, text: str, language: str = "en") -> dict[str, Any]:
-        """Extracts structured values from normalized OCR text using configurable JSON keywords."""
+        """Extracts structured values from normalized OCR text using configurable JSON keywords,
+        anchored to OCR lines with fallback to subsequent lines and noise filtering."""
         fields: dict[str, Any] = {}
         if not text:
             return fields
 
-        text_lower = text.lower()
+        lines = [line.strip() for line in text.splitlines() if line.strip()]
+        if not lines:
+            return fields
+
         age_keywords = _get_field_keywords("age", language)
         dob_keywords = _get_field_keywords("dob", language)
         income_keywords = _get_field_keywords("income", language)
         land_keywords = _get_field_keywords("landholding", language)
 
-        age_pattern = _build_keyword_regex(age_keywords) + r"[^\d\n]{0,25}(\d{1,3})\b"
-        dob_pattern = _build_keyword_regex(dob_keywords) + r"[^\d\n]{0,25}(\d{1,2})[/-](\d{1,2})[/-](\d{4})\b"
-        income_pattern = _build_keyword_regex(income_keywords) + r"[^\d\n]{0,25}(?:(?:rs\.?|inr|₹|రూ|ரூ|ರೂ|रु)\s*)?([\d,]+(?:\.\d+)?)\b"
-        land_pattern = _build_keyword_regex(land_keywords) + r"[^\d\n]{0,25}([\d.]+)\s*(?:acres?|acre|एकड़|ఎకరాలు|ஏக்கர்|ഏക്കർ|একর|हेक्टर|guntha)?"
+        age_kw_pattern = _build_keyword_regex(age_keywords)
+        dob_kw_pattern = _build_keyword_regex(dob_keywords)
+        income_kw_pattern = _build_keyword_regex(income_keywords)
+        land_kw_pattern = _build_keyword_regex(land_keywords)
 
-        # 1. Extract age
-        age_match = re.search(age_pattern, text_lower, re.IGNORECASE)
-        if age_match:
-            try:
-                val = int(age_match.group(1))
-                if 0 <= val <= 125:
-                    fields["age"] = val
-            except ValueError:
-                pass
+        # Helper to get search text for a match in lines:
+        # returns list of scopes to check (current line after keyword, then next line if needed)
+        def _get_search_scopes(kw_regex: str) -> list[str]:
+            scopes: list[str] = []
+            for idx, line in enumerate(lines):
+                m = re.search(kw_regex, line, re.IGNORECASE)
+                if m:
+                    # Text on the same line after keyword
+                    after_kw = line[m.end():].strip()
+                    # Delimiters between multi-field single lines: ' / ', '|', ';' (avoid breaking dates '15/08/1990')
+                    first_segment = re.split(r"\s+/\s+|\s*[|;]\s*", after_kw)[0].strip()
+                    if first_segment:
+                        scopes.append(first_segment)
+                    # If after_kw was empty or as fallback, check next line
+                    if idx + 1 < len(lines):
+                        next_line = lines[idx + 1].strip()
+                        next_segment = re.split(r"\s+/\s+|\s*[|;]\s*", next_line)[0].strip()
+                        if next_segment:
+                            scopes.append(next_segment)
+            return scopes
 
-        # 2. Extract DOB (if age not directly matched or as supplement)
-        dob_match = re.search(dob_pattern, text_lower, re.IGNORECASE)
-        if dob_match:
-            try:
-                birth_year = int(dob_match.group(3))
-                current_year = datetime.now().year
-                calculated_age = current_year - birth_year
-                if 0 <= calculated_age <= 125 and "age" not in fields:
-                    fields["age"] = calculated_age
-                fields["dob"] = f"{dob_match.group(1)}/{dob_match.group(2)}/{dob_match.group(3)}"
-            except ValueError:
-                pass
+        # 1. Extract Age
+        for scope in _get_search_scopes(age_kw_pattern):
+            candidates: list[int] = []
+            for m in re.finditer(r"\b(\d{1,3})\b", scope):
+                try:
+                    val = int(m.group(1))
+                    if 0 <= val <= 125:
+                        candidates.append(val)
+                except ValueError:
+                    continue
 
-        # 3. Extract income
-        income_match = re.search(income_pattern, text_lower, re.IGNORECASE)
-        if income_match:
-            try:
-                raw_income_str = income_match.group(1).replace(",", "")
-                income_val = float(raw_income_str)
-                if income_val >= 0:
-                    fields["income"] = income_val
-            except ValueError:
-                pass
+            if candidates:
+                # If any candidate is explicitly followed by age units, prefer it
+                unit_match = re.search(r"\b(\d{1,3})\s*(?:yrs?|years?|ವರ್ಷ|ವರ್ಷಗಳು|साल|वर्ष)\b", scope, re.IGNORECASE)
+                if unit_match:
+                    try:
+                        u_val = int(unit_match.group(1))
+                        if 0 <= u_val <= 125:
+                            fields["age"] = u_val
+                            break
+                    except ValueError:
+                        pass
 
-        # 4. Extract landholding
-        land_match = re.search(land_pattern, text_lower, re.IGNORECASE)
-        if land_match:
-            try:
-                land_val = float(land_match.group(1))
-                if 0 <= land_val <= 10000:
-                    fields["landholding"] = land_val
-            except ValueError:
-                pass
+                # If multiple candidates, prefer plausible 2-digit age over single stray digits
+                two_digit = [c for c in candidates if 10 <= c <= 125]
+                if two_digit:
+                    fields["age"] = two_digit[0]
+                else:
+                    fields["age"] = candidates[0]
+                break
+
+        # 2. Extract DOB (and derive age if not yet present)
+        for scope in _get_search_scopes(dob_kw_pattern):
+            dob_matches = list(re.finditer(r"\b(\d{1,2})[./\-\s](\d{1,2})[./\-\s](\d{4})\b", scope))
+            found_dob = False
+            for m in dob_matches:
+                try:
+                    d = int(m.group(1))
+                    mo = int(m.group(2))
+                    y = int(m.group(3))
+                    current_year = datetime.now().year
+                    if 1 <= d <= 31 and 1 <= mo <= 12 and 1900 <= y <= current_year:
+                        fields["dob"] = f"{d:02d}/{mo:02d}/{y}"
+                        calculated_age = current_year - y
+                        if 0 <= calculated_age <= 125 and "age" not in fields:
+                            fields["age"] = calculated_age
+                        found_dob = True
+                        break
+                except ValueError:
+                    continue
+            if found_dob:
+                break
+
+        # 3. Extract Income
+        for scope in _get_search_scopes(income_kw_pattern):
+            candidates_income: list[tuple[float, bool, bool]] = []
+            for m in re.finditer(r"(?:(?:rs\.?|inr|₹|రూ|ரூ|ರೂ|रु|%)\s*)?([\d,]+(?:\.\d+)?)\b", scope, re.IGNORECASE):
+                raw = m.group(1).replace(",", "").strip()
+                if not raw:
+                    continue
+                try:
+                    val = float(raw)
+                    if val >= 0:
+                        has_symbol_or_comma = bool(re.search(r"[rs|inr|₹|రూ|ரூ|ರೂ|रु,%]", m.group(0), re.IGNORECASE)) or ("," in m.group(1))
+                        is_large = val >= 1000.0
+                        candidates_income.append((val, has_symbol_or_comma, is_large))
+                except ValueError:
+                    continue
+
+            if candidates_income:
+                preferred = [c[0] for c in candidates_income if c[1] or c[2]]
+                if preferred:
+                    fields["income"] = preferred[-1] if len(preferred) == 1 else max(preferred)
+                else:
+                    fields["income"] = candidates_income[-1][0]
+                break
+
+        # 4. Extract Landholding
+        for scope in _get_search_scopes(land_kw_pattern):
+            candidates_land: list[tuple[float, bool]] = []
+            for m in re.finditer(r"([\d.]+)\s*(acres?|acre|एकड़|ఎకరాలు|ஏக்கர்|ഏക്കർ|একর|हेक्टर|guntha|bigha|cents?|hectares?)?", scope, re.IGNORECASE):
+                raw = m.group(1).strip()
+                if not raw or raw == ".":
+                    continue
+                try:
+                    val = float(raw)
+                    if 0 <= val <= 10000:
+                        has_unit = bool(m.group(2))
+                        candidates_land.append((val, has_unit))
+                except ValueError:
+                    continue
+
+            if candidates_land:
+                with_units = [c[0] for c in candidates_land if c[1]]
+                if with_units:
+                    fields["landholding"] = with_units[0]
+                else:
+                    fields["landholding"] = candidates_land[0][0]
+                break
+
+        # 5. Extract Name if present
+        name_kw_re = r"(?:name|ಹೆಸರು|नाम|పేರು|பெயர்|പേര്|নাম|नाव|નામ)"
+        for scope in _get_search_scopes(name_kw_re):
+            clean_scope = re.sub(r"^[:\s\-\.]+", "", scope).strip()
+            name_m = re.search(r"^([A-Za-z\u0900-\u0DFF\s]{2,40})", clean_scope)
+            if name_m:
+                extracted_name = name_m.group(1).strip()
+                extracted_name = re.split(r"[\n\r;]", extracted_name)[0].strip()
+                if extracted_name and len(extracted_name) >= 2 and not any(k in extracted_name.lower() for k in ["income", "age", "land", "date"]):
+                    fields["name"] = extracted_name
+                    break
 
         return fields
 

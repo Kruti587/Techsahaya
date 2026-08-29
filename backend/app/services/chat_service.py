@@ -5,6 +5,8 @@ from typing import Any
 # pyrefly: ignore [missing-import]
 import httpx
 
+from sqlalchemy.orm import Session
+
 from app.core.config import get_settings
 from app.core.prompts import (
     PII_DETECTION_RESPONSES,
@@ -12,6 +14,8 @@ from app.core.prompts import (
     SAHAYA_SYSTEM_INSTRUCTION,
     USER_PROMPT_TEMPLATE,
 )
+from app.core.redis_client import ephemeral_store
+from app.models.db_models import DocumentRecord, User
 from app.models.schemas import ChatResponse, EligibilityProfile, EligibilityResult, Scheme
 from app.services.data_loader import load_rules, load_schemes, load_scheme_translations, load_tours
 from app.services.eligibility_engine import eligibility_engine
@@ -27,7 +31,14 @@ class ChatService:
         self.schemes = load_schemes()
         self.scheme_map = {s.id: s for s in self.schemes}
 
-    def answer(self, message: str, language: str = "en", profile: EligibilityProfile | None = None) -> ChatResponse:
+    def answer(
+        self,
+        message: str,
+        language: str = "en",
+        profile: EligibilityProfile | None = None,
+        user: User | None = None,
+        db: Session | None = None,
+    ) -> ChatResponse:
         self.schemes = load_schemes()
         self.scheme_map = {s.id: s for s in self.schemes}
         self.rules = load_rules()
@@ -49,6 +60,73 @@ class ChatService:
         if self._is_greeting_or_general_help(cleaned_message):
             return self._greeting_or_general_help_response(language)
 
+        # 2c. Ephemeral OCR extraction lookup for citizen's recent documents
+        live_ocr_fields: dict[str, Any] = {}
+        has_user_docs = False
+        has_live_docs = False
+        has_expired_docs = False
+        live_doc_types: list[str] = []
+
+        if user and db:
+            try:
+                user_docs = (
+                    db.query(DocumentRecord)
+                    .filter(DocumentRecord.user_id == user.id, DocumentRecord.status == "processed")
+                    .order_by(DocumentRecord.created_at.desc())
+                    .limit(10)
+                    .all()
+                )
+                if user_docs:
+                    has_user_docs = True
+                    for doc in user_docs:
+                        cached = ephemeral_store.get(f"doc:{doc.id}")
+                        if cached and isinstance(cached, dict) and cached.get("extracted_fields"):
+                            has_live_docs = True
+                            doc_type = doc.document_type
+                            if doc_type and doc_type not in live_doc_types:
+                                live_doc_types.append(doc_type)
+                            extracted = cached["extracted_fields"]
+                            for k, v in extracted.items():
+                                if k not in live_ocr_fields and v is not None:
+                                    live_ocr_fields[k] = v
+                        else:
+                            has_expired_docs = True
+            except Exception as exc:
+                logger.warning("Error fetching ephemeral OCR data for user %s: %s", getattr(user, "id", "unknown"), exc)
+
+        # Merge live ephemeral data into profile
+        effective_profile = profile.model_copy() if profile else EligibilityProfile()
+        if live_ocr_fields:
+            if effective_profile.age is None and "age" in live_ocr_fields:
+                effective_profile.age = live_ocr_fields["age"]
+            if effective_profile.income is None and "income" in live_ocr_fields:
+                effective_profile.income = float(live_ocr_fields["income"])
+            if effective_profile.landholding is None and "landholding" in live_ocr_fields:
+                effective_profile.landholding = float(live_ocr_fields["landholding"])
+            for dt in live_doc_types:
+                if dt not in effective_profile.available_documents:
+                    effective_profile.available_documents.append(dt)
+
+        if live_ocr_fields:
+            ocr_extracted_profile_payload = f"Active session ephemeral OCR fields: {live_ocr_fields} from document types: {live_doc_types}"
+        elif has_user_docs and has_expired_docs and not has_live_docs:
+            ocr_extracted_profile_payload = "Document session expired: previously processed document fields have expired from temporary memory (TTL elapsed)."
+        else:
+            ocr_extracted_profile_payload = "None active in session"
+
+        # 2d. Direct query about citizen's own profile / age / income / extracted data
+        if self._is_profile_query(cleaned_message):
+            return self._profile_query_response(
+                message=cleaned_message,
+                language=language,
+                profile=effective_profile,
+                live_ocr_fields=live_ocr_fields,
+                has_user_docs=has_user_docs,
+                has_expired_docs=has_expired_docs,
+                has_live_docs=has_live_docs,
+                live_doc_types=live_doc_types,
+            )
+
         normalized_message = search_service._normalize_query(cleaned_message)
         intent = self._detect_intent(cleaned_message)
         chunks = search_service.search(cleaned_message, top_k=4, threshold=0.10)
@@ -67,10 +145,9 @@ class ChatService:
         top_score = max((c.get("retrieval_score", 0.0) for c in chunks), default=0.0)
         if top_score < 0.12 and not any(
             term in cleaned_message.lower()
-            for term in ["farmer", "student", "worker", "women", "disability", "health", "house", "scheme", "kisan", "yojana", "help", "madu", "madi"]
+            for term in ["farmer", "student", "worker", "women", "disability", "health", "house", "scheme", "kisan", "yojana", "help", "madu", "madi", "eligible", "eligibility", "age", "income", "my"]
         ):
             return self._insufficient_evidence_response(language)
-
 
         # Retrieve matched structured schemes
         scheme_ids = list({chunk["scheme_id"] for chunk in chunks})
@@ -83,12 +160,11 @@ class ChatService:
 
         # Evaluate Deterministic Eligibility
         eligibility_result: EligibilityResult | None = None
-        if (intent == "eligibility" or "eligible" in cleaned_message.lower() or profile is not None) and matched_schemes:
+        if (intent == "eligibility" or "eligible" in cleaned_message.lower() or profile is not None or bool(live_ocr_fields)) and matched_schemes:
             primary_scheme = matched_schemes[0]
             rule = self.rules.get(primary_scheme.id, {})
-            eval_profile = profile or EligibilityProfile()
             eligibility_result = eligibility_engine.evaluate(
-                primary_scheme.id, eval_profile, rule, primary_scheme.alternative_scheme_ids
+                primary_scheme.id, effective_profile, rule, primary_scheme.alternative_scheme_ids
             )
 
         confidence = self._calculate_confidence(chunks, matched_schemes, cleaned_message)
@@ -101,7 +177,9 @@ class ChatService:
             schemes=matched_schemes,
             chunks=chunks,
             eligibility_result=eligibility_result,
-            profile=profile,
+            profile=effective_profile,
+            ocr_extracted_profile_payload=ocr_extracted_profile_payload,
+            has_expired_docs=(has_user_docs and has_expired_docs and not has_live_docs),
         )
 
         # 3. Output Validation vs Deterministic Rule Engine
@@ -222,9 +300,9 @@ class ChatService:
 
     def _detect_intent(self, message: str) -> str:
         msg = message.lower()
-        if any(w in msg for w in ["eligible", "eligibility", "can i apply", "qualify", "पात्रता", "ಅರ್ಹತೆ", "అర్హత", "தகுதி", "യോഗ്യത", "যোগ্যতা", "पात्रता", "પાત્રતા"]):
+        if any(w in msg for w in ["eligible", "eligibility", "can i apply", "qualify", "पात्रता", "ಅರ್ಹತೆ", "ಅರ್ಹತ", "தகுதி", "യോഗ്യത", "যোগ্যতা", "पात्रता", "પાત્રતા"]):
             return "eligibility"
-        if any(w in msg for w in ["document", "documents", "upload", "proof", "certificate", "दस्तावेज़", "ದಾಖಲೆಗಳು", "పత్రాలు", "ஆவணங்கள்", "രേഖകൾ", "নথিপত্র", "कागदपत्रे", "દસ્તાવેજો"]):
+        if any(w in msg for w in ["document", "documents", "upload", "proof", "certificate", "दस्तावेज़", "ದಾಖಲೆಗಳು", "ಪತ್ರಗಳು", "ஆவணங்கள்", "രേഖകൾ", "নথিপত্র", "कागदपत्रे", "દસ્તાવેજો"]):
             return "documents"
         if any(w in msg for w in ["benefit", "benefits", "money", "amount", "pension", "लाभ", "ಪ್ರಯೋಜನಗಳು", "ప్రయోజనాలు", "பலன்கள்", "ആനുകൂല്യങ്ങൾ", "সুবিধা", "लाभ", "લાભો"]):
             return "benefits"
@@ -234,11 +312,191 @@ class ChatService:
             return "website"
         if any(w in msg for w in ["family", "children", "household", "परिवार", "ಕುಟುಂಬ", "కుటుంబం", "குடும்பம்", "കുടുംബം", "পরিবার", "कुटुंब", "પરિવાર"]):
             return "family"
-        if any(w in msg for w in ["profile", "income", "update", "state", "प्रोफ़ाइल", "ಪ್ರೊಫೈಲ್", "ప్రొఫైల్", "சுயவிவரம்", "പ്രൊഫൈൽ", "প্রোফাইল", "પ્રોફાઇલ"]):
+        if any(w in msg for w in ["profile", "income", "update", "state", "age", "ವಯಸ್ಸು", "ಆದಾಯ", "ಪ್ರೊಫೈಲ್", "उम्र", "आय", "प्रोफ़ाइल", "వయస్సు", "ఆదాయం", "ప్రొಫೈಲ್", "வயது", "வருமானம்", "சுயவிவரம்", "പ്രൊഫൈൽ", "প্রোফাইল", "પ્રોફાઇલ", "वय", "उत्पन्न"]):
             return "profile"
         if any(w in msg for w in ["gap", "missed", "schemes", "available", "list", "योजनाएं", "ಯೋಜನೆಗಳು", "పథకాలు", "திட்டங்கள்", "പദ്ധതികൾ", "প্রকল্প", "योजना", "યોજનાઓ"]):
             return "scheme_discovery"
         return "scheme_explanation"
+
+    def _is_profile_query(self, message: str) -> bool:
+        lowered = message.lower()
+        if any(w in lowered for w in ["how to", "how do i", "how can i", "apply", "upload", "submit", "attach", "register"]):
+            return False
+
+        patterns = [
+            r"\b(whats?|what's|what is|tell|show|check|know|get|view|display)\b.*\b(my|extracted|uploaded|current)?\b.*\b(age|income|land|landholding|salary|details|profile|data|document|info)\b",
+            r"\b(my|extracted|uploaded|current)\b.*\b(age|income|land|landholding|salary|details|profile|data|info)\b",
+            r"\bhow old (am i|i am)\b",
+            r"\b(age|income|landholding)\b.*\b(is what|what is|whats)\b",
+            r"^\s*(what is|whats?|what's)?\s*my (age|income|landholding|details|profile)\s*\??$",
+            r"ನನ್ನ (ವಯಸ್ಸು|ಆದಾಯ|ವಿವರ|ದಾಖಲೆ|ಪ್ರೊಫೈಲ್|ಭೂಮಿ)",
+            r"ಏನು ನನ್ನ (ವಯಸ್ಸು|ಆದಾಯ|ಪ್ರೊಫೈಲ್)",
+            r"ನನ್ನ ವಯಸ್ಸು",
+            r"ನನ್ನ ಆದಾಯ",
+            r"मेरी (उम्र|आय|विवरण|प्रोफ़ाइल|जमीन)",
+            r"मेरी उम्र",
+            r"मेरी आय",
+            r"నా (వయస్సు|ఆదాయం|వివరాలు)",
+            r"என் (வயது|வருமானம்)",
+        ]
+        return any(re.search(pat, lowered) for pat in patterns)
+
+    def _profile_query_response(
+        self,
+        message: str,
+        language: str,
+        profile: EligibilityProfile,
+        live_ocr_fields: dict[str, Any],
+        has_user_docs: bool,
+        has_expired_docs: bool,
+        has_live_docs: bool,
+        live_doc_types: list[str],
+    ) -> ChatResponse:
+        lang = language.lower()
+        msg = message.lower()
+        is_age_query = any(w in msg for w in ["age", "old", "ವಯಸ್ಸು", "उम्र", "వయస్సు", "வயது", "വയസ്സ്", "বয়স", "ઉંમર", "वय"])
+        is_income_query = any(w in msg for w in ["income", "salary", "ಆದಾಯ", "आय", "ఆదాయం", "வருமானம்", "ആദായം", "আয়", "આવક", "उत्पन्न"])
+
+        # Case 1: Specific age query
+        if is_age_query:
+            if profile.age is not None:
+                if lang.startswith("kn"):
+                    ans = f"ನಿಮ್ಮ ಇತ್ತೀಚಿನ ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ ಪ್ರಕಾರ, ನಿಮ್ಮ ಪರಿಶೀಲಿತ ವಯಸ್ಸು **{profile.age} ವರ್ಷಗಳು**."
+                elif lang.startswith("hi"):
+                    ans = f"आपके हालिया दस्तावेज़ अपलोड सत्र के अनुसार, आपकी सत्यापित आयु **{profile.age} वर्ष** है।"
+                else:
+                    ans = f"Based on your active document session, your verified age is **{profile.age} years**."
+                return ChatResponse(
+                    answer=ans,
+                    schemes=[],
+                    evidence=[],
+                    verification_status="verified_from_source_data",
+                    confidence="high",
+                    offline_ready=True,
+                )
+            elif has_user_docs and has_expired_docs and not has_live_docs:
+                pass  # Fall through to Case 2 (expired session prompt)
+            else:
+                if lang.startswith("kn"):
+                    ans = "ನಿಮ್ಮ ಅಪ್‌ಲೋಡ್ ಮಾಡಿದ ದಾಖಲೆಯಲ್ಲಿ ಅಥವಾ ಪ್ರೊಫೈಲ್‌ನಲ್ಲಿ ವಯಸ್ಸಿನ ವಿವರ ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ."
+                elif lang.startswith("hi"):
+                    ans = "आपके अपलोड किए गए दस्तावेज़ या प्रोफ़ाइल में आयु का विवरण नहीं मिला। कृपया अपना विवरण दर्ज करें।"
+                else:
+                    ans = "No age was found in your uploaded document or profile. Please enter your age manually or upload a document showing your age."
+                return ChatResponse(
+                    answer=ans,
+                    schemes=[],
+                    evidence=[],
+                    verification_status="insufficient_evidence",
+                    confidence="medium",
+                    offline_ready=True,
+                )
+
+        # Case 1b: Specific income query
+        if is_income_query:
+            if profile.income is not None:
+                if lang.startswith("kn"):
+                    ans = f"ನಿಮ್ಮ ಇತ್ತೀಚಿನ ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ ಪ್ರಕಾರ, ನಿಮ್ಮ ಪರಿಶೀಲಿತ ವಾರ್ಷಿಕ ಆದಾಯ **ರೂ {profile.income:,.0f}**."
+                elif lang.startswith("hi"):
+                    ans = f"आपके हालिया दस्तावेज़ अपलोड सत्र के अनुसार, आपकी सत्यापित वार्षिक आय **₹{profile.income:,.0f}** है।"
+                else:
+                    ans = f"Based on your active document session, your verified annual income is **₹{profile.income:,.0f}**."
+                return ChatResponse(
+                    answer=ans,
+                    schemes=[],
+                    evidence=[],
+                    verification_status="verified_from_source_data",
+                    confidence="high",
+                    offline_ready=True,
+                )
+            elif has_user_docs and has_expired_docs and not has_live_docs:
+                pass  # Fall through to Case 2 (expired session prompt)
+            else:
+                if lang.startswith("kn"):
+                    ans = "ನಿಮ್ಮ ಅಪ್‌ಲೋಡ್ ಮಾಡಿದ ದಾಖಲೆಯಲ್ಲಿ ಅಥವಾ ಪ್ರೊಫೈಲ್‌ನಲ್ಲಿ ಆದಾಯದ ವಿವರ ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ಆದಾಯ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ."
+                elif lang.startswith("hi"):
+                    ans = "आपके अपलोड किए गए दस्तावेज़ या प्रोफ़ाइल में आय का विवरण नहीं मिला। कृपया आय प्रमाण पत्र अपलोड करें।"
+                else:
+                    ans = "No income was found in your uploaded document or profile. Please upload an Income Certificate or enter your income manually."
+                return ChatResponse(
+                    answer=ans,
+                    schemes=[],
+                    evidence=[],
+                    verification_status="insufficient_evidence",
+                    confidence="medium",
+                    offline_ready=True,
+                )
+
+        # Case 1c: General profile overview
+        if profile.age is not None or profile.income is not None or profile.landholding is not None:
+            details = []
+            if profile.age is not None:
+                details.append(f"Age: {profile.age} yrs")
+            if profile.income is not None:
+                details.append(f"Annual Income: ₹{profile.income:,.0f}")
+            if profile.landholding is not None:
+                details.append(f"Landholding: {profile.landholding} acres")
+            if live_doc_types:
+                details.append(f"Verified Documents: {', '.join(live_doc_types)}")
+
+            if lang.startswith("kn"):
+                ans = "ನಿಮ್ಮ ಸಕ್ರಿಯ ಸೆಷನ್ ಪರಿಶೀಲಿತ ವಿವರಗಳು:\n• " + "\n• ".join(details)
+            elif lang.startswith("hi"):
+                ans = "आपके सक्रिय सत्र का सत्यापित विवरण:\n• " + "\n• ".join(details)
+            else:
+                ans = "Your active session verified profile:\n• " + "\n• ".join(details)
+
+            return ChatResponse(
+                answer=ans,
+                schemes=[],
+                evidence=[],
+                verification_status="verified_from_source_data",
+                confidence="high",
+                offline_ready=True,
+            )
+
+        # Case 2: TTL has expired for previously uploaded documents
+        if has_user_docs and has_expired_docs and not has_live_docs:
+            if lang.startswith("kn"):
+                ans = "ನಿಮ್ಮ ತಾತ್ಕಾಲಿಕ ದಾಖಲೆ ಪರಿಶೀಲನಾ ಅವಧಿ ಮುಕ್ತಾಯಗೊಂಡಿದೆ (ಗೌಪ್ಯತೆಗಾಗಿ 5 ನಿಮಿಷಗಳ ನಂತರ ಡೇಟಾ ಅಳಿಸಲಾಗಿದೆ). ಪ್ರಸ್ತುತ ಪರಿಶೀಲಿಸಿದ ಡೇಟಾ ಲಭ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ದಾಖಲೆಯನ್ನು ಮರು-ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಅಥವಾ ವಿವರಗಳನ್ನು ಹಸ್ತಚಾಲಿತವಾಗಿ ನಮೂದಿಸಿ."
+            elif lang.startswith("hi"):
+                ans = "आपका अस्थायी दस्तावेज़ सत्यापन सत्र समाप्त हो गया है (गोपनीयता के लिए 5 मिनट के बाद डेटा हटा दिया गया है)। वर्तमान में निकाले गए विवरण उपलब्ध नहीं हैं। कृपया अपना दस्तावेज़ फिर से अपलोड करें या मैन्युअल रूप से विवरण दर्ज करें।"
+            else:
+                ans = "Your temporary document session has expired (temporary OCR cache purged after 5 minutes for privacy). I do not have current extracted data for your documents. Please re-upload your document or provide your details manually."
+
+            return ChatResponse(
+                answer=ans,
+                schemes=[],
+                evidence=[],
+                verification_status="requires_official_verification",
+                confidence="medium",
+                offline_ready=True,
+                tour_id="upload_income_proof",
+                suggested_action={
+                    "type": "start_tour",
+                    "tour_id": "upload_income_proof",
+                    "title": "Re-upload Verification Document",
+                    "description": "Upload an Income Certificate or relevant proof to restore active verification.",
+                    "route": "/upload-document",
+                },
+            )
+
+        # Case 3: No document uploaded and no profile data
+        if lang.startswith("kn"):
+            ans = "ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಸೆಷನ್‌ನಲ್ಲಿ ಯಾವುದೇ ವಯಸ್ಸು ಅಥವಾ ಆದಾಯದ ವಿವರಗಳು ಲಭ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ಆದಾಯ ಪ್ರಮಾಣಪತ್ರ ಅಥವಾ ಇತರ ದಾಖಲೆಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಅಥವಾ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನವೀಕರಿಸಿ."
+        elif lang.startswith("hi"):
+            ans = "आपके वर्तमान सत्र में कोई आयु या आय विवरण दर्ज नहीं है। कृपया आय प्रमाण पत्र या संबंधित दस्तावेज़ अपलोड करें अथवा अपनी प्रोफ़ाइल अपडेट करें।"
+        else:
+            ans = "No age or income details are recorded in your current session. Please upload a verification document (e.g. Income Certificate) or enter your details manually."
+
+        return ChatResponse(
+            answer=ans,
+            schemes=[],
+            evidence=[],
+            verification_status="insufficient_evidence",
+            confidence="low",
+            offline_ready=True,
+        )
 
     def _is_greeting_or_general_help(self, message: str) -> bool:
         msg = message.lower().strip()
@@ -262,7 +520,7 @@ class ChatService:
         elif lang.startswith("ta"):
             answer = "வணக்கம்! நான் 'சகாயா' - உங்கள் டிஜிட்டல் நலத்திட்ட உதவியாளர். நான் உங்களுக்கு உதவ முடியும்:\n• விவசாயிகள், மாணவர்கள் மற்றும் பெண்களுக்கான அரசு நலத்திட்டங்களை அறிய,\n• உங்கள் தகுதியைச் சரிபார்க்க,\n• தேவையான ஆவணங்களைத் தயார் செய்ய.\n\nநீங்கள் எந்தத் திட்டம் பற்றி அறிய விரும்புகிறீர்கள்?"
         elif lang.startswith("ml"):
-            answer = "നമസ്കാരം! ഞാൻ 'സഹായ' - നിങ്ങളുടെ ഡിജിറ്റൽ ക്ഷേമ സഹായി. ഞാൻ നിങ്ങളെ സഹായിക്കാം:\n• കർഷകർ, വിദ്യാർത്ഥികൾ, സ്ത്രീകൾ എന്നിവർക്കുള്ള പദ്ധതികൾ അറിയാൻ,\n• നിങ്ങളുടെ യോഗ്യത പരിശോധിക്കാൻ,\n• രേഖകൾ തയ്യാറാക്കാൻ.\n\nനിങ്ങൾക്ക് ഏത് വിഷയത്തിലാണ് സഹായം വേണ്ടത്?"
+            answer = "നമസ്കാരം! ഞാൻ 'സഹായ' - നിങ്ങളുടെ ഡിജിಟൽ ക്ഷേമ സഹായി. ഞാൻ നിങ്ങളെ സഹായിക്കാം:\n• കർഷകർ, വിദ്യാർത്ഥികൾ, സ്ത്രീകൾ എന്നിവർക്കുള്ള പദ്ധതികൾ അറിയാൻ,\n• നിങ്ങളുടെ യോഗ്യത പരിശോധിക്കാൻ,\n• രേഖകൾ തയ്യാറാക്കാൻ.\n\nനിങ്ങൾക്ക് ഏത് വിഷയത്തിലാണ് സഹായം വേണ്ടത്?"
         elif lang.startswith("bn"):
             answer = "নমস্কার! আমি 'সহায়' - আপনার ডিজিটাল কল্যাণ সহকারী। আমি আপনাকে সাহায্য করতে পারি:\n• কৃষক, ছাত্রছাত্রী এবং মহিলাদের জন্য সরকারি প্রকল্প খুঁজে পেতে,\n• আপনার যোগ্যতা যাচাই করতে,\n• প্রয়োজনীয় নথিপত্র প্রস্তুত করতে।\n\nআপনি কোন প্রকল্প সম্পর্কে জানতে চান?"
         elif lang.startswith("mr"):
@@ -305,13 +563,13 @@ class ChatService:
         elif lang.startswith("kn"):
             answer = "ನನ್ನ ಬಳಿ ಇರುವ ಪರಿಶೀಲಿತ ಟೆಕ್ ಸಹಾಯ (Tech Sahaya) ಡೇಟಾದಲ್ಲಿ ಇದಕ್ಕೆ ನಿಖರವಾದ ಉತ್ತರ ನೀಡಲು ಸಾಕಷ್ಟು ಮಾಹಿತಿ ಇಲ್ಲ. ದಯವಿಟ್ಟು ಅಧಿಕೃತ ಸರ್ಕಾರಿ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಪರಿಶೀಲಿಸಿ."
         elif lang.startswith("te"):
-            answer = "లభ్యమైన ధృవీకరించబడిన టెక్ సహాయ (Tech Sahaya) డేటాలో ఖచ్చితమైన సమాధానం ఇవ్వడానికి తగిన సమాచారం లేదు. దయచేసి అధికారిక ప్రభుత్వ పోర్టల్‌లో తనిఖీ చేయండి."
+            answer = "లభ్యమైన ధృవీకరించబడిన టెక్ సహాయ (Tech Sahaya) డేటాలో ఖచ్చితమైన సమాధానం ఇవ్వడానికి తగిన సమాచారం లేదు. దయచేసి అధికారిక ప్రభుత్వ పోర్టల్‌లో తనిಖೀ చేయండి."
         elif lang.startswith("ta"):
             answer = "சரிபார்க்கப்பட்ட டெக் சகாயா (Tech Sahaya) தரவில் இதற்கு துல்லியமான பதில் அளிக்க போதுமான தகவல் இல்லை. அதிகாரப்பூர்வ அரசு தளத்தில் சரிபார்க்கவும்."
         elif lang.startswith("ml"):
             answer = "ടെക് സഹായ (Tech Sahaya) വിവരങ്ങളിൽ ഇതിന് കൃത്യമായ മറുപടി നൽകാൻ ആവശ്യമായ വിവരങ്ങൾ ലഭ്യമല്ല. ദയവായി ഔദ്യോഗിക പോർട്ടലിൽ പരിശോധിക്കുക."
         elif lang.startswith("bn"):
-            answer = "যাচাইকৃত টেক সহায় (Tech Sahaya) ডেটায় এর সঠিক উত্তর দেওয়ার জন্য পর্যাপ্ত তথ্য নেই। দয়া করে অফিসিয়াল সরকারি পোর্টালে যাচাই করুন।"
+            answer = "যাচাইকৃত টেক সহায় (Tech Sahaya) ডেটায় এর সঠিক উত্তর দেওয়ার জন্য পর্যাপ্ত তথ্য নেই। দয়া করে অফিসিয়াল সরকারি পোর্টালে যাচাই করুন."
         elif lang.startswith("mr"):
             answer = "उपलब्ध सत्यापित टेक सहाया (Tech Sahaya) डेटामध्ये याचे अचूक उत्तर देण्यासाठी पुरेशी माहिती नाही. कृपया अधिकृत सरकारी संकेतस्थळावर तपासा."
         elif lang.startswith("gu"):
@@ -352,17 +610,38 @@ class ChatService:
         chunks: list[dict[str, Any]],
         eligibility_result: EligibilityResult | None,
         profile: EligibilityProfile | None = None,
+        ocr_extracted_profile_payload: str = "None active in session",
+        has_expired_docs: bool = False,
     ) -> str:
         api_key = settings.gemini_api_key or settings.google_api_key
         if api_key:
             try:
-                answer = self._call_gemini_api(api_key, message, language, intent, schemes, chunks, eligibility_result, profile)
+                answer = self._call_gemini_api(
+                    api_key=api_key,
+                    message=message,
+                    language=language,
+                    intent=intent,
+                    schemes=schemes,
+                    chunks=chunks,
+                    eligibility_result=eligibility_result,
+                    profile=profile,
+                    ocr_extracted_profile_payload=ocr_extracted_profile_payload,
+                )
                 if answer and len(answer.strip()) > 10:
                     return answer
             except Exception as exc:
                 logger.warning("Gemini API call failed, falling back to local generator: %s", exc)
 
-        return self._generate_local_grounded_fallback(message, language, intent, schemes, chunks, eligibility_result)
+        return self._generate_local_grounded_fallback(
+            message=message,
+            language=language,
+            intent=intent,
+            schemes=schemes,
+            chunks=chunks,
+            eligibility_result=eligibility_result,
+            profile=profile,
+            has_expired_docs=has_expired_docs,
+        )
 
     def _call_gemini_api(
         self,
@@ -374,6 +653,7 @@ class ChatService:
         chunks: list[dict[str, Any]],
         eligibility_result: EligibilityResult | None,
         profile: EligibilityProfile | None = None,
+        ocr_extracted_profile_payload: str = "None active in session",
     ) -> str:
         system_instruction = SAHAYA_SYSTEM_INSTRUCTION.format(language=language)
 
@@ -446,7 +726,6 @@ class ChatService:
         family_schemes_payload = "None recorded"
         alternative_schemes_payload = eligibility_result.alternative_schemes if (eligibility_result and eligibility_result.alternative_schemes) else "None"
         pii_detection_payload = "No sensitive identity numbers detected"
-        ocr_extracted_profile_payload = "None active in session"
 
         user_prompt = USER_PROMPT_TEMPLATE.format(
             message=message,
@@ -606,6 +885,8 @@ class ChatService:
         schemes: list[Scheme],
         chunks: list[dict[str, Any]],
         eligibility_result: EligibilityResult | None,
+        profile: EligibilityProfile | None = None,
+        has_expired_docs: bool = False,
     ) -> str:
         if not schemes:
             return self._insufficient_evidence_response(language).answer
@@ -647,6 +928,14 @@ class ChatService:
                 if eligibility_result.missing:
                     lines.append(f"• **अनुपलब्ध प्रोफ़ाइल फ़ील्ड**: {', '.join(eligibility_result.missing)}")
 
+                if profile and (profile.age is not None or profile.income is not None):
+                    age_str = f"{profile.age} वर्ष" if profile.age is not None else "उपलब्ध नहीं"
+                    inc_str = f"₹{profile.income:,.0f}" if profile.income is not None else "उपलब्ध नहीं"
+                    lines.append(f"• **सत्यापित प्रोफ़ाइल सत्र डेटा**: आयु: {age_str} | वार्षिक आय: {inc_str}")
+
+                if has_expired_docs and eligibility_result.missing:
+                    lines.append("• *सत्र सूचना*: आपका पहले अपलोड किया गया दस्तावेज़ डेटा अस्थायी मेमोरी से समाप्त हो गया है। पूर्ण पात्रता जांच के लिए कृपया पुनः अपलोड करें।")
+
             lines.append(f"\n• **आधिकारिक स्रोत**: {primary.source_name} ({primary.official_link})")
             lines.append("• *टिप्पणी*: आवेदन करने से पहले आधिकारिक वेबसाइट पर नियम सत्यापित करें।")
             return "\n".join(lines)
@@ -676,6 +965,14 @@ class ChatService:
                     lines.append(f"• **ಅಪೂರ್ಣ ಷರತ್ತುಗಳು**: {', '.join(eligibility_result.failed)}")
                 if eligibility_result.missing:
                     lines.append(f"• **ಅಗತ್ಯವಿರುವ ವಿವರಗಳು**: {', '.join(eligibility_result.missing)}")
+
+                if profile and (profile.age is not None or profile.income is not None):
+                    age_str = f"{profile.age} ವರ್ಷ" if profile.age is not None else "ಲಭ್ಯವಿಲ್ಲ"
+                    inc_str = f"ರೂ {profile.income:,.0f}" if profile.income is not None else "ಲಭ್ಯವಿಲ್ಲ"
+                    lines.append(f"• **ಪರಿಶೀಲಿತ ಸೆಷನ್ ವಿವರಗಳು**: ವಯಸ್ಸು: {age_str} | ಆದಾಯ: {inc_str}")
+
+                if has_expired_docs and eligibility_result.missing:
+                    lines.append("• *ಸೆಷನ್ ಸೂಚನೆ*: ನಿಮ್ಮ ಹಿಂದಿನ ದಾಖಲೆ ಡೇಟಾ ತಾತ್ಕಾಲಿಕ ಮೆಮೊರಿಯಿಂದ ಮುಕ್ತಾಯಗೊಂಡಿದೆ. ಪೂರ್ಣ ಪರಿಶೀಲನೆಗಾಗಿ ದಯವಿಟ್ಟು ಮರು-ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.")
 
             lines.append(f"\n• **ಅಧಿಕೃತ ಮೂಲ**: {primary.source_name} ({primary.official_link})")
             lines.append("• *ಟಿಪ್ಪಣಿ*: ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ಮೊದಲು ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಪರಿಶೀಲಿಸಿ.")
@@ -708,6 +1005,14 @@ class ChatService:
                     lines.append(f"• **Unmet Conditions**: {', '.join(eligibility_result.failed)}")
                 if eligibility_result.missing:
                     lines.append(f"• **Missing Profile Fields**: {', '.join(eligibility_result.missing)}")
+
+                if profile and (profile.age is not None or profile.income is not None):
+                    age_str = f"{profile.age} yrs" if profile.age is not None else "N/A"
+                    inc_str = f"₹{profile.income:,.0f}" if profile.income is not None else "N/A"
+                    lines.append(f"• **Verified Session Profile Data**: Age: {age_str} | Annual Income: {inc_str}")
+
+                if has_expired_docs and eligibility_result.missing:
+                    lines.append("• *Session Notice*: Your previously uploaded document data has expired from temporary memory for privacy. Please re-upload your document or provide details manually for full verification.")
 
             lines.append(f"\n• **Official Source**: {primary.source_name} ({primary.official_link})")
             lines.append("• *Verification Note*: Always verify current guidelines on the official portal before applying.")

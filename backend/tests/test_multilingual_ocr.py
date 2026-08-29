@@ -68,3 +68,77 @@ def test_no_third_party_vision_apis():
     forbidden = ["googleapis", "azure", "openai", "vision.googleapis", "aws.amazon", "sarvam_service.vision"]
     for token in forbidden:
         assert token not in source.lower(), f"Found forbidden third-party OCR reference: {token}"
+
+
+def test_ocr_stray_digit_noise_before_real_value():
+    # Verified real-world OCR case: Stray digit/token (e.g. item number or misread symbol) before the actual income value
+    kannada_income_noise = "ಆದಾಯ (Income) 2 %85,000"
+    extracted_inc = document_service._parse_structured_fields(kannada_income_noise, language="kn")
+    assert extracted_inc.get("income") == 85000.0, f"Expected 85000.0, got {extracted_inc.get('income')}"
+
+    # Stray invalid number (999 fails 0-125) and stray digit before age
+    age_noise_1 = "1. Age : 999 34 yrs"
+    extracted_age_1 = document_service._parse_structured_fields(age_noise_1, language="en")
+    assert extracted_age_1.get("age") == 34, f"Expected 34, got {extracted_age_1.get('age')}"
+
+    # Stray item digit in Kannada age line
+    age_noise_2 = "ವಯಸ್ಸು : 2 34"
+    extracted_age_2 = document_service._parse_structured_fields(age_noise_2, language="kn")
+    assert extracted_age_2.get("age") == 34, f"Expected 34, got {extracted_age_2.get('age')}"
+
+    # Stray item index before landholding
+    land_noise = "3. Landholding: 1 2.5 acres"
+    extracted_land = document_service._parse_structured_fields(land_noise, language="en")
+    assert extracted_land.get("landholding") == 2.5, f"Expected 2.5, got {extracted_land.get('landholding')}"
+
+
+def test_ocr_keyword_and_value_on_different_lines():
+    # Verified real-world OCR case: OCR splits keyword and value across line breaks
+    multiline_text = (
+        "GOVERNMENT CERTIFICATE\n"
+        "Name: Ramesh Kumar\n"
+        "Age:\n"
+        "34\n"
+        "Annual Income:\n"
+        "Rs 85,000\n"
+        "Date of Birth:\n"
+        "15/08/1990\n"
+        "Landholding:\n"
+        "2.5 acres\n"
+    )
+    extracted = document_service._parse_structured_fields(multiline_text, language="en")
+    assert extracted.get("name") == "Ramesh Kumar"
+    assert extracted.get("age") == 34
+    assert extracted.get("income") == 85000.0
+    assert extracted.get("dob") == "15/08/1990"
+    assert extracted.get("landholding") == 2.5
+
+    # Kannada multiline text
+    kannada_multiline = (
+        "ಕರ್ನಾಟಕ ಸರ್ಕಾರ\n"
+        "ವಯಸ್ಸು:\n"
+        "34\n"
+        "ಆದಾಯ:\n"
+        "85000\n"
+    )
+    kan_extracted = document_service._parse_structured_fields(_normalize_indic_digits(kannada_multiline), language="kn")
+    assert kan_extracted.get("age") == 34
+    assert kan_extracted.get("income") == 85000.0
+
+
+def test_real_world_noisy_ocr_samples():
+    # Realistic OCR sample with OCR artifacts (percentage signs, colons, tildes, item numbers)
+    noisy_ocr = (
+        "=== GOVT OF KARNATAKA ===\n"
+        "No. 492849/2024\n"
+        "Name: Ramesh Gowda\n"
+        "ವಯಸ್ಸು (Age) : ~ 34 yrs\n"
+        "ಕುಟುಂಬ ಆದಾಯ (Income) : 2 %85,000/-\n"
+        "ಜಮೀನು (Land) : 2.5 ಎಕರೆ\n"
+    )
+    res = document_service._parse_structured_fields(_normalize_indic_digits(noisy_ocr), language="kn")
+    assert res.get("name") == "Ramesh Gowda"
+    assert res.get("age") == 34
+    assert res.get("income") == 85000.0
+    assert res.get("landholding") == 2.5
+

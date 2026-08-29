@@ -41,6 +41,7 @@ from app.services.journey_service import journey_service
 from app.services.profile_service import profile_service
 from app.services.recommendation_service import recommendation_service
 from app.services.sarvam_service import SarvamAPIError, sarvam_service
+from app.services.text_normalizer import normalize_for_speech
 
 router = APIRouter(prefix="/api", tags=["api"])
 settings = get_settings()
@@ -87,7 +88,8 @@ async def onboarding_welcome_audio(
     language_key = language[:2].lower()
     message = welcome_messages.get(language_key, welcome_messages["en"])
     try:
-        audio_bytes = await sarvam_service.text_to_speech(message, language_code=language_key)
+        tts_text = normalize_for_speech(message, language_code=language_key)
+        audio_bytes = await sarvam_service.text_to_speech(tts_text, language_code=language_key)
     except SarvamAPIError as err:
         raise HTTPException(status_code=err.status_code, detail=err.message) from err
     return {"audio_base64": base64.b64encode(audio_bytes).decode("utf-8"), "audio_mime": "audio/wav"}
@@ -128,11 +130,12 @@ def consent(payload: ConsentRequest, request: Request, user: User = Depends(get_
 
 
 @router.post("/chat")
-async def chat(payload: ChatRequest, user: User = Depends(get_current_user)):
-    chat_response = chat_service.answer(payload.message, payload.language, payload.profile)
+async def chat(payload: ChatRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    chat_response = chat_service.answer(payload.message, payload.language, payload.profile, user=user, db=db)
     if settings.sarvam_api_key and chat_response.answer:
         try:
-            audio_bytes = await sarvam_service.text_to_speech(chat_response.answer, language_code=payload.language)
+            tts_text = normalize_for_speech(chat_response.answer, language_code=payload.language)
+            audio_bytes = await sarvam_service.text_to_speech(tts_text, language_code=payload.language)
             chat_response.audio_base64 = base64.b64encode(audio_bytes).decode("utf-8")
             chat_response.audio_mime = "audio/wav"
         except (SarvamAPIError, Exception) as exc:
@@ -142,7 +145,7 @@ async def chat(payload: ChatRequest, user: User = Depends(get_current_user)):
 
 
 @router.post("/voice-chat")
-async def voice_chat(payload: VoiceChatRequest, user: User = Depends(get_current_user)):
+async def voice_chat(payload: VoiceChatRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     transcript = payload.transcript or ""
     mode = "sarvam_ai"
 
@@ -167,13 +170,14 @@ async def voice_chat(payload: VoiceChatRequest, user: User = Depends(get_current
         raise HTTPException(status_code=400, detail="Transcript or audio input is required")
 
     # Run RAG chat answering
-    chat_response = chat_service.answer(transcript, payload.language, payload.profile)
+    chat_response = chat_service.answer(transcript, payload.language, payload.profile, user=user, db=db)
 
     # Synthesize audio with Sarvam TTS if enabled
     audio_base64_out: str | None = None
     if settings.sarvam_api_key and chat_response.answer:
         try:
-            audio_bytes_out = await sarvam_service.text_to_speech(chat_response.answer, language_code=payload.language)
+            tts_text = normalize_for_speech(chat_response.answer, language_code=payload.language)
+            audio_bytes_out = await sarvam_service.text_to_speech(tts_text, language_code=payload.language)
             audio_base64_out = base64.b64encode(audio_bytes_out).decode("utf-8")
         except Exception:
             # Degrade gracefully to text if TTS fails
@@ -193,6 +197,7 @@ async def voice_chat_audio(
     file: UploadFile = File(...),
     language: str = Form("en"),
     user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
 
 
@@ -210,12 +215,13 @@ async def voice_chat_audio(
         logger.exception("Voice audio STT failed unexpectedly: %s", exc)
         raise HTTPException(status_code=500, detail="Voice transcription failed")
 
-    chat_response = chat_service.answer(transcript, language)
+    chat_response = chat_service.answer(transcript, language, user=user, db=db)
 
     audio_base64_out: str | None = None
     if settings.sarvam_api_key and chat_response.answer:
         try:
-            audio_bytes_out = await sarvam_service.text_to_speech(chat_response.answer, language_code=language)
+            tts_text = normalize_for_speech(chat_response.answer, language_code=language)
+            audio_bytes_out = await sarvam_service.text_to_speech(tts_text, language_code=language)
             audio_base64_out = base64.b64encode(audio_bytes_out).decode("utf-8")
         except Exception:
             pass
@@ -415,7 +421,8 @@ async def eligible_schemes_summary_audio(
     }
     message = messages.get(language_key, messages["en"])
     try:
-        audio_bytes = await sarvam_service.text_to_speech(message, language_code=language_key)
+        tts_text = normalize_for_speech(message, language_code=language_key)
+        audio_bytes = await sarvam_service.text_to_speech(tts_text, language_code=language_key)
     except SarvamAPIError as err:
         logger.warning("Eligible scheme summary TTS unavailable: %s", err.message)
         return {"summary": message, "audio_base64": None, "audio_mime": "audio/wav"}
