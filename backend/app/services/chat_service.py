@@ -18,6 +18,7 @@ from app.core.redis_client import ephemeral_store
 from app.models.db_models import DocumentRecord, User
 from app.models.schemas import ChatResponse, EligibilityProfile, EligibilityResult, Scheme
 from app.services.data_loader import load_rules, load_schemes, load_scheme_translations, load_tours
+from app.services.document_service import REUPLOAD_PROMPTS
 from app.services.eligibility_engine import eligibility_engine
 from app.services.search_service import search_service
 
@@ -66,6 +67,7 @@ class ChatService:
         has_user_docs = False
         has_live_docs = False
         has_expired_docs = False
+        has_poor_quality_docs = False
         live_doc_types: list[str] = []
 
         if user and db:
@@ -82,11 +84,12 @@ class ChatService:
                     for doc in user_docs:
                         cached = ephemeral_store.get(f"doc:{doc.id}")
                         if cached and isinstance(cached, dict) and cached.get("extracted_fields"):
+                            extracted = cached['extracted_fields']
+                            ocr_quality = cached.get('ocr_quality') or extracted.get('ocr_quality', 'good')
+                            if ocr_quality == 'poor':
+                                has_poor_quality_docs = True
+                                continue
                             has_live_docs = True
-                            doc_type = doc.document_type
-                            if doc_type and doc_type not in live_doc_types:
-                                live_doc_types.append(doc_type)
-                            extracted = cached["extracted_fields"]
                             confidences = cached.get("field_confidences", {})
                             for k, v in extracted.items():
                                 if not k.startswith("_") and k != "field_confidences" and k not in live_ocr_fields and v is not None:
@@ -133,6 +136,7 @@ class ChatService:
                 has_user_docs=has_user_docs,
                 has_expired_docs=has_expired_docs,
                 has_live_docs=has_live_docs,
+                has_poor_quality_docs=has_poor_quality_docs,
                 live_doc_types=live_doc_types,
             )
 
@@ -360,12 +364,34 @@ class ChatService:
         has_user_docs: bool,
         has_expired_docs: bool,
         has_live_docs: bool,
+        has_poor_quality_docs: bool,
         live_doc_types: list[str],
     ) -> ChatResponse:
         lang = language.lower()
         msg = message.lower()
         is_age_query = any(w in msg for w in ["age", "old", "ವಯಸ್ಸು", "उम्र", "వయస్సు", "வயது", "വയസ്സ്", "বয়স", "ઉંમર", "वय"])
         is_income_query = any(w in msg for w in ["income", "salary", "ಆದಾಯ", "आय", "ఆదాయం", "வருமானம்", "ആദായം", "আয়", "આવક", "उत्पन्न"])
+
+        # If document was detected as poor quality and no verified profile data exists, prompt re-upload immediately
+        if not has_live_docs and has_poor_quality_docs and profile.age is None and profile.income is None:
+            lang_key = lang[:2]
+            ans = REUPLOAD_PROMPTS.get(lang_key, REUPLOAD_PROMPTS['en'])
+            return ChatResponse(
+                answer=ans,
+                schemes=[],
+                evidence=[],
+                verification_status='requires_official_verification',
+                confidence='low',
+                offline_ready=True,
+                tour_id='upload_income_proof',
+                suggested_action={
+                    'type': 'start_tour',
+                    'tour_id': 'upload_income_proof',
+                    'title': 'Re-upload Verification Document',
+                    'description': 'Upload a clearer photo of your document.',
+                    'route': '/upload-document',
+                },
+            )
 
         # Case 1: Specific age query
         if is_age_query:

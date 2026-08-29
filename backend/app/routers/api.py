@@ -35,7 +35,7 @@ from app.services.audit_service import audit_service
 from app.services.auth_service import auth_service
 from app.services.chat_service import chat_service
 from app.services.data_loader import load_languages, load_personas, load_rules, load_schemes, load_tours
-from app.services.document_service import document_service
+from app.services.document_service import document_service, REUPLOAD_PROMPTS
 from app.services.eligibility_engine import eligibility_engine
 from app.services.journey_service import journey_service
 from app.services.profile_service import profile_service
@@ -267,14 +267,26 @@ async def upload_document(
         db.add(profile)
         db.commit()
     audit_service.log(db, "document_uploaded", f"{document.document_type} uploaded", user.id, get_user_role(db, user.id), f"document:{document.id}", request)
+    ephemeral_extracted = getattr(document, "ephemeral_extracted", {})
+    ocr_quality = ephemeral_extracted.get("ocr_quality", "good")
+    ocr_confidence = ephemeral_extracted.get("ocr_confidence_score")
+
+    if ocr_quality == "poor":
+        lang_key = selected_language[:2].lower()
+        reupload_msg = REUPLOAD_PROMPTS.get(lang_key, REUPLOAD_PROMPTS["en"])
+    else:
+        reupload_msg = "Processed in memory and discarded. Only masked metadata is retained in DB; ephemeral OCR cached in Redis with short TTL."
+
     return {
         "status": "processed",
         "document": document.id,
         "document_type": document.document_type,
         "available_documents": profile.available_documents,
-        "ephemeral_extracted": getattr(document, "ephemeral_extracted", {}),
+        "ocr_quality": ocr_quality,
+        "ocr_confidence_score": ocr_confidence,
+        "ephemeral_extracted": ephemeral_extracted,
         "ephemeral_ttl": settings.redis_ephemeral_ttl,
-        "message": "Processed in memory and discarded. Only masked metadata is retained in DB; ephemeral OCR cached in Redis with short TTL.",
+        "message": reupload_msg,
     }
 
 

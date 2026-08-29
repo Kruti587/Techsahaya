@@ -1,3 +1,4 @@
+from pathlib import Path
 from fastapi.testclient import TestClient
 
 from main import app
@@ -222,3 +223,37 @@ def test_admin_rbac():
     assert citizen.status_code == 403
     admin = client.get("/api/admin/dashboard", headers=auth_headers("admin@techsahaya.org", "Admin@12345"))
     assert admin.status_code == 200
+
+
+def test_document_upload_ocr_quality_gate():
+    headers = auth_headers()
+    fixture_path = Path(__file__).parent / "fixtures" / "income_cert_decodesih.png"
+    if fixture_path.exists():
+        with fixture_path.open("rb") as f:
+            content = f.read()
+        res = client.post(
+            "/api/documents/upload",
+            headers=headers,
+            files={"file": ("income_cert.png", content, "image/png")},
+            data={"language": "kn"},
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["ocr_quality"] == "good"
+        assert data["ocr_confidence_score"] >= 40.0
+
+    degraded_path = Path(__file__).parent / "fixtures" / "degraded_skewed_creased_cert.png"
+    if degraded_path.exists():
+        with degraded_path.open("rb") as f:
+            content = f.read()
+        res = client.post(
+            "/api/documents/upload",
+            headers=headers,
+            files={"file": ("degraded.png", content, "image/png")},
+            data={"language": "kn"},
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["ocr_quality"] == "poor"
+        assert "ಮರು-ಅಪ್‌ಲೋಡ್" in data["message"] or "ಸ್ಪಷ್ಟವಾದ" in data["message"]
+

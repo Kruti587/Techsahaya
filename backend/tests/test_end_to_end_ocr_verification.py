@@ -241,3 +241,79 @@ def test_low_confidence_softened_chat_response():
     finally:
         db.close()
 
+
+def test_ocr_quality_gate_clean_fixture_is_good():
+    """Verify clean fixture gets ocr_quality == 'good' and merges into chat profile."""
+    assert FIXTURE_PATH.exists()
+    content = FIXTURE_PATH.read_bytes()
+
+    fields = document_service._extract_ephemeral_fields(content, "image/png", "income_certificate", language="kn")
+    assert fields.get("ocr_quality") == "good"
+    assert fields.get("ocr_confidence_score") is not None
+    assert fields.get("ocr_confidence_score") >= 40.0
+    assert fields.get("age") == 34
+    assert fields.get("income") == 85000.0
+
+
+def test_ocr_quality_gate_degraded_creased_fixture_is_poor_and_unmerged():
+    """Verify degraded/creased fixture gets ocr_quality == 'poor' and is NOT merged into chat-visible profile."""
+    degraded_path = Path(__file__).parent / "fixtures" / "degraded_skewed_creased_cert.png"
+    assert degraded_path.exists()
+    content = degraded_path.read_bytes()
+
+    # 1. Direct extraction asserts
+    fields = document_service._extract_ephemeral_fields(content, "image/png", "income_certificate", language="kn")
+    assert fields.get("ocr_quality") == "poor"
+    assert (fields.get("ocr_confidence_score") is None) or (fields.get("ocr_confidence_score") < 40.0)
+
+    # 2. Upload through service & test chat rejection
+    db: Session = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == "degraded_ocr_test@example.com").first()
+        if not user:
+            user = User(
+                email="degraded_ocr_test@example.com",
+                full_name="Degraded Tester",
+                password_hash="mock",
+                preferred_language="kn",
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+        file = UploadFile(
+            file=io.BytesIO(content),
+            filename="degraded_cert.png",
+            headers={"content-type": "image/png"},
+        )
+
+        doc = document_service.process_upload(
+            db=db,
+            user=user,
+            file=file,
+            content=content,
+            declared_type="income_certificate",
+            language="kn",
+        )
+
+        # Ephemeral cache contains poor quality annotation
+        cached = ephemeral_store.get(f"doc:{doc.id}")
+        assert cached is not None
+        assert cached.get("ocr_quality") == "poor"
+
+        # 3. Chat query MUST NOT state numbers, must prompt re-upload in Kannada
+        kn_chat_resp = chat_service.answer("ನನ್ನ ವಯಸ್ಸು ಏನು?", language="kn", user=user, db=db)
+        assert "ಮರು-ಅಪ್‌ಲೋಡ್" in kn_chat_resp.answer or "ಸ್ಪಷ್ಟವಾದ" in kn_chat_resp.answer or "ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ" in kn_chat_resp.answer
+
+        # 4. Chat query in English must prompt re-upload in English
+        en_chat_resp = chat_service.answer("What is my age?", language="en", user=user, db=db)
+        assert "re-upload" in en_chat_resp.answer.lower() or "clearer photo" in en_chat_resp.answer.lower()
+
+        # Clean up
+        db.delete(doc)
+        db.commit()
+        ephemeral_store.delete(f"doc:{doc.id}")
+    finally:
+        db.close()
+
+

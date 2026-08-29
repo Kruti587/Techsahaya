@@ -112,6 +112,22 @@ def _preprocess_image_for_ocr(image: Image.Image) -> Image.Image:
         return image
 
 
+OCR_QUALITY_THRESHOLD = 40.0
+
+REUPLOAD_PROMPTS = {
+    "en": "We couldn't read this document clearly enough to verify your details. Please try re-uploading a clearer photo — flat, well-lit, and without creases or heavy shadows.",
+    "hi": "हम आपके विवरणों को सत्यापित करने के लिए इस दस्तावेज़ को स्पष्ट रूप से नहीं पढ़ सके। कृपया एक स्पष्ट तस्वीर फिर से अपलोड करने का प्रयास करें - सीधी, अच्छी रोशनी वाली, और बिना सिलवटों या गहरी छाया के।",
+    "kn": "ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಈ ದಾಖಲೆಯನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಫೋಟೋವನ್ನು ಮರು-ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ — ನೇರವಾದ, ಉತ್ತಮ ಬೆಳಕಿರುವ ಮತ್ತು ಸುಕ್ಕುಗಳು ಅಥವಾ ನೆರಳುಗಳಿಲ್ಲದ ಫೋಟೋ.",
+    "te": "మీ వివరాలను ధృవీకరించడానికి ఈ పత్రాన్ని స్పష్టంగా చదవలేకపోయాము. దయచేసి స్పష్టమైన ఫోటోను మళ్లీ అప్‌లోడ్ చేయడానికి ప్రయత్నించండి — సమాంతరంగా, మంచి వెలుతురులో, మరియు ముడతలు లేదా నీడలు లేకుండా.",
+    "ta": "உங்கள் விவரங்களைச் சரிபார்க்க இந்த ஆவணத்தை தெளிவாகப் படிக்க முடியவில்லை. தயவுசெய்து தெளிவான புகைப்படத்தை மீண்டும் பதிவேற்ற முயற்சிக்கவும் — தட்டையான, நல்ல வெளிச்சமுள்ள, மடிப்புகள் அல்லது நிழல்கள் இல்லாத புகைப்படம்.",
+    "ml": "നിങ്ങളുടെ വിശദാംശങ്ങൾ പരിശോധിക്കാൻ ഈ രേഖ വ്യക്തമായി വായിക്കാൻ കഴിഞ്ഞില്ല. ദയവായി വ്യക്തമായ ഒരു ഫോട്ടോ വീണ്ടും അപ്‌ലോഡ് ചെയ്യാൻ ശ്രമിക്കുക — നിവർന്നതും നല്ല വെളിച്ചമുള്ളതും ചുളിവുകളോ നിഴലുകളോ ഇല്ലാത്തതുമായ ഫോട്ടോ.",
+    "bn": "আপনার বিবরণ যাচাই করার জন্য আমরা এই নথিটি স্পষ্টভাবে পড়তে পারিনি। অনুগ্রহ করে একটি পরিষ্কার ছবি পুনরায় আপলোড করার চেষ্টা করুন — সমতল, ভাল আলোযুক্ত এবং ভাঁজ বা ভারী ছায়া ছাড়া।",
+    "mr": "तुमच्या तपशीलांची पडताळणी करण्यासाठी आम्हाला हा दस्तऐवज स्पष्टपणे वाचता आला नाही. कृपया अधिक स्पष्ट फोटो पुन्हा अपलोड करण्याचा प्रयत्न करा — सपाट, चांगल्या प्रकाशात आणि सुरकुत्या किंवा सावल्या नसलेला.",
+    "gu": "તમારી વિગતો ચકાસવા માટે અમે આ દસ્તાવેજ સ્પષ્ટપણે વાંચી શક્યા નથી. કૃપા કરીને સ્પષ્ટ ફોટો ફરીથી અપલોડ કરવાનો પ્રયાસ કરો — સપાટ, સારી લાઇટિંગવાળો અને કરચલીઓ અથવા પડછાયા વગરનો.",
+}
+
+
+
 def _build_keyword_regex(keywords: list[str]) -> str:
     """Sorts keywords by length descending and builds regex pattern."""
     if not keywords:
@@ -213,6 +229,8 @@ class DocumentService:
             "document_type": doc_type,
             "extracted_fields": extracted_fields,
             "field_confidences": extracted_fields.get("field_confidences", {}),
+            "ocr_quality": extracted_fields.get("ocr_quality", "good"),
+            "ocr_confidence_score": extracted_fields.get("ocr_confidence_score"),
             "created_at": datetime.utcnow().isoformat(),
         }
         ephemeral_store.set(f"doc:{document.id}", ephemeral_payload, ttl_seconds=settings.redis_ephemeral_ttl)
@@ -221,9 +239,11 @@ class DocumentService:
         return document
 
     def _extract_ephemeral_fields(self, content: bytes, content_type: str, doc_type: str, language: str = "en") -> dict[str, Any]:
-        """Runs in-memory local OCR / text extraction without writing bytes to disk or calling third-party vision APIs."""
+        """Runs in-memory local OCR / text extraction without writing bytes to disk or calling third-party vision APIs.
+        Computes OCR quality confidence score and quality gate flag."""
         text = ""
         used_lang = "fallback"
+        ocr_confidence_score: float | None = None
         if content_type in {"image/png", "image/jpeg"}:
             try:
                 raw_image = Image.open(io.BytesIO(content))
@@ -242,6 +262,23 @@ class DocumentService:
                         except Exception as ocr_err:
                             logger.debug("Tesseract attempt with lang=%s failed: %s", lang_attempt, ocr_err)
                             continue
+
+                    # Compute mean OCR confidence from image_to_data
+                    if text and used_lang != "fallback":
+                        try:
+                            data = pytesseract.image_to_data(image, lang=used_lang, output_type=pytesseract.Output.DICT)
+                            conf_list = []
+                            for conf, word in zip(data.get("conf", []), data.get("text", [])):
+                                try:
+                                    c_val = float(conf)
+                                    if c_val >= 0 and str(word).strip():
+                                        conf_list.append(c_val)
+                                except (ValueError, TypeError):
+                                    continue
+                            if conf_list:
+                                ocr_confidence_score = round(sum(conf_list) / len(conf_list), 2)
+                        except Exception as data_err:
+                            logger.debug("Tesseract image_to_data failed: %s", data_err)
             except Exception as img_err:
                 logger.warning("Image preprocessing for OCR failed: %s", img_err)
 
@@ -254,10 +291,24 @@ class DocumentService:
         normalized_text = _normalize_indic_digits(text)
         fields = self._parse_structured_fields(normalized_text, language=language)
 
+        # Evaluate OCR Quality Gate
+        field_confs = fields.get("field_confidences", {})
+        all_fields_low = bool(field_confs) and all(v == "low" for v in field_confs.values())
+
+        if ocr_confidence_score is None or ocr_confidence_score < OCR_QUALITY_THRESHOLD or all_fields_low:
+            ocr_quality = "poor"
+        else:
+            ocr_quality = "good"
+
+        fields["ocr_quality"] = ocr_quality
+        fields["ocr_confidence_score"] = ocr_confidence_score
+
         logger.info(
-            "OCR DIAGNOSTICS: OCR INVOKED=%s | TESSERACT LANG=%s | OCR TEXT FOUND=%s (len=%d) | EXTRACTED=%s",
+            "OCR DIAGNOSTICS: OCR INVOKED=%s | TESSERACT LANG=%s | OCR CONFIDENCE=%s | OCR QUALITY=%s | OCR TEXT FOUND=%s (len=%d) | EXTRACTED=%s",
             "YES" if bool(pytesseract) else "NO (pytesseract missing)",
             used_lang,
+            f"{ocr_confidence_score:.2f}" if ocr_confidence_score is not None else "None",
+            ocr_quality,
             "YES" if bool(text.strip()) else "NO",
             len(text),
             fields,
