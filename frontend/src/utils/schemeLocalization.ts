@@ -225,6 +225,26 @@ export const documentTranslations: Record<string, Record<string, string>> = {
     mr: "दिव्यांगत्व प्रमाणपत्र",
     gu: "દિવ્યાંગતા પ્રમાણપત્ર"
   },
+  "caste certificate": {
+    hi: "जाति प्रमाण पत्र",
+    kn: "ಜಾತಿ ಪ್ರಮಾಣಪತ್ರ",
+    te: "కుల ధృవీకరణ పత్రం",
+    ta: "சாதிச் சான்றிதழ்",
+    ml: "ജാതി സർട്ടിഫിക്കറ്റ്",
+    bn: "জাতিগত শংসাপত্র",
+    mr: "जात प्रमाणपत्र",
+    gu: "જાતિનું પ્રમાણપત્ર"
+  },
+  "generic sample document": {
+    hi: "सामान्य नमूना दस्तावेज़",
+    kn: "ಸಾಮಾನ್ಯ ಮಾದರಿ ದಾಖಲೆ",
+    te: "సాధారణ నమూనా పత్రం",
+    ta: "மாதிரி பொது ஆவணம்",
+    ml: "സാധാരണ മാതൃകാ രേഖ",
+    bn: "সাধারণ নমুনা নথি",
+    mr: "सर्वसाधारण नमुना दस्तऐवज",
+    gu: "સામાન્ય નમૂના દસ્તાવેજ"
+  },
   "state residence proof": {
     hi: "राज्य निवास प्रमाण पत्र",
     kn: "ಕರ್ನಾಟಕ ವಾಸಸ್ಥಳ ಪುರಾವೆ",
@@ -303,5 +323,6 @@ export function getLocalizedDocumentName(docName: string, language: string): str
   if (!docName || language === "en") return docName;
   const lang = language.toLowerCase().trim();
   const key = docName.toLowerCase().trim();
-  return documentTranslations[key]?.[lang] || docName;
+  const normalizedKey = key.replace(/_/g, " ");
+  return documentTranslations[key]?.[lang] || documentTranslations[normalizedKey]?.[lang] || docName;
 }

@@ -1,5 +1,6 @@
 import base64
 import logging
+from typing import Optional
 from uuid import uuid4
 
 logger = logging.getLogger("techsahaya.api")
@@ -240,11 +241,17 @@ def get_tours_config():
 
 
 @router.post("/documents/upload")
-async def upload_document(request: Request, file: UploadFile = File(...), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def upload_document(
+    request: Request,
+    file: UploadFile = File(...),
+    document_type: Optional[str] = Form(None),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     content = await file.read()
     if len(content) > settings.max_upload_size:
         raise HTTPException(status_code=413, detail="File too large")
-    document = document_service.process_upload(db, user, file, content)
+    document = document_service.process_upload(db, user, file, content, declared_type=document_type)
     profile = profile_service.get_or_create(db, user)
     existing_documents = profile.available_documents or []
     if document.document_type not in existing_documents:
