@@ -104,39 +104,96 @@ export function DashboardPage() {
     },
   ];
 
+  const getStepDescription = (stepId: number): string => {
+    switch (stepId) {
+      case 1:
+        if (language === "hi") return "आयु, राज्य और व्यवसाय विवरण जोड़ें";
+        if (language === "kn") return "ವಯಸ್ಸು, ರಾಜ್ಯ ಮತ್ತು ಉದ್ಯೋಗ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ";
+        if (language === "te") return "వయస్సు, రాష్ట్రం మరియు వృత్తి వివరాలను జోడించండి";
+        if (language === "ta") return "வயது, மாநிலம் மற்றும் தொழில் விவரங்களைச் சேர்க்கவும்";
+        if (language === "ml") return "പ്രായം, സംസ്ഥാനം, തൊഴിൽ വിവരങ്ങൾ ചേർക്കുക";
+        if (language === "bn") return "বয়স, রাজ্য এবং পেশার বিবরণ যোগ করুন";
+        if (language === "mr") return "वय, राज्य आणि व्यवसाय तपशील जोडा";
+        if (language === "gu") return "ઉંમર, રાજ્ય અને વ્યવસાયની વિગતો ઉમેરો";
+        return "Add age, state and occupation details";
+      case 2:
+        if (language === "hi") return "पहचान और आय सत्यापन दस्तावेज़ जोड़ें";
+        if (language === "kn") return "ಗುರುತು ಮತ್ತು ಆದಾಯ ಪರಿಶೀಲನಾ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ";
+        if (language === "te") return "గుర్తింపు మరియు ఆదాయ ధృవీకరణ పత్రాలను జోడించండి";
+        if (language === "ta") return "அடையாளம் மற்றும் வருமான சரிபார்ப்பு ஆவணங்களைச் சேர்க்கவும்";
+        if (language === "ml") return "തിരിച്ചറിയൽ, വരുമാന സാക്ഷ്യപത്രങ്ങൾ ചേർക്കുക";
+        if (language === "bn") return "পরিচয় এবং আয় যাচাইকরণ নথি যোগ করুন";
+        if (language === "mr") return "ओळख आणि उत्पन्न पडताळणी कागदपत्रे जोडा";
+        if (language === "gu") return "ઓળખ અને આવક ચકાસણી દસ્તાવેજો ઉમેરો";
+        return "Add identity and income verification documents";
+      case 3:
+        if (language === "hi") return "योजनाओं के लिए अपनी पात्रता जाँचें";
+        if (language === "kn") return "ಯೋಜನೆಗಳಿಗೆ ನಿಮ್ಮ ಅರ್ಹತೆಯನ್ನು ಪರಿಶೀಲಿಸಿ";
+        if (language === "te") return "పథకాలకు మీ అర్హతను అంచనా వేయండి";
+        if (language === "ta") return "திட்டங்களுக்கான உங்கள் தகுதியை மதிப்பிடுங்கள்";
+        if (language === "ml") return "പദ്ധതികൾക്കായുള്ള നിങ്ങളുടെ യോഗ്യത പരിശോധിക്കുക";
+        if (language === "bn") return "স্কিমগুলির জন্য আপনার যোগ্যতা মূল্যায়ন করুন";
+        if (language === "mr") return "योजनांसाठी आपली पात्रता तपासा";
+        if (language === "gu") return "યોજનાઓ માટે તમારી પાત્રતા તપાસો";
+        return "Evaluate scheme rules against your profile";
+      case 4:
+        if (language === "hi") return "परिवार के सदस्यों को जोड़कर लाभ बढ़ाएँ";
+        if (language === "kn") return "ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ ಪ್ರಯೋಜನಗಳನ್ನು ಹೆಚ್ಚಿಸಿ";
+        if (language === "te") return "కుటుంబ ప్రయోజనాలను పొందడానికి సభ్యులను జోడించండి";
+        if (language === "ta") return "குடும்ப நன்மைகளைப் பெற உறுப்பினர்களைச் சேர்க்கவும்";
+        if (language === "ml") return "കുടുംബ ആനുകൂല്യങ്ങൾ ലഭിക്കാൻ അംഗങ്ങളെ ചേർക്കുക";
+        if (language === "bn") return "পারিবারিক সুবিধা পেতে সদস্যদের যোগ করুন";
+        if (language === "mr") return "कुटुंब लाभ मिळवण्यासाठी सदस्यांची नोंद करा";
+        if (language === "gu") return "કૌટુંબિક લાભો મેળવવા સભ્યો ઉમેરો";
+        return "Add family members to unlock household benefits";
+      case 5:
+        if (language === "hi") return "पात्र योजनाओं की पहचान करें जो आपसे छूट गई हैं";
+        if (language === "kn") return "ನೀವು ಪಡೆಯಬಹುದಾದ ಕಲ್ಯಾಣ ಯೋಜನೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ";
+        if (language === "te") return "మీరు అర్హత కలిగి ఉండి క్లెయిమ్ చేయని సంక్షేమ పథకాలను కనుగొనండి";
+        if (language === "ta") return "நீங்கள் தகுதியுள்ள ஆனால் பெறாத நலத்திட்டங்களைக் கண்டறியவும்";
+        if (language === "ml") return "നിങ്ങൾക്ക് അർഹതയുള്ളതും എന്നാൽ ലഭ്യമാകാത്തതുമായ ക്ഷേമപദ്ധതികൾ കണ്ടെത്തുക";
+        if (language === "bn") return "আপনি যোগ্য কিন্তু দাবি করেননি এমন কল্যাণমূলক স্কিমগুলি খুঁজুন";
+        if (language === "mr") return "आपण पात्र असलेल्या परंतु न मिळालेल्या कल्याणकारी योजना शोधा";
+        if (language === "gu") return "તમે પાત્ર છો પરંતુ દાવો કર્યો નથી તેવી કલ્યાણકારી યોજનાઓ શોધો";
+        return "Find welfare schemes you qualify for but haven't claimed";
+      default:
+        return "";
+    }
+  };
+
   const onboardingSteps: OnboardingStep[] = [
     {
       id: 1,
       title: t(language, "completeProfile"),
-      description: language === "hi" ? "आयु, राज्य और व्यवसाय विवरण जोड़ें" : language === "kn" ? "ವಯಸ್ಸು, ರಾಜ್ಯ ಮತ್ತು ಉದ್ಯೋಗ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ" : "Add age, state and occupation details",
+      description: getStepDescription(1),
       isCompleted: Boolean(profile.age && profile.state && profile.occupation),
       route: "/profile",
     },
     {
       id: 2,
       title: t(language, "prepareDocuments"),
-      description: language === "hi" ? "पहचान और आय सत्यापन दस्तावेज़ जोड़ें" : language === "kn" ? "ಗುರುತು ಮತ್ತು ಆದಾಯ ಪರಿಶೀಲನಾ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ" : "Add identity and income verification documents",
+      description: getStepDescription(2),
       isCompleted: Boolean(profile.available_documents?.length),
       route: "/documents",
     },
     {
       id: 3,
       title: t(language, "checkEligibility"),
-      description: language === "hi" ? "योजनाओं के लिए अपनी पात्रता जाँचें" : language === "kn" ? "ಯೋಜನೆಗಳಿಗೆ ನಿಮ್ಮ ಅರ್ಹತೆಯನ್ನು ಪರಿಶೀಲಿಸಿ" : "Evaluate scheme rules against your profile",
+      description: getStepDescription(3),
       isCompleted: recommendations.length > 0,
       route: "/eligibility",
     },
     {
       id: 4,
       title: t(language, "familyBenefits"),
-      description: language === "hi" ? "परिवार के सदस्यों को जोड़कर लाभ बढ़ाएँ" : language === "kn" ? "ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ ಪ್ರಯೋಜನಗಳನ್ನು ಹೆಚ್ಚಿಸಿ" : "Add family members to unlock household benefits",
+      description: getStepDescription(4),
       isCompleted: Boolean(profile.family_members?.length),
       route: "/family",
     },
     {
       id: 5,
       title: t(language, "missingBenefits"),
-      description: language === "hi" ? "पात्र योजनाओं की पहचान करें जो आपसे छूट गई हैं" : language === "kn" ? "ನೀವು ಪಡೆಯಬಹುದಾದ ಕಲ್ಯಾಣ ಯೋಜನೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ" : "Find welfare schemes you qualify for but haven't claimed",
+      description: getStepDescription(5),
       isCompleted: gaps.length === 0 && Boolean(profile.age && profile.occupation),
       route: "/welfare-gaps",
     },
