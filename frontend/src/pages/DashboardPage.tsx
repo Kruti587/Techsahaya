@@ -7,6 +7,7 @@ import { SectionCard } from "../components/SectionCard";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
+import { SUPPORTED_LANGUAGES } from "../utils/languages";
 import type { Scheme } from "../types";
 
 export function DashboardPage() {
@@ -163,8 +164,29 @@ export function DashboardPage() {
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
               <Languages className="mb-2 text-sahaya-green" />
-              <b>{language === "hi" ? "3 भाषाएँ" : language === "kn" ? "3 ಭಾಷೆಗಳು" : "3 languages"}</b>
-              <p className="text-slate-600">English, Hindi, Kannada</p>
+              <b>
+                {SUPPORTED_LANGUAGES.length}{" "}
+                {language === "hi"
+                  ? "भाषाएँ"
+                  : language === "kn"
+                  ? "ಭಾಷೆಗಳು"
+                  : language === "te"
+                  ? "భాషలు"
+                  : language === "ta"
+                  ? "மொழிகள்"
+                  : language === "ml"
+                  ? "ഭാഷകൾ"
+                  : language === "bn"
+                  ? "ভাষা"
+                  : language === "mr"
+                  ? "भाषा"
+                  : language === "gu"
+                  ? "ભાષાઓ"
+                  : "Languages"}
+              </b>
+              <p className="text-slate-600 line-clamp-2">
+                English, हिन्दी, ಕನ್ನಡ, తెలుగు, தமிழ், മലയാളം, বাংলা, मराठी, ગુજરાતી
+              </p>
             </div>
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
               <ShieldCheck className="mb-2 text-sahaya-green" />

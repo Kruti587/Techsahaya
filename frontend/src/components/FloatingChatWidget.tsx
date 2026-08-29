@@ -150,7 +150,7 @@ export function FloatingChatWidget() {
     {
       id: "welcome",
       sender: "assistant",
-      text: "Namaste! I am Sahaya, your citizen welfare assistant. Ask me anything about government schemes, eligibility criteria, or document preparation in English, Hindi, or Kannada.",
+      text: "Namaste! I am Sahaya, your citizen welfare assistant. Ask me anything about government schemes, eligibility criteria, or document preparation in any of the 9 supported Indian languages.",
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
   ]);
