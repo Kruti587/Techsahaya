@@ -129,13 +129,13 @@ def consent(payload: ConsentRequest, request: Request, user: User = Depends(get_
 @router.post("/chat")
 async def chat(payload: ChatRequest, user: User = Depends(get_current_user)):
     chat_response = chat_service.answer(payload.message, payload.language, payload.profile)
-    if chat_response.schemes and settings.sarvam_api_key and chat_response.answer:
+    if settings.sarvam_api_key and chat_response.answer:
         try:
             audio_bytes = await sarvam_service.text_to_speech(chat_response.answer, language_code=payload.language)
             chat_response.audio_base64 = base64.b64encode(audio_bytes).decode("utf-8")
             chat_response.audio_mime = "audio/wav"
-        except SarvamAPIError:
-            pass
+        except (SarvamAPIError, Exception) as exc:
+            logger.warning("TTS generation in /chat failed: %s", exc)
     return chat_response
 
 

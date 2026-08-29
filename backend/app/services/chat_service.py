@@ -7,6 +7,7 @@ import httpx
 
 from app.core.config import get_settings
 from app.core.prompts import (
+    PII_DETECTION_RESPONSES,
     REFUSAL_PROMPT_RESPONSES,
     SAHAYA_SYSTEM_INSTRUCTION,
     USER_PROMPT_TEMPLATE,
@@ -38,6 +39,11 @@ class ChatService:
         if settings.prompt_injection_guard_enabled and self._is_adversarial_or_jailbreak(cleaned_message):
             logger.warning("Prompt injection / jailbreak detected: '%s'", cleaned_message)
             return self._refusal_response(language)
+
+        # 2a. PII Guardrail Check (Aadhaar, PAN)
+        if self._detect_pii(cleaned_message):
+            logger.warning("Sensitive PII detected in chat query: '%s'", cleaned_message)
+            return self._pii_detected_response(language)
 
         # 2b. Friendly Greeting & General Onboarding Help
         if self._is_greeting_or_general_help(cleaned_message):
@@ -95,6 +101,7 @@ class ChatService:
             schemes=matched_schemes,
             chunks=chunks,
             eligibility_result=eligibility_result,
+            profile=profile,
         )
 
         # 3. Output Validation vs Deterministic Rule Engine
@@ -179,9 +186,30 @@ class ChatService:
         ]
         return any(re.search(pat, lowered) for pat in adversarial_patterns)
 
+    def _detect_pii(self, message: str) -> bool:
+        """Detect Aadhaar (12-digit format) or PAN (10-character alphanumeric) in message."""
+        # 12 digits (with optional spaces or dashes)
+        if re.search(r"\b\d{4}[ -]?\d{4}[ -]?\d{4}\b", message):
+            return True
+        # PAN format: 5 letters, 4 digits, 1 letter
+        if re.search(r"\b[A-Za-z]{5}\d{4}[A-Za-z]\b", message):
+            return True
+        return False
+
+    def _pii_detected_response(self, language: str) -> ChatResponse:
+        lang_key = next((k for k in ["hi", "kn", "te", "ta", "ml", "bn", "mr", "gu"] if language.lower().startswith(k)), "en")
+        pii_text = PII_DETECTION_RESPONSES.get(lang_key, PII_DETECTION_RESPONSES["en"])
+        return ChatResponse(
+            answer=pii_text,
+            schemes=[],
+            evidence=[],
+            verification_status="pii_detected_blocked",
+            confidence="low",
+            offline_ready=True,
+        )
 
     def _refusal_response(self, language: str) -> ChatResponse:
-        lang_key = "hi" if language.startswith("hi") else "kn" if language.startswith("kn") else "en"
+        lang_key = next((k for k in ["hi", "kn", "te", "ta", "ml", "bn", "mr", "gu"] if language.lower().startswith(k)), "en")
         refusal_text = REFUSAL_PROMPT_RESPONSES.get(lang_key, REFUSAL_PROMPT_RESPONSES["en"])
         return ChatResponse(
             answer=refusal_text,
@@ -194,21 +222,21 @@ class ChatService:
 
     def _detect_intent(self, message: str) -> str:
         msg = message.lower()
-        if any(w in msg for w in ["eligible", "eligibility", "can i apply", "qualify", "पात्रता", "ಅರ್ಹತೆ"]):
+        if any(w in msg for w in ["eligible", "eligibility", "can i apply", "qualify", "पात्रता", "ಅರ್ಹತೆ", "అర్హత", "தகுதி", "യോഗ്യത", "যোগ্যতা", "पात्रता", "પાત્રતા"]):
             return "eligibility"
-        if any(w in msg for w in ["document", "documents", "upload", "proof", "certificate", "दस्तावेज़", "ದಾಖಲೆಗಳು"]):
+        if any(w in msg for w in ["document", "documents", "upload", "proof", "certificate", "दस्तावेज़", "ದಾಖಲೆಗಳು", "పత్రాలు", "ஆவணங்கள்", "രേഖകൾ", "নথিপত্র", "कागदपत्रे", "દસ્તાવેજો"]):
             return "documents"
-        if any(w in msg for w in ["benefit", "benefits", "money", "amount", "pension", "लाभ", "ಪ್ರಯೋಜನಗಳು"]):
+        if any(w in msg for w in ["benefit", "benefits", "money", "amount", "pension", "लाभ", "ಪ್ರಯೋಜನಗಳು", "ప్రయోజనాలు", "பலன்கள்", "ആനുകൂല്യങ്ങൾ", "সুবিধা", "लाभ", "લાભો"]):
             return "benefits"
-        if any(w in msg for w in ["apply", "how to apply", "application", "procedure", "process", "आवेदन", "ಅರ್ಜಿ"]):
+        if any(w in msg for w in ["apply", "how to apply", "application", "procedure", "process", "आवेदन", "ಅರ್ಜಿ", "దరఖాస్తు", "விண்ணப்பம்", "അപേക്ഷ", "আবেদন", "अर्ज", "અરજી"]):
             return "application"
-        if any(w in msg for w in ["website", "link", "portal", "url", "वेबसाइट", "ಲಿಂಕ್"]):
+        if any(w in msg for w in ["website", "link", "portal", "url", "वेबसाइट", "ಲಿಂಕ್", "వెబ్‌సైట్", "வலைத்தளம்", "വെബ്സൈറ്റ്", "ওয়েবসাইট", "संकेतस्थळ"]):
             return "website"
-        if any(w in msg for w in ["family", "children", "household", "परिवार", "ಕುಟುಂಬ"]):
+        if any(w in msg for w in ["family", "children", "household", "परिवार", "ಕುಟುಂಬ", "కుటుంబం", "குடும்பம்", "കുടുംബം", "পরিবার", "कुटुंब", "પરિવાર"]):
             return "family"
-        if any(w in msg for w in ["profile", "income", "update", "state", "प्रोफ़ाइल", "ಪ್ರೊಫೈಲ್"]):
+        if any(w in msg for w in ["profile", "income", "update", "state", "प्रोफ़ाइल", "ಪ್ರೊಫೈಲ್", "ప్రొఫైల్", "சுயவிவரம்", "പ്രൊഫൈൽ", "প্রোফাইল", "પ્રોફાઇલ"]):
             return "profile"
-        if any(w in msg for w in ["gap", "missed", "schemes", "available", "list", "योजनाएं", "ಯೋಜನೆಗಳು"]):
+        if any(w in msg for w in ["gap", "missed", "schemes", "available", "list", "योजनाएं", "ಯೋಜನೆಗಳು", "పథకాలు", "திட்டங்கள்", "പദ്ധതികൾ", "প্রকল্প", "योजना", "યોજનાઓ"]):
             return "scheme_discovery"
         return "scheme_explanation"
 
@@ -216,8 +244,10 @@ class ChatService:
         msg = message.lower().strip()
         help_phrases = [
             "help", "help me", "help madu", "help madi", "sahaya", "sahaya madi", "sahaya madu",
-            "hello", "hi", "namaste", "namaskara", "hey", "what can you do", "guide me", "how to use",
-            "yen madbeku", "madad", "sahayata", "मदद", "सहायता", "नमस्ते", "ನಮಸ್ಕಾರ", "ಸಹಾಯ", "ಸಹಾಯ ಮಾಡಿ", "ಹೇಗೆ ಬಳಸಬೇಕು"
+            "hello", "hi", "namaste", "namaskara", "namaskaram", "namaste ji", "nomoshkar", "hey",
+            "what can you do", "guide me", "how to use", "yen madbeku", "madad", "sahayata",
+            "मदद", "सहायता", "नमस्ते", "ನಮಸ್ಕಾರ", "ಸಹಾಯ", "ಸಹಾಯ ಮಾಡಿ", "ಹೇಗೆ ಬಳಸಬೇಕು",
+            "నమస్కారం", "సహాయం", "வணக்கம்", "உதவி", "നമസ്കാരം", "സഹായം", "নমস্কার", "সাহায্য", "નમસ્તે", "મદદ"
         ]
         return any(msg == p or msg.startswith(p + " ") or msg.endswith(" " + p) for p in help_phrases)
 
@@ -227,6 +257,18 @@ class ChatService:
             answer = "ನಮಸ್ಕಾರ! ನಾನು 'ಸಹಾಯ' - ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಕಲ್ಯಾಣ ಸಹಾಯಕ. ನಾನು ನಿಮಗೆ:\n• ರೈತರು, ವಿದ್ಯಾರ್ಥಿಗಳು ಮತ್ತು ಮಹಿಳೆಯರ ಯೋಜನೆಗಳನ್ನು ತಿಳಿಸಲು,\n• ನಿಮ್ಮ ಅರ್ಹತೆಯನ್ನು ಪರಿಶೀಲಿಸಲು,\n• ಅಗತ್ಯ ದಾಖಲೆಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಮಾರ್ಗದರ್ಶನ ನೀಡಬಲ್ಲೆ.\n\nನಿಮಗೆ ಯಾವ ವಿಷಯದಲ್ಲಿ ಸಹಾಯ ಬೇಕು?"
         elif lang.startswith("hi"):
             answer = "नमस्ते! मैं 'सहाय' हूँ - आपका डिजिटल कल्याण सहायक। मैं आपकी सहायता कर सकता हूँ:\n• किसानों, छात्रों और महिलाओं के लिए सरकारी योजनाओं की जानकारी देने में,\n• आपकी पात्रता की जांच करने में,\n• आवश्यक दस्तावेज़ तैयार करने में।\n\nआप किस योजना या विषय के बारे में जानना चाहते हैं?"
+        elif lang.startswith("te"):
+            answer = "నమస్కారం! నేను 'సహాయ' - మీ డిజిటల్ సంక్షేమ సహాయకుడిని. నేను మీకు సహాయం చేయగలను:\n• రైతులు, విద్యార్థులు మరియు మహిళల కోసం ప్రభుత్వ పథకాలను కనుగొనడంలో,\n• మీ అర్హతను ధృవీకరించడంలో,\n• అవసరమైన పత్రాలను సిద్ధం చేయడంలో.\n\nమీరు ఏ పథకం గురించి తెలుసుకోవాలనుకుంటున్నారు?"
+        elif lang.startswith("ta"):
+            answer = "வணக்கம்! நான் 'சகாயா' - உங்கள் டிஜிட்டல் நலத்திட்ட உதவியாளர். நான் உங்களுக்கு உதவ முடியும்:\n• விவசாயிகள், மாணவர்கள் மற்றும் பெண்களுக்கான அரசு நலத்திட்டங்களை அறிய,\n• உங்கள் தகுதியைச் சரிபார்க்க,\n• தேவையான ஆவணங்களைத் தயார் செய்ய.\n\nநீங்கள் எந்தத் திட்டம் பற்றி அறிய விரும்புகிறீர்கள்?"
+        elif lang.startswith("ml"):
+            answer = "നമസ്കാരം! ഞാൻ 'സഹായ' - നിങ്ങളുടെ ഡിജിറ്റൽ ക്ഷേമ സഹായി. ഞാൻ നിങ്ങളെ സഹായിക്കാം:\n• കർഷകർ, വിദ്യാർത്ഥികൾ, സ്ത്രീകൾ എന്നിവർക്കുള്ള പദ്ധതികൾ അറിയാൻ,\n• നിങ്ങളുടെ യോഗ്യത പരിശോധിക്കാൻ,\n• രേഖകൾ തയ്യാറാക്കാൻ.\n\nനിങ്ങൾക്ക് ഏത് വിഷയത്തിലാണ് സഹായം വേണ്ടത്?"
+        elif lang.startswith("bn"):
+            answer = "নমস্কার! আমি 'সহায়' - আপনার ডিজিটাল কল্যাণ সহকারী। আমি আপনাকে সাহায্য করতে পারি:\n• কৃষক, ছাত্রছাত্রী এবং মহিলাদের জন্য সরকারি প্রকল্প খুঁজে পেতে,\n• আপনার যোগ্যতা যাচাই করতে,\n• প্রয়োজনীয় নথিপত্র প্রস্তুত করতে।\n\nআপনি কোন প্রকল্প সম্পর্কে জানতে চান?"
+        elif lang.startswith("mr"):
+            answer = "नमस्ते! मी 'सहाया' - आपला डिजिटल कल्याण सहाय्यक. मी आपल्याला मदत करू शकतो:\n• शेतकरी, विद्यार्थी आणि महिलांसाठी सरकारी योजना शोधण्यात,\n• आपली पात्रता तपासण्यात,\n• आवश्यक कागदपत्रे तयार करण्यात.\n\nआपल्याला कोणत्या योजनेबद्दल माहिती हवी आहे?"
+        elif lang.startswith("gu"):
+            answer = "નમસ્તે! હું 'સહાય' છું - તમારો ડિજિટલ કલ્યાણ સહાયક. હું તમને મદદ કરી શકું છું:\n• ખેડૂતો, વિદ્યાર્થીઓ અને મહિલાઓ માટે સરકારી યોજનાઓ શોધવામાં,\n• તમારી પાત્રતા તપાસવામાં,\n• જરૂરી દસ્તાવેજો તૈયાર કરવામાં.\n\nતમે કઈ યોજના વિશે જાણવા માગો છો?"
         else:
             answer = "Namaste! I am Sahaya, your digital citizen welfare assistant. I can help you with:\n• Finding government welfare schemes for farmers, students, workers, and families\n• Checking your deterministic eligibility with transparent rules\n• Discovering missed welfare entitlements\n• Guided step-by-step document preparation\n\nWhat would you like to explore today?"
 
@@ -262,6 +304,18 @@ class ChatService:
             answer = "मेरे पास उपलब्ध सत्यापित टेक सहायता (Tech Sahaya) डेटा में इसका सटीक उत्तर देने के लिए पर्याप्त जानकारी नहीं है। कृपया आधिकारिक सरकारी पोर्टल पर जांच करें।"
         elif lang.startswith("kn"):
             answer = "ನನ್ನ ಬಳಿ ಇರುವ ಪರಿಶೀಲಿತ ಟೆಕ್ ಸಹಾಯ (Tech Sahaya) ಡೇಟಾದಲ್ಲಿ ಇದಕ್ಕೆ ನಿಖರವಾದ ಉತ್ತರ ನೀಡಲು ಸಾಕಷ್ಟು ಮಾಹಿತಿ ಇಲ್ಲ. ದಯವಿಟ್ಟು ಅಧಿಕೃತ ಸರ್ಕಾರಿ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಪರಿಶೀಲಿಸಿ."
+        elif lang.startswith("te"):
+            answer = "లభ్యమైన ధృవీకరించబడిన టెక్ సహాయ (Tech Sahaya) డేటాలో ఖచ్చితమైన సమాధానం ఇవ్వడానికి తగిన సమాచారం లేదు. దయచేసి అధికారిక ప్రభుత్వ పోర్టల్‌లో తనిఖీ చేయండి."
+        elif lang.startswith("ta"):
+            answer = "சரிபார்க்கப்பட்ட டெக் சகாயா (Tech Sahaya) தரவில் இதற்கு துல்லியமான பதில் அளிக்க போதுமான தகவல் இல்லை. அதிகாரப்பூர்வ அரசு தளத்தில் சரிபார்க்கவும்."
+        elif lang.startswith("ml"):
+            answer = "ടെക് സഹായ (Tech Sahaya) വിവരങ്ങളിൽ ഇതിന് കൃത്യമായ മറുപടി നൽകാൻ ആവശ്യമായ വിവരങ്ങൾ ലഭ്യമല്ല. ദയവായി ഔദ്യോഗിക പോർട്ടലിൽ പരിശോധിക്കുക."
+        elif lang.startswith("bn"):
+            answer = "যাচাইকৃত টেক সহায় (Tech Sahaya) ডেটায় এর সঠিক উত্তর দেওয়ার জন্য পর্যাপ্ত তথ্য নেই। দয়া করে অফিসিয়াল সরকারি পোর্টালে যাচাই করুন।"
+        elif lang.startswith("mr"):
+            answer = "उपलब्ध सत्यापित टेक सहाया (Tech Sahaya) डेटामध्ये याचे अचूक उत्तर देण्यासाठी पुरेशी माहिती नाही. कृपया अधिकृत सरकारी संकेतस्थळावर तपासा."
+        elif lang.startswith("gu"):
+            answer = "ચકાસાયેલ ટેક સહાય (Tech Sahaya) ડેટામાં સચોટ જવાબ આપવા માટે પૂરતી માહિતી ઉપલબ્ધ નથી. કૃપા કરીને સત્તાવાર સરકારી પોર્ટલ પર તપાસો."
         else:
             answer = "I don't have enough verified information in the Tech Sahaya database to answer that accurately. Please verify on the official government portal."
 
@@ -297,11 +351,12 @@ class ChatService:
         schemes: list[Scheme],
         chunks: list[dict[str, Any]],
         eligibility_result: EligibilityResult | None,
+        profile: EligibilityProfile | None = None,
     ) -> str:
         api_key = settings.gemini_api_key or settings.google_api_key
         if api_key:
             try:
-                answer = self._call_gemini_api(api_key, message, language, intent, schemes, chunks, eligibility_result)
+                answer = self._call_gemini_api(api_key, message, language, intent, schemes, chunks, eligibility_result, profile)
                 if answer and len(answer.strip()) > 10:
                     return answer
             except Exception as exc:
@@ -318,11 +373,12 @@ class ChatService:
         schemes: list[Scheme],
         chunks: list[dict[str, Any]],
         eligibility_result: EligibilityResult | None,
+        profile: EligibilityProfile | None = None,
     ) -> str:
         system_instruction = SAHAYA_SYSTEM_INSTRUCTION.format(language=language)
 
         translations_map = load_scheme_translations()
-        lang_key = "hi" if language.startswith("hi") else "kn" if language.startswith("kn") else "en"
+        lang_key = next((k for k in ["hi", "kn", "te", "ta", "ml", "bn", "mr", "gu"] if language.lower().startswith(k)), "en")
 
         schemes_payload = []
         for s in schemes:
@@ -376,13 +432,36 @@ class ChatService:
         eligibility_payload = eligibility_result.model_dump() if eligibility_result else "No profile evaluated"
         tours_allowlist = load_tours().get("allowlist", [])
 
+        citizen_context_payload = profile.model_dump() if profile else "No stored profile"
+
+        proactive_schemes = []
+        if profile:
+            for s in self.schemes:
+                rule = self.rules.get(s.id, {})
+                res = eligibility_engine.evaluate(s.id, profile, rule, s.alternative_scheme_ids)
+                if res.status == "eligible":
+                    proactive_schemes.append({"id": s.id, "name": s.name, "benefits": s.benefits})
+        proactive_schemes_payload = proactive_schemes if proactive_schemes else "None currently eligible"
+
+        family_schemes_payload = "None recorded"
+        alternative_schemes_payload = eligibility_result.alternative_schemes if (eligibility_result and eligibility_result.alternative_schemes) else "None"
+        pii_detection_payload = "No sensitive identity numbers detected"
+        ocr_extracted_profile_payload = "None active in session"
+
         user_prompt = USER_PROMPT_TEMPLATE.format(
             message=message,
             language=language,
             intent=intent,
+            citizen_context_payload=citizen_context_payload,
             evidence_payload=evidence_payload,
             schemes_payload=schemes_payload,
             eligibility_payload=eligibility_payload,
+            proactive_schemes_payload=proactive_schemes_payload,
+            family_schemes_payload=family_schemes_payload,
+            alternative_schemes_payload=alternative_schemes_payload,
+            pii_detection_result=pii_detection_payload,
+            ocr_extracted_profile_payload=ocr_extracted_profile_payload,
+            pii_detection_payload=pii_detection_payload,
             tours_allowlist=tours_allowlist,
         )
 

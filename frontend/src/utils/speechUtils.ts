@@ -49,7 +49,7 @@ export function cleanTextForSpeech(rawText: string): string {
   text = text.replace(/\s+•\s+/g, ". ");
 
   // 9. Format key-value pairs (e.g. "Overview: text" -> "Overview. text")
-  text = text.replace(/([A-Za-z0-9\u0900-\u097F\u0C80-\u0CFF]+):\s*/g, "$1. ");
+  text = text.replace(/([A-Za-z0-9\u0900-\u0D7F]+):\s*/g, "$1. ");
 
   // 10. Remove special brackets and markdown symbols that cause vocal artifacts
   text = text.replace(/[\\#{}\[\]()<>~^|]/g, " ");
@@ -66,4 +66,20 @@ export function cleanTextForSpeech(rawText: string): string {
   }
 
   return text;
+}
+
+export function languageToBCP47(language: string): string {
+  const lang = (language || "en").toLowerCase().trim();
+  const map: Record<string, string> = {
+    en: "en-IN",
+    hi: "hi-IN",
+    kn: "kn-IN",
+    te: "te-IN",
+    ta: "ta-IN",
+    ml: "ml-IN",
+    bn: "bn-IN",
+    mr: "mr-IN",
+    gu: "gu-IN",
+  };
+  return map[lang] || (lang.includes("-") ? lang : `${lang}-IN`);
 }

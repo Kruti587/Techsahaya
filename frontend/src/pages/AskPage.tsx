@@ -17,7 +17,7 @@ import { useAppContext } from "../context/AppContext";
 import { useTour } from "../context/TourContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
-import { cleanTextForSpeech } from "../utils/speechUtils";
+import { cleanTextForSpeech, languageToBCP47 } from "../utils/speechUtils";
 
 const suggestedQuestions: Record<string, string[]> = {
   en: [
@@ -37,6 +37,42 @@ const suggestedQuestions: Record<string, string[]> = {
     "1.2 ಲಕ್ಷ ಆದಾಯದೊಂದಿಗೆ ನಾನು ವಿದ್ಯಾರ್ಥಿವೇತನಕ್ಕೆ ಅರ್ಜಿ ಹಾಕಬಹುದೇ?",
     "PM-Kisan ಗೆ ಯಾವ ದಾಖಲೆಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಕು?",
     "ನಾನು ಯಾವ ಸವಲತ್ತುಗಳನ್ನು ಕಳೆದುಕೊಳ್ಳುತ್ತಿದ್ದೇನೆ?",
+  ],
+  te: [
+    "రైతుల కోసం ఏ ప్రభుత్వ పథకాలు అందుబాటులో ఉన్నాయి?",
+    "1.2 లక్షల ఆదాయంతో స్కాలర్‌షిప్‌కు దరఖాస్తు చేసుకోవచ్చా?",
+    "PM-Kisan పథకానికి ఏ పత్రాలు అవసరం?",
+    "నాకు వర్తించే సంక్షేమ పథకాలు ఏవి?",
+  ],
+  ta: [
+    "விவசாயிகளுக்கான அரசு திட்டங்கள் என்னென்ன?",
+    "1.2 லட்சம் வருமானத்தில் கல்வி உதவித்தொகை பெற முடியுமா?",
+    "PM-Kisan திட்டத்திற்கு என்ன ஆவணங்கள் தேவை?",
+    "நான் பெறக்கூடிய நலத்திட்டங்கள் எவை?",
+  ],
+  ml: [
+    "കർഷകർക്കുള്ള സർക്കാർ പദ്ധതികൾ ഏതെല്ലാമാണ്?",
+    "1.2 ലക്ഷം രൂപ വരുമാനത്തിൽ സ്കോളർഷിപ്പിന് അപേക്ഷിക്കാമോ?",
+    "PM-Kisan പദ്ധതിക്ക് ആവശ്യമായ രേഖകൾ ഏതെല്ലാം?",
+    "എനിക്ക് ലഭിക്കാൻ സാധ്യതയുള്ള ആനുകൂല്യങ്ങൾ ഏവ?",
+  ],
+  bn: [
+    "কৃষকদের জন্য কী কী সরকারি প্রকল্প রয়েছে?",
+    "১.২ লক্ষ আয়ে কি বৃত্তির জন্য আবেদন করা যাবে?",
+    "PM-Kisan প্রকল্পের জন্য কী কী নথি প্রয়োজন?",
+    "আমার প্রাপ্য কল্যাণ প্রকল্পগুলি কী কী?",
+  ],
+  mr: [
+    "शेतकऱ्यांसाठी कोणत्या सरकारी योजना उपलब्ध आहेत?",
+    "१.२ लाख उत्पन्नासह मी शिष्यवृत्तीसाठी अर्ज करू शकतो का?",
+    "PM-Kisan योजनेसाठी कोणती कागदपत्रे लागतील?",
+    "मला मिळू शकणाऱ्या कल्याणकारी योजना कोणत्या?",
+  ],
+  gu: [
+    "ખેડૂતો માટે કઈ સરકારી યોજનાઓ ઉપલબ્ધ છે?",
+    "૧.૨ લાખ આવક સાથે હું શિષ્યવૃત્તિ માટે અરજી કરી શકું?",
+    "PM-Kisan યોજના માટે કયા દસ્તાવેજોની જરૂર છે?",
+    "મારા મળવાપાત્ર કલ્યાણકારી લાભો કયા છે?",
   ],
 };
 
@@ -72,6 +108,22 @@ export function AskPage() {
       setResponse(res.data);
       if (res.data?.audio_base64) {
         setAudioBase64(res.data.audio_base64);
+        playAudio(res.data.audio_base64);
+      } else if ("speechSynthesis" in window && res.data?.answer) {
+        const speechText = cleanTextForSpeech(res.data.answer);
+        if (speechText) {
+          if (audioElementRef.current) {
+            audioElementRef.current.pause();
+            setAudioPlaying(false);
+          }
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(speechText);
+          utterance.lang = languageToBCP47(language || "en");
+          setAudioPlaying(true);
+          utterance.onend = () => setAudioPlaying(false);
+          utterance.onerror = () => setAudioPlaying(false);
+          window.speechSynthesis.speak(utterance);
+        }
       }
     } catch (err: any) {
       if (err?.response?.status === 429) {
@@ -161,8 +213,16 @@ export function AskPage() {
           // Browser TTS Fallback
           const speechText = cleanTextForSpeech(data.response.answer);
           if (speechText) {
+            if (audioElementRef.current) {
+              audioElementRef.current.pause();
+              setAudioPlaying(false);
+            }
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(speechText);
-            utterance.lang = language === "hi" ? "hi-IN" : language === "kn" ? "kn-IN" : "en-IN";
+            utterance.lang = languageToBCP47(language || "en");
+            setAudioPlaying(true);
+            utterance.onend = () => setAudioPlaying(false);
+            utterance.onerror = () => setAudioPlaying(false);
             window.speechSynthesis.speak(utterance);
           }
         }
@@ -175,7 +235,6 @@ export function AskPage() {
           setError(t(language, "voiceUnderstandingError"));
         }
       } finally {
-
         setLoading(false);
         setVoiceStatus("");
       }
@@ -183,6 +242,9 @@ export function AskPage() {
   };
 
   const playAudio = (b64Audio: string) => {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
     if (audioElementRef.current) {
       audioElementRef.current.pause();
     }
@@ -196,10 +258,13 @@ export function AskPage() {
   };
 
   const stopAudio = () => {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
     if (audioElementRef.current) {
       audioElementRef.current.pause();
-      setAudioPlaying(false);
     }
+    setAudioPlaying(false);
   };
 
   return (

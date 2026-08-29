@@ -19,7 +19,8 @@ import { useAppContext } from "../context/AppContext";
 import { useTour } from "../context/TourContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
-import { cleanTextForSpeech } from "../utils/speechUtils";
+import { SUPPORTED_LANGUAGES } from "../utils/languages";
+import { cleanTextForSpeech, languageToBCP47 } from "../utils/speechUtils";
 
 interface Message {
   id: string;
@@ -206,6 +207,25 @@ export function FloatingChatWidget() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+
+      // Auto-play returned Sarvam TTS audio if present, else browser TTS fallback
+      if (data.audio_base64) {
+        playAudio(assistantMessage.id, data.audio_base64, data.audio_mime || "audio/wav");
+      } else if ("speechSynthesis" in window && data.answer) {
+        const speechText = cleanTextForSpeech(data.answer);
+        if (speechText) {
+          if (currentAudioElementRef.current) {
+            currentAudioElementRef.current.pause();
+          }
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(speechText);
+          utterance.lang = languageToBCP47(language || "en");
+          setPlayingAudioId(assistantMessage.id);
+          utterance.onend = () => setPlayingAudioId(null);
+          utterance.onerror = () => setPlayingAudioId(null);
+          window.speechSynthesis.speak(utterance);
+        }
+      }
     } catch (err: any) {
       const isRateLimit = err?.response?.status === 429;
       const retryAfter = err?.response?.headers?.["retry-after"] || "a few";
@@ -305,14 +325,23 @@ export function FloatingChatWidget() {
 
         setMessages((prev) => [...prev, userMsg, asstMsg]);
 
-        // Auto-play returned Sarvam TTS audio if present
+        // Auto-play returned Sarvam TTS audio if present, else browser TTS fallback
         if (data.audio_base64) {
           playAudio(asstMsg.id, data.audio_base64, data.audio_mime || "audio/wav");
         } else if ("speechSynthesis" in window && asstData?.answer) {
-          // Browser TTS fallback
-          const utterance = new SpeechSynthesisUtterance(cleanTextForSpeech(asstData.answer));
-          utterance.lang = language === "hi" ? "hi-IN" : language === "kn" ? "kn-IN" : "en-IN";
-          window.speechSynthesis.speak(utterance);
+          const speechText = cleanTextForSpeech(asstData.answer);
+          if (speechText) {
+            if (currentAudioElementRef.current) {
+              currentAudioElementRef.current.pause();
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(speechText);
+            utterance.lang = languageToBCP47(language || "en");
+            setPlayingAudioId(asstMsg.id);
+            utterance.onend = () => setPlayingAudioId(null);
+            utterance.onerror = () => setPlayingAudioId(null);
+            window.speechSynthesis.speak(utterance);
+          }
         }
       } catch (err: any) {
         console.error("Voice chat error", err);
@@ -329,9 +358,15 @@ export function FloatingChatWidget() {
     };
   };
 
-  const playAudio = (msgId: string, base64Audio: string, mime: string = "audio/wav") => {
-    if (playingAudioId === msgId && currentAudioElementRef.current) {
-      currentAudioElementRef.current.pause();
+  const playAudio = (msgId: string, base64Audio?: string | null, mime: string = "audio/wav", textFallback?: string) => {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+
+    if (playingAudioId === msgId) {
+      if (currentAudioElementRef.current) {
+        currentAudioElementRef.current.pause();
+      }
       setPlayingAudioId(null);
       return;
     }
@@ -340,13 +375,25 @@ export function FloatingChatWidget() {
       currentAudioElementRef.current.pause();
     }
 
-    const audio = new Audio(`data:${mime};base64,${base64Audio}`);
-    currentAudioElementRef.current = audio;
-    setPlayingAudioId(msgId);
+    if (base64Audio) {
+      const audio = new Audio(`data:${mime};base64,${base64Audio}`);
+      currentAudioElementRef.current = audio;
+      setPlayingAudioId(msgId);
 
-    audio.onended = () => setPlayingAudioId(null);
-    audio.onerror = () => setPlayingAudioId(null);
-    audio.play().catch(() => setPlayingAudioId(null));
+      audio.onended = () => setPlayingAudioId(null);
+      audio.onerror = () => setPlayingAudioId(null);
+      audio.play().catch(() => setPlayingAudioId(null));
+    } else if ("speechSynthesis" in window && textFallback) {
+      const speechText = cleanTextForSpeech(textFallback);
+      if (speechText) {
+        const utterance = new SpeechSynthesisUtterance(speechText);
+        utterance.lang = languageToBCP47(language || "en");
+        setPlayingAudioId(msgId);
+        utterance.onend = () => setPlayingAudioId(null);
+        utterance.onerror = () => setPlayingAudioId(null);
+        window.speechSynthesis.speak(utterance);
+      }
+    }
   };
 
   const triggerTour = (tourId: string) => {
@@ -406,9 +453,11 @@ export function FloatingChatWidget() {
                 onChange={(e) => setLanguage(e.target.value)}
                 className="rounded-lg border border-white/20 bg-emerald-800/80 px-2 py-1 text-xs text-white focus:outline-none"
               >
-                <option value="en">English</option>
-                <option value="hi">हिन्दी</option>
-                <option value="kn">ಕನ್ನಡ</option>
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <option key={lang.code} value={lang.code} className="bg-emerald-900 text-white">
+                    {lang.nativeLabel}
+                  </option>
+                ))}
               </select>
               <button
                 type="button"
@@ -437,13 +486,12 @@ export function FloatingChatWidget() {
                 >
                   <FormattedMessageText text={msg.text} isUser={msg.sender === "user"} />
 
-
                   {/* Audio Player Button for Assistant Voice */}
-                  {msg.audioBase64 && msg.sender === "assistant" && (
+                  {msg.sender === "assistant" && msg.text && (
                     <div className="mt-2.5 pt-2 border-t border-stone-100 flex items-center gap-2">
                       <button
                         type="button"
-                        onClick={() => playAudio(msg.id, msg.audioBase64!, msg.audioMime)}
+                        onClick={() => playAudio(msg.id, msg.audioBase64, msg.audioMime, msg.text)}
                         className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition"
                       >
                         {playingAudioId === msg.id ? (

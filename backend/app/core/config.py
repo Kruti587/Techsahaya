@@ -6,6 +6,15 @@ from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+VALID_BULBUL_V3_SPEAKERS = {
+    "aditya", "ritu", "ashutosh", "priya", "neha", "rahul", "pooja", "rohan",
+    "simran", "kavya", "amit", "dev", "ishita", "shreya", "ratan", "varun",
+    "manan", "sumit", "roopa", "kabir", "aayan", "shubh", "advait", "anand",
+    "tanya", "tarun", "sunny", "mani", "gokul", "vijay", "shruti", "suhani",
+    "mohit", "kavitha", "rehan", "soham", "rupali", "niharika"
+}
+
+
 class Settings(BaseSettings):
     # Core Provider Keys
     gemini_api_key: str = ""
@@ -56,6 +65,18 @@ class Settings(BaseSettings):
         case_sensitive=False,
         extra="ignore",
     )
+
+    @field_validator("sarvam_tts_voice")
+    @classmethod
+    def validate_sarvam_tts_voice(cls, value: str) -> str:
+        if not value:
+            return "ishita"
+        val_clean = value.strip().lower()
+        if val_clean not in VALID_BULBUL_V3_SPEAKERS:
+            raise ValueError(
+                f"Invalid Sarvam TTS voice '{value}'. Must be one of valid bulbul:v3 speakers: {sorted(VALID_BULBUL_V3_SPEAKERS)}"
+            )
+        return val_clean
 
     @field_validator("cors_origins", mode="before")
     @classmethod

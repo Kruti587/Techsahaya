@@ -5,6 +5,7 @@ import { ProfileForm } from "../components/ProfileForm";
 import { api } from "../services/api";
 import { useAppContext } from "../context/AppContext";
 import { t } from "../utils/i18n";
+import { SUPPORTED_LANGUAGES } from "../utils/languages";
 
 export function ProfileSetupPage() {
   const { profile, setProfile, language, setLanguage, user } = useAppContext();
@@ -54,9 +55,11 @@ export function ProfileSetupPage() {
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <label className="text-sm font-semibold" htmlFor="onboarding-language">{t(language, "preferredLanguage")}</label>
         <select id="onboarding-language" className="min-h-12 rounded-xl border p-3" value={language} onChange={(e) => setLanguage(e.target.value)}>
-          <option value="en">English</option>
-          <option value="hi">Hindi</option>
-          <option value="kn">Kannada</option>
+          {SUPPORTED_LANGUAGES.map((lang) => (
+            <option key={lang.code} value={lang.code}>
+              {lang.nativeLabel} ({lang.label})
+            </option>
+          ))}
         </select>
         {audio && audioError && <button type="button" onClick={playWelcome} className="inline-flex min-h-12 items-center gap-2 rounded-xl border px-4 font-semibold text-sahaya-green"><Volume2 size={18} /> {t(language, "playWelcome")}</button>}
       </div>
