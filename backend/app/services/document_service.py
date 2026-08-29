@@ -212,6 +212,7 @@ class DocumentService:
             "user_id": user.id,
             "document_type": doc_type,
             "extracted_fields": extracted_fields,
+            "field_confidences": extracted_fields.get("field_confidences", {}),
             "created_at": datetime.utcnow().isoformat(),
         }
         ephemeral_store.set(f"doc:{document.id}", ephemeral_payload, ttl_seconds=settings.redis_ephemeral_ttl)
@@ -265,8 +266,9 @@ class DocumentService:
 
     def _parse_structured_fields(self, text: str, language: str = "en") -> dict[str, Any]:
         """Extracts structured values from normalized OCR text using configurable JSON keywords,
-        anchored to OCR lines with fallback to subsequent lines and noise filtering."""
+        anchored to OCR lines with multi-line plausibility ranking and confidence estimation."""
         fields: dict[str, Any] = {}
+        field_confidences: dict[str, str] = {}
         if not text:
             return fields
 
@@ -285,61 +287,74 @@ class DocumentService:
         land_kw_pattern = _build_keyword_regex(land_keywords)
 
         # Helper to get search text for a match in lines:
-        # returns list of scopes to check (current line after keyword, then next line if needed)
-        def _get_search_scopes(kw_regex: str) -> list[str]:
-            scopes: list[str] = []
+        # returns list of tuples: (scope_text, distance_in_lines, line_index)
+        def _get_search_scopes(kw_regex: str) -> list[tuple[str, int, int]]:
+            scopes: list[tuple[str, int, int]] = []
             for idx, line in enumerate(lines):
                 m = re.search(kw_regex, line, re.IGNORECASE)
                 if m:
-                    # Text on the same line after keyword
+                    # 1. Text on same line after keyword
                     after_kw = line[m.end():].strip()
-                    # Delimiters between multi-field single lines: ' / ', '|', ';' (avoid breaking dates '15/08/1990')
                     first_segment = re.split(r"\s+/\s+|\s*[|;]\s*", after_kw)[0].strip()
                     if first_segment:
-                        scopes.append(first_segment)
-                    # If after_kw was empty or as fallback, check next line
+                        scopes.append((first_segment, 0, idx))
+                    # 2. Next line (distance 1)
                     if idx + 1 < len(lines):
                         next_line = lines[idx + 1].strip()
                         next_segment = re.split(r"\s+/\s+|\s*[|;]\s*", next_line)[0].strip()
                         if next_segment:
-                            scopes.append(next_segment)
+                            scopes.append((next_segment, 1, idx))
+                    # 3. Line after next (distance 2, for skewed/creased multi-column layouts)
+                    if idx + 2 < len(lines):
+                        next2_line = lines[idx + 2].strip()
+                        next2_segment = re.split(r"\s+/\s+|\s*[|;]\s*", next2_line)[0].strip()
+                        if next2_segment:
+                            scopes.append((next2_segment, 2, idx))
             return scopes
 
-        # 1. Extract Age
-        for scope in _get_search_scopes(age_kw_pattern):
-            candidates: list[int] = []
+        # 1. Extract Age with Plausibility Scoring
+        age_candidates: list[tuple[int, float, str]] = []  # (value, score, confidence)
+        for scope, dist, _ in _get_search_scopes(age_kw_pattern):
+            # Explicit age unit matches e.g. "34 yrs", "34 years", "34 ವರ್ಷ", "34 वर्ष"
+            for um in re.finditer(r"\b(\d{1,3})\s*(?:yrs?|years?|ವರ್ಷ|ವರ್ಷಗಳು|साल|वर्ष)\b", scope, re.IGNORECASE):
+                try:
+                    u_val = int(um.group(1))
+                    if 0 <= u_val <= 125:
+                        score = 100.0 - (dist * 5.0)
+                        age_candidates.append((u_val, score, "high"))
+                except ValueError:
+                    pass
+
+            # Regular digit tokens
             for m in re.finditer(r"\b(\d{1,3})\b", scope):
                 try:
                     val = int(m.group(1))
                     if 0 <= val <= 125:
-                        candidates.append(val)
+                        if 18 <= val <= 100:
+                            score = 85.0 - (dist * 10.0)
+                            conf = "high" if dist <= 1 else "medium"
+                        elif 10 <= val <= 17 or 101 <= val <= 125:
+                            score = 65.0 - (dist * 10.0)
+                            conf = "medium"
+                        else:
+                            # 1-digit without unit is very likely stray OCR noise (like item number '4' or '2')
+                            score = 20.0 - (dist * 5.0)
+                            conf = "low"
+                        age_candidates.append((val, score, conf))
                 except ValueError:
                     continue
 
-            if candidates:
-                # If any candidate is explicitly followed by age units, prefer it
-                unit_match = re.search(r"\b(\d{1,3})\s*(?:yrs?|years?|ವರ್ಷ|ವರ್ಷಗಳು|साल|वर्ष)\b", scope, re.IGNORECASE)
-                if unit_match:
-                    try:
-                        u_val = int(unit_match.group(1))
-                        if 0 <= u_val <= 125:
-                            fields["age"] = u_val
-                            break
-                    except ValueError:
-                        pass
-
-                # If multiple candidates, prefer plausible 2-digit age over single stray digits
-                two_digit = [c for c in candidates if 10 <= c <= 125]
-                if two_digit:
-                    fields["age"] = two_digit[0]
-                else:
-                    fields["age"] = candidates[0]
-                break
+        if age_candidates:
+            age_candidates.sort(key=lambda x: x[1], reverse=True)
+            best_age, _, best_age_conf = age_candidates[0]
+            fields["age"] = best_age
+            fields["_age_confidence"] = best_age_conf
+            field_confidences["age"] = best_age_conf
 
         # 2. Extract DOB (and derive age if not yet present)
-        for scope in _get_search_scopes(dob_kw_pattern):
+        dob_candidates: list[tuple[str, int, float, str]] = []
+        for scope, dist, _ in _get_search_scopes(dob_kw_pattern):
             dob_matches = list(re.finditer(r"\b(\d{1,2})[./\-\s](\d{1,2})[./\-\s](\d{4})\b", scope))
-            found_dob = False
             for m in dob_matches:
                 try:
                     d = int(m.group(1))
@@ -347,20 +362,25 @@ class DocumentService:
                     y = int(m.group(3))
                     current_year = datetime.now().year
                     if 1 <= d <= 31 and 1 <= mo <= 12 and 1900 <= y <= current_year:
-                        fields["dob"] = f"{d:02d}/{mo:02d}/{y}"
-                        calculated_age = current_year - y
-                        if 0 <= calculated_age <= 125 and "age" not in fields:
-                            fields["age"] = calculated_age
-                        found_dob = True
-                        break
+                        dob_str = f"{d:02d}/{mo:02d}/{y}"
+                        calc_age = current_year - y
+                        score = 90.0 - (dist * 10.0)
+                        dob_candidates.append((dob_str, calc_age, score, "high"))
                 except ValueError:
                     continue
-            if found_dob:
-                break
 
-        # 3. Extract Income
-        for scope in _get_search_scopes(income_kw_pattern):
-            candidates_income: list[tuple[float, bool, bool]] = []
+        if dob_candidates:
+            dob_candidates.sort(key=lambda x: x[2], reverse=True)
+            best_dob, calc_age, _, dob_conf = dob_candidates[0]
+            fields["dob"] = best_dob
+            if "age" not in fields and 0 <= calc_age <= 125:
+                fields["age"] = calc_age
+                fields["_age_confidence"] = dob_conf
+                field_confidences["age"] = dob_conf
+
+        # 3. Extract Income with Plausibility Scoring
+        income_candidates: list[tuple[float, float, str]] = []  # (value, score, confidence)
+        for scope, dist, _ in _get_search_scopes(income_kw_pattern):
             for m in re.finditer(r"(?:(?:rs\.?|inr|₹|రూ|ரூ|ರೂ|रु|%)\s*)?([\d,]+(?:\.\d+)?)\b", scope, re.IGNORECASE):
                 raw = m.group(1).replace(",", "").strip()
                 if not raw:
@@ -368,23 +388,43 @@ class DocumentService:
                 try:
                     val = float(raw)
                     if val >= 0:
-                        has_symbol_or_comma = bool(re.search(r"[rs|inr|₹|రూ|ரூ|ರೂ|रु,%]", m.group(0), re.IGNORECASE)) or ("," in m.group(1))
-                        is_large = val >= 1000.0
-                        candidates_income.append((val, has_symbol_or_comma, is_large))
+                        has_sym = bool(re.search(r"[rs|inr|₹|రూ|ரூ|ರೂ|रु,%]", m.group(0), re.IGNORECASE))
+                        has_comma = "," in m.group(1)
+                        has_suffix_dash = bool(re.search(r"/\-", scope))
+
+                        if (has_sym or has_suffix_dash) and (has_comma or val >= 1000.0):
+                            score = 100.0 - (dist * 5.0)
+                            conf = "high"
+                        elif has_comma and val >= 1000.0:
+                            score = 95.0 - (dist * 5.0)
+                            conf = "high"
+                        elif has_sym and val >= 1000.0:
+                            score = 90.0 - (dist * 5.0)
+                            conf = "high"
+                        elif val >= 10000.0:
+                            score = 80.0 - (dist * 5.0)
+                            conf = "high" if dist <= 1 else "medium"
+                        elif 1000.0 <= val < 10000.0:
+                            score = 40.0 - (dist * 5.0)
+                            conf = "medium"
+                        else:  # < 1000 and no currency/comma -> low confidence stray noise (e.g. item number '2')
+                            score = 10.0 - (dist * 5.0)
+                            conf = "low"
+
+                        income_candidates.append((val, score, conf))
                 except ValueError:
                     continue
 
-            if candidates_income:
-                preferred = [c[0] for c in candidates_income if c[1] or c[2]]
-                if preferred:
-                    fields["income"] = preferred[-1] if len(preferred) == 1 else max(preferred)
-                else:
-                    fields["income"] = candidates_income[-1][0]
-                break
+        if income_candidates:
+            income_candidates.sort(key=lambda x: x[1], reverse=True)
+            best_inc, _, best_inc_conf = income_candidates[0]
+            fields["income"] = best_inc
+            fields["_income_confidence"] = best_inc_conf
+            field_confidences["income"] = best_inc_conf
 
-        # 4. Extract Landholding
-        for scope in _get_search_scopes(land_kw_pattern):
-            candidates_land: list[tuple[float, bool]] = []
+        # 4. Extract Landholding with Plausibility Scoring
+        land_candidates: list[tuple[float, float, str]] = []  # (value, score, confidence)
+        for scope, dist, _ in _get_search_scopes(land_kw_pattern):
             for m in re.finditer(r"([\d.]+)\s*(acres?|acre|एकड़|ఎకరాలు|ஏக்கர்|ഏക്കർ|একর|हेक्टर|guntha|bigha|cents?|hectares?)?", scope, re.IGNORECASE):
                 raw = m.group(1).strip()
                 if not raw or raw == ".":
@@ -393,30 +433,27 @@ class DocumentService:
                     val = float(raw)
                     if 0 <= val <= 10000:
                         has_unit = bool(m.group(2))
-                        candidates_land.append((val, has_unit))
+                        if has_unit and val > 0:
+                            score = 95.0 - (dist * 5.0)
+                            conf = "high"
+                        elif val > 0:
+                            score = 60.0 - (dist * 5.0)
+                            conf = "medium"
+                        else:
+                            score = 30.0 - (dist * 5.0)
+                            conf = "low"
+                        land_candidates.append((val, score, conf))
                 except ValueError:
                     continue
 
-            if candidates_land:
-                with_units = [c[0] for c in candidates_land if c[1]]
-                if with_units:
-                    fields["landholding"] = with_units[0]
-                else:
-                    fields["landholding"] = candidates_land[0][0]
-                break
+        if land_candidates:
+            land_candidates.sort(key=lambda x: x[1], reverse=True)
+            best_land, _, best_land_conf = land_candidates[0]
+            fields["landholding"] = best_land
+            fields["_landholding_confidence"] = best_land_conf
+            field_confidences["landholding"] = best_land_conf
 
-        # 5. Extract Name if present
-        name_kw_re = r"(?:name|ಹೆಸರು|नाम|పేರು|பெயர்|പേര്|নাম|नाव|નામ)"
-        for scope in _get_search_scopes(name_kw_re):
-            clean_scope = re.sub(r"^[:\s\-\.]+", "", scope).strip()
-            name_m = re.search(r"^([A-Za-z\u0900-\u0DFF\s]{2,40})", clean_scope)
-            if name_m:
-                extracted_name = name_m.group(1).strip()
-                extracted_name = re.split(r"[\n\r;]", extracted_name)[0].strip()
-                if extracted_name and len(extracted_name) >= 2 and not any(k in extracted_name.lower() for k in ["income", "age", "land", "date"]):
-                    fields["name"] = extracted_name
-                    break
-
+        fields["field_confidences"] = field_confidences
         return fields
 
     def _classify(self, file_name: str) -> str:

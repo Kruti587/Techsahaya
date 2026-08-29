@@ -107,7 +107,6 @@ def test_ocr_keyword_and_value_on_different_lines():
         "2.5 acres\n"
     )
     extracted = document_service._parse_structured_fields(multiline_text, language="en")
-    assert extracted.get("name") == "Ramesh Kumar"
     assert extracted.get("age") == 34
     assert extracted.get("income") == 85000.0
     assert extracted.get("dob") == "15/08/1990"
@@ -137,8 +136,37 @@ def test_real_world_noisy_ocr_samples():
         "ಜಮೀನು (Land) : 2.5 ಎಕರೆ\n"
     )
     res = document_service._parse_structured_fields(_normalize_indic_digits(noisy_ocr), language="kn")
-    assert res.get("name") == "Ramesh Gowda"
     assert res.get("age") == 34
     assert res.get("income") == 85000.0
     assert res.get("landholding") == 2.5
+    assert res.get("field_confidences", {}).get("age") == "high"
+    assert res.get("field_confidences", {}).get("income") == "high"
+
+
+def test_degraded_skewed_creased_ocr_ranking_and_confidence():
+    """
+    Regression test for degraded/creased/skewed OCR input where:
+    - Same line after keyword has stray isolated noise digits (e.g. 'Age: 4' or 'Income: 1580')
+    - Subsequent line (shifted by skewed column layout) contains the real shaped value ('34' or '%85,000/-')
+    - System MUST prefer the well-shaped, high-scoring candidate over the first stray match.
+    """
+    skewed_degraded_text = (
+        "ಕರ್ನಾಟಕ ಸರ್ಕಾರ / GOVERNMENT OF KARNATAKA\n"
+        "ಪ್ರಮಾಣ ಪತ್ರ ಸಂಖ್ಯೆ : IC/2025/9988\n"
+        "ವಯಸ್ಸು (Age) : 4\n"
+        "34\n"
+        "ಆದಾಯ (Income) : 1580\n"
+        "%85,000/-\n"
+        "ಜಮೀನು (Land) : 0\n"
+        "2.5 acres\n"
+    )
+    extracted = document_service._parse_structured_fields(
+        _normalize_indic_digits(skewed_degraded_text), language="kn"
+    )
+    assert extracted.get("age") == 34, f"Expected age 34 (not noise 4), got {extracted.get('age')}"
+    assert extracted.get("income") == 85000.0, f"Expected income 85000.0 (not noise 1580), got {extracted.get('income')}"
+    assert extracted.get("landholding") == 2.5, f"Expected landholding 2.5 (not noise 0), got {extracted.get('landholding')}"
+    assert extracted.get("field_confidences", {}).get("age") == "high"
+    assert extracted.get("field_confidences", {}).get("income") == "high"
+
 

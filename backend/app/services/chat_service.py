@@ -62,6 +62,7 @@ class ChatService:
 
         # 2c. Ephemeral OCR extraction lookup for citizen's recent documents
         live_ocr_fields: dict[str, Any] = {}
+        live_ocr_confidences: dict[str, Any] = {}
         has_user_docs = False
         has_live_docs = False
         has_expired_docs = False
@@ -86,9 +87,16 @@ class ChatService:
                             if doc_type and doc_type not in live_doc_types:
                                 live_doc_types.append(doc_type)
                             extracted = cached["extracted_fields"]
+                            confidences = cached.get("field_confidences", {})
                             for k, v in extracted.items():
-                                if k not in live_ocr_fields and v is not None:
+                                if not k.startswith("_") and k != "field_confidences" and k not in live_ocr_fields and v is not None:
                                     live_ocr_fields[k] = v
+                            if isinstance(confidences, dict):
+                                live_ocr_confidences.update(confidences)
+                            if isinstance(extracted, dict):
+                                for ck in ["_age_confidence", "_income_confidence", "_landholding_confidence"]:
+                                    if ck in extracted:
+                                        live_ocr_confidences[ck.replace("_", "").replace("confidence", "")] = extracted[ck]
                         else:
                             has_expired_docs = True
             except Exception as exc:
@@ -121,6 +129,7 @@ class ChatService:
                 language=language,
                 profile=effective_profile,
                 live_ocr_fields=live_ocr_fields,
+                live_ocr_confidences=live_ocr_confidences,
                 has_user_docs=has_user_docs,
                 has_expired_docs=has_expired_docs,
                 has_live_docs=has_live_docs,
@@ -347,6 +356,7 @@ class ChatService:
         language: str,
         profile: EligibilityProfile,
         live_ocr_fields: dict[str, Any],
+        live_ocr_confidences: dict[str, Any],
         has_user_docs: bool,
         has_expired_docs: bool,
         has_live_docs: bool,
@@ -360,18 +370,27 @@ class ChatService:
         # Case 1: Specific age query
         if is_age_query:
             if profile.age is not None:
-                if lang.startswith("kn"):
-                    ans = f"ನಿಮ್ಮ ಇತ್ತೀಚಿನ ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ ಪ್ರಕಾರ, ನಿಮ್ಮ ಪರಿಶೀಲಿತ ವಯಸ್ಸು **{profile.age} ವರ್ಷಗಳು**."
-                elif lang.startswith("hi"):
-                    ans = f"आपके हालिया दस्तावेज़ अपलोड सत्र के अनुसार, आपकी सत्यापित आयु **{profile.age} वर्ष** है।"
+                age_conf = live_ocr_confidences.get('age', live_ocr_fields.get('_age_confidence', 'high'))
+                if age_conf == 'low':
+                    if lang.startswith('kn'):
+                        ans = f"ನಿಮ್ಮ ದಾಖಲೆಯ ಪ್ರಕಾರ ನಿಮ್ಮ ವಯಸ್ಸು ಅಂದಾಜು **{profile.age} ವರ್ಷಗಳು** ಎಂದು ಓದಲಾಗಿದೆ (ದಯವಿಟ್ಟು ಇದು ಸರಿಯಾಗಿದೆಯೇ ಎಂದು ಖಚಿತಪಡಿಸಿ)."
+                    elif lang.startswith('hi'):
+                        ans = f"आपके दस्तावेज़ के अनुसार आपकी आयु लगभग **{profile.age} वर्ष** पढ़ी गई है (कृपया पुष्टि करें कि यह सही है)।"
+                    else:
+                        ans = f"Based on your document upload, our system read your age as approximately **{profile.age} years** (please confirm this is correct)."
                 else:
-                    ans = f"Based on your active document session, your verified age is **{profile.age} years**."
+                    if lang.startswith('kn'):
+                        ans = f"ನಿಮ್ಮ ಇತ್ತೀಚಿನ ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ ಪ್ರಕಾರ, ನಿಮ್ಮ ಪರಿಶೀಲಿತ ವಯಸ್ಸು **{profile.age} ವರ್ಷಗಳು**."
+                    elif lang.startswith('hi'):
+                        ans = f"आपके हालिया दस्तावेज़ अपलोड सत्र के अनुसार, आपकी सत्यापित आयु **{profile.age} वर्ष** है।"
+                    else:
+                        ans = f"Based on your active document session, your verified age is **{profile.age} years**."
                 return ChatResponse(
                     answer=ans,
                     schemes=[],
                     evidence=[],
-                    verification_status="verified_from_source_data",
-                    confidence="high",
+                    verification_status='verified_from_source_data' if age_conf != 'low' else 'requires_official_verification',
+                    confidence='high' if age_conf != 'low' else 'medium',
                     offline_ready=True,
                 )
             elif has_user_docs and has_expired_docs and not has_live_docs:
@@ -395,18 +414,27 @@ class ChatService:
         # Case 1b: Specific income query
         if is_income_query:
             if profile.income is not None:
-                if lang.startswith("kn"):
-                    ans = f"ನಿಮ್ಮ ಇತ್ತೀಚಿನ ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ ಪ್ರಕಾರ, ನಿಮ್ಮ ಪರಿಶೀಲಿತ ವಾರ್ಷಿಕ ಆದಾಯ **ರೂ {profile.income:,.0f}**."
-                elif lang.startswith("hi"):
-                    ans = f"आपके हालिया दस्तावेज़ अपलोड सत्र के अनुसार, आपकी सत्यापित वार्षिक आय **₹{profile.income:,.0f}** है।"
+                inc_conf = live_ocr_confidences.get('income', live_ocr_fields.get('_income_confidence', 'high'))
+                if inc_conf == 'low':
+                    if lang.startswith('kn'):
+                        ans = f"ನಿಮ್ಮ ದಾಖಲೆಯ ಪ್ರಕಾರ ನಿಮ್ಮ ವಾರ್ಷಿಕ ಆದಾಯ ಅಂದಾಜು **ರೂ {profile.income:,.0f}** ಎಂದು ಓದಲಾಗಿದೆ (ದಯವಿಟ್ಟು ಇದು ಸರಿಯಾಗಿದೆಯೇ ಎಂದು ಖಚಿತಪಡಿಸಿ)."
+                    elif lang.startswith('hi'):
+                        ans = f"आपके दस्तावेज़ के अनुसार आपकी वार्षिक आय लगभग **₹{profile.income:,.0f}** पढ़ी गई है (कृपया पुष्टि करें कि यह सही है)।"
+                    else:
+                        ans = f"Based on your document upload, our system read your annual income as approximately **₹{profile.income:,.0f}** (please confirm this is correct)."
                 else:
-                    ans = f"Based on your active document session, your verified annual income is **₹{profile.income:,.0f}**."
+                    if lang.startswith('kn'):
+                        ans = f"ನಿಮ್ಮ ಇತ್ತೀಚಿನ ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ ಪ್ರಕಾರ, ನಿಮ್ಮ ಪರಿಶೀಲಿತ ವಾರ್ಷಿಕ ಆದಾಯ **ರೂ {profile.income:,.0f}**."
+                    elif lang.startswith('hi'):
+                        ans = f"आपके हालिया दस्तावेज़ अपलोड सत्र के अनुसार, आपकी सत्यापित वार्षिक आय **₹{profile.income:,.0f}** है।"
+                    else:
+                        ans = f"Based on your active document session, your verified annual income is **₹{profile.income:,.0f}**."
                 return ChatResponse(
                     answer=ans,
                     schemes=[],
                     evidence=[],
-                    verification_status="verified_from_source_data",
-                    confidence="high",
+                    verification_status='verified_from_source_data' if inc_conf != 'low' else 'requires_official_verification',
+                    confidence='high' if inc_conf != 'low' else 'medium',
                     offline_ready=True,
                 )
             elif has_user_docs and has_expired_docs and not has_live_docs:

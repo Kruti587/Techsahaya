@@ -175,3 +175,69 @@ def test_json_keywords_loaded_dynamically():
     assert "ವಯಸ್ಸು" in keywords["age"]["kn"]
     assert "kn" in keywords["income"]
     assert "ಆದಾಯ" in keywords["income"]["kn"]
+
+
+def test_low_confidence_softened_chat_response():
+    db: Session = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == "low_conf_test@example.com").first()
+        if not user:
+            user = User(
+                email="low_conf_test@example.com",
+                full_name="Low Conf User",
+                password_hash="mock",
+                preferred_language="en",
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+        doc = DocumentRecord(
+            user_id=user.id,
+            document_type="income_certificate",
+            status="processed",
+            verification_state="processed_in_memory",
+            masked_fields={"document_type": "income_certificate"},
+            file_name="income_cert.png",
+            mime_type="image/png",
+            file_size=1024,
+            retained_in_storage=False,
+        )
+        db.add(doc)
+        db.commit()
+        db.refresh(doc)
+
+        # Store low confidence age & income in ephemeral store
+        ephemeral_payload = {
+            "document_id": doc.id,
+            "user_id": user.id,
+            "document_type": "income_certificate",
+            "extracted_fields": {
+                "age": 34,
+                "income": 85000.0,
+                "_age_confidence": "low",
+                "_income_confidence": "low",
+                "field_confidences": {"age": "low", "income": "low"},
+            },
+            "field_confidences": {"age": "low", "income": "low"},
+            "created_at": "2026-08-29T12:00:00",
+        }
+        ephemeral_store.set(f"doc:{doc.id}", ephemeral_payload, ttl_seconds=300)
+
+        # 1. Ask age in English -> softened phrasing
+        age_resp = chat_service.answer("What is my age?", language="en", user=user, db=db)
+        assert "approximately" in age_resp.answer.lower() or "confirm" in age_resp.answer.lower()
+        assert "verified age is" not in age_resp.answer.lower()
+
+        # 2. Ask income in English -> softened phrasing
+        inc_resp = chat_service.answer("What is my income?", language="en", user=user, db=db)
+        assert "approximately" in inc_resp.answer.lower() or "confirm" in inc_resp.answer.lower()
+        assert "verified annual income is" not in inc_resp.answer.lower()
+
+        # Clean up
+        db.delete(doc)
+        db.commit()
+        ephemeral_store.delete(f"doc:{doc.id}")
+    finally:
+        db.close()
+
