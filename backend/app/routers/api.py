@@ -245,13 +245,15 @@ async def upload_document(
     request: Request,
     file: UploadFile = File(...),
     document_type: Optional[str] = Form(None),
+    language: Optional[str] = Form(None),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     content = await file.read()
     if len(content) > settings.max_upload_size:
         raise HTTPException(status_code=413, detail="File too large")
-    document = document_service.process_upload(db, user, file, content, declared_type=document_type)
+    selected_language = language or user.preferred_language or "en"
+    document = document_service.process_upload(db, user, file, content, declared_type=document_type, language=selected_language)
     profile = profile_service.get_or_create(db, user)
     existing_documents = profile.available_documents or []
     if document.document_type not in existing_documents:

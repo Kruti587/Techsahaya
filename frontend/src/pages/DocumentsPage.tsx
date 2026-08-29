@@ -243,6 +243,7 @@ export function DocumentsPage() {
               if (select?.value) {
                 form.append("document_type", select.value);
               }
+              form.append("language", language || "en");
               const res = await api.post("/api/documents/upload", form);
               setMessage(res.data.message);
               setProfile({ ...profile, available_documents: res.data.available_documents || profile.available_documents });

@@ -52,3 +52,11 @@ def load_scheme_translations() -> dict[str, Any]:
     if path.exists():
         return _load_json(path)
     return {}
+
+
+@lru_cache
+def load_ocr_keywords() -> dict[str, Any]:
+    path = DATA_DIR / "config" / "ocr_keywords.json"
+    if path.exists():
+        return _load_json(path)
+    return {}
