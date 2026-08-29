@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Compass,
   FileCheck2,
@@ -17,7 +17,7 @@ import { useAppContext } from "../context/AppContext";
 import { useTour } from "../context/TourContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
-import { cleanTextForSpeech, languageToBCP47 } from "../utils/speechUtils";
+import { cleanTextForSpeech, languageToBCP47, playExclusiveAudio, speakExclusive, stopAllPlayback } from "../utils/speechUtils";
 
 const suggestedQuestions: Record<string, string[]> = {
   en: [
@@ -92,7 +92,12 @@ export function AskPage() {
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const audioElementRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    return () => {
+      stopAllPlayback();
+    };
+  }, []);
 
   const ask = async (prompt = message) => {
     if (!prompt.trim()) return;
@@ -108,22 +113,9 @@ export function AskPage() {
       setResponse(res.data);
       if (res.data?.audio_base64) {
         setAudioBase64(res.data.audio_base64);
-        playAudio(res.data.audio_base64);
-      } else if ("speechSynthesis" in window && res.data?.answer) {
-        const speechText = cleanTextForSpeech(res.data.answer);
-        if (speechText) {
-          if (audioElementRef.current) {
-            audioElementRef.current.pause();
-            setAudioPlaying(false);
-          }
-          window.speechSynthesis.cancel();
-          const utterance = new SpeechSynthesisUtterance(speechText);
-          utterance.lang = languageToBCP47(language || "en");
-          setAudioPlaying(true);
-          utterance.onend = () => setAudioPlaying(false);
-          utterance.onerror = () => setAudioPlaying(false);
-          window.speechSynthesis.speak(utterance);
-        }
+        playAudio(res.data.audio_base64, res.data.answer);
+      } else if (res.data?.answer) {
+        playAudio(null, res.data.answer);
       }
     } catch (err: any) {
       if (err?.response?.status === 429) {
@@ -208,23 +200,9 @@ export function AskPage() {
 
         if (data.audio_base64) {
           setAudioBase64(data.audio_base64);
-          playAudio(data.audio_base64);
-        } else if ("speechSynthesis" in window && data.response?.answer) {
-          // Browser TTS Fallback
-          const speechText = cleanTextForSpeech(data.response.answer);
-          if (speechText) {
-            if (audioElementRef.current) {
-              audioElementRef.current.pause();
-              setAudioPlaying(false);
-            }
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(speechText);
-            utterance.lang = languageToBCP47(language || "en");
-            setAudioPlaying(true);
-            utterance.onend = () => setAudioPlaying(false);
-            utterance.onerror = () => setAudioPlaying(false);
-            window.speechSynthesis.speak(utterance);
-          }
+          playAudio(data.audio_base64, data.response?.answer);
+        } else if (data.response?.answer) {
+          playAudio(null, data.response.answer);
         }
       } catch (err: any) {
         if (err?.response?.status === 429) {
@@ -241,29 +219,37 @@ export function AskPage() {
     };
   };
 
-  const playAudio = (b64Audio: string) => {
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
+  const playAudio = (b64Audio: string | null, textFallback?: string) => {
+    if (audioPlaying) {
+      stopAudio();
+      return;
     }
-    if (audioElementRef.current) {
-      audioElementRef.current.pause();
-    }
-    const audio = new Audio(`data:audio/wav;base64,${b64Audio}`);
-    audioElementRef.current = audio;
-    setAudioPlaying(true);
 
-    audio.onended = () => setAudioPlaying(false);
-    audio.onerror = () => setAudioPlaying(false);
-    audio.play().catch(() => setAudioPlaying(false));
+    if (b64Audio) {
+      const audio = new Audio(`data:audio/wav;base64,${b64Audio}`);
+      playExclusiveAudio(
+        audio,
+        () => setAudioPlaying(true),
+        () => setAudioPlaying(false),
+        () => setAudioPlaying(false)
+      ).catch(() => setAudioPlaying(false));
+    } else if ("speechSynthesis" in window && textFallback) {
+      const speechText = cleanTextForSpeech(textFallback);
+      if (speechText) {
+        const utterance = new SpeechSynthesisUtterance(speechText);
+        utterance.lang = languageToBCP47(language || "en");
+        speakExclusive(
+          utterance,
+          () => setAudioPlaying(true),
+          () => setAudioPlaying(false),
+          () => setAudioPlaying(false)
+        );
+      }
+    }
   };
 
   const stopAudio = () => {
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-    if (audioElementRef.current) {
-      audioElementRef.current.pause();
-    }
+    stopAllPlayback();
     setAudioPlaying(false);
   };
 

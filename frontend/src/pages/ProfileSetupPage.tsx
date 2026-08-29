@@ -6,6 +6,7 @@ import { api } from "../services/api";
 import { useAppContext } from "../context/AppContext";
 import { t } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
+import { hasActivePlayback, playExclusiveAudio, stopAllPlayback } from "../utils/speechUtils";
 
 export function ProfileSetupPage() {
   const { profile, setProfile, language, setLanguage, user } = useAppContext();
@@ -18,31 +19,67 @@ export function ProfileSetupPage() {
   const welcomeAudioSessionKey = `tech-sahaya-welcome-audio:${user?.id || "unknown"}`;
 
   useEffect(() => {
-    if (welcomeAudioRequested.current || sessionStorage.getItem(welcomeAudioSessionKey)) return;
+    return () => {
+      stopAllPlayback();
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (welcomeAudioRequested.current || sessionStorage.getItem(welcomeAudioSessionKey) === "played") return;
     welcomeAudioRequested.current = true;
-    sessionStorage.setItem(welcomeAudioSessionKey, "requested");
     api.post("/api/onboarding/welcome-audio", null, { params: { language } })
       .then((response) => {
+        if (!isMounted) return;
         const nextAudio = { base64: response.data.audio_base64, mime: response.data.audio_mime || "audio/wav" };
         setAudio(nextAudio);
-        const player = new Audio(`data:${nextAudio.mime};base64,${nextAudio.base64}`);
-        audioRef.current = player;
-        welcomeAudioPlayStarted.current = true;
-        player.play().catch(() => {
-          welcomeAudioPlayStarted.current = false;
-          setAudioError(true);
-        });
+        if (!hasActivePlayback() && nextAudio.base64) {
+          const player = new Audio(`data:${nextAudio.mime};base64,${nextAudio.base64}`);
+          audioRef.current = player;
+          welcomeAudioPlayStarted.current = true;
+          playExclusiveAudio(
+            player,
+            () => {
+              sessionStorage.setItem(welcomeAudioSessionKey, "played");
+              if (isMounted) setAudioError(false);
+            },
+            () => { welcomeAudioPlayStarted.current = false; },
+            () => {
+              welcomeAudioPlayStarted.current = false;
+              if (isMounted) setAudioError(true);
+            }
+          ).catch(() => {
+            welcomeAudioPlayStarted.current = false;
+            if (isMounted) setAudioError(true);
+          });
+        } else if (hasActivePlayback()) {
+          if (isMounted) setAudioError(true);
+        }
       })
-      .catch(() => setAudioError(true));
+      .catch(() => {
+        if (isMounted) setAudioError(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [language, welcomeAudioSessionKey]);
 
   const playWelcome = () => {
-    if (!audio || welcomeAudioPlayStarted.current) return;
+    if (!audio) return;
     welcomeAudioPlayStarted.current = true;
     const player = new Audio(`data:${audio.mime};base64,${audio.base64}`);
     audioRef.current = player;
     setAudioError(false);
-    player.play().catch(() => {
+    playExclusiveAudio(
+      player,
+      () => setAudioError(false),
+      () => { welcomeAudioPlayStarted.current = false; },
+      () => {
+        welcomeAudioPlayStarted.current = false;
+        setAudioError(true);
+      }
+    ).catch(() => {
       welcomeAudioPlayStarted.current = false;
       setAudioError(true);
     });

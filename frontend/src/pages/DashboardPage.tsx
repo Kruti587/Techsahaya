@@ -8,7 +8,11 @@ import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
+import { hasActivePlayback, playExclusiveAudio, stopAllPlayback } from "../utils/speechUtils";
 import type { Scheme } from "../types";
+
+const getDashboardSummaryAutoplayKey = (userId?: string) =>
+  `sahaya_dashboard_summary_autoplayed:${userId || "guest"}`;
 
 export function DashboardPage() {
   const { profile, user, notifications, language } = useAppContext();
@@ -21,20 +25,31 @@ export function DashboardPage() {
   const [summaryAutoplayBlocked, setSummaryAutoplayBlocked] = useState(false);
   const summaryAudioRef = useRef<HTMLAudioElement | null>(null);
   const summaryRequestedKeys = useRef(new Set<string>());
-  const summaryPlayedKeys = useRef(new Set<string>());
 
   const profileKey = JSON.stringify(profile);
   const eligibilityKey = `${profileKey}:${language}`;
 
   useEffect(() => {
+    return () => {
+      if (summaryAudioRef.current) {
+        summaryAudioRef.current.pause();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const autoplayKey = getDashboardSummaryAutoplayKey(user?.id);
+
     if (summaryRequestedKeys.current.has(eligibilityKey)) return;
     summaryRequestedKeys.current.add(eligibilityKey);
-    api.get("/api/recommendations").then((res) => setRecommendations(res.data)).catch(() => setRecommendations([]));
-    api.get("/api/welfare-gaps").then((res) => setGaps(res.data)).catch(() => setGaps([]));
+    api.get("/api/recommendations").then((res) => { if (isMounted) setRecommendations(res.data); }).catch(() => { if (isMounted) setRecommendations([]); });
+    api.get("/api/welfare-gaps").then((res) => { if (isMounted) setGaps(res.data); }).catch(() => { if (isMounted) setGaps([]); });
     setEligibleError("");
     setSummaryAudio(null);
     api.get("/api/eligible-schemes")
       .then((res) => {
+        if (!isMounted) return;
         const schemes = res.data as Scheme[];
         setEligibleSchemes(schemes);
         if (!schemes.length) return;
@@ -45,37 +60,60 @@ export function DashboardPage() {
         });
       })
       .then((res) => {
-        if (!res) return;
+        if (!isMounted || !res) return;
         const nextAudio = { summary: res.data.summary, base64: res.data.audio_base64, mime: res.data.audio_mime || "audio/wav" };
         setSummaryAudio(nextAudio);
-        if (summaryPlayedKeys.current.has(eligibilityKey)) return;
-        summaryPlayedKeys.current.add(eligibilityKey);
-        if (!nextAudio.base64) return;
-        const player = new Audio(`data:${nextAudio.mime};base64,${nextAudio.base64}`);
-        summaryAudioRef.current = player;
-        player.onended = () => setSummaryPlaying(false);
-        setSummaryPlaying(true);
-        player.play().catch(() => {
-          setSummaryPlaying(false);
-          setSummaryAutoplayBlocked(true);
-        });
+
+        const hasAutoplayedBefore = localStorage.getItem(autoplayKey) === "true";
+        // Guard: only autoplay if user has not heard it before, component is still mounted, AND no other audio is actively playing
+        if (!hasAutoplayedBefore && nextAudio.base64 && !hasActivePlayback()) {
+          const player = new Audio(`data:${nextAudio.mime};base64,${nextAudio.base64}`);
+          summaryAudioRef.current = player;
+          playExclusiveAudio(
+            player,
+            () => {
+              localStorage.setItem(autoplayKey, "true"); // only mark played once it actually starts
+              if (isMounted) setSummaryPlaying(true);
+            },
+            () => { if (isMounted) setSummaryPlaying(false); },
+            () => {
+              if (isMounted) {
+                setSummaryPlaying(false);
+                setSummaryAutoplayBlocked(true);
+              }
+            }
+          ).catch(() => {
+            if (isMounted) {
+              setSummaryPlaying(false);
+              setSummaryAutoplayBlocked(true);
+            }
+          });
+        }
       })
-      .catch(() => setEligibleError(t(language, "eligibleSchemesError")));
-  }, [eligibilityKey, profile, language, user?.full_name]);
+      .catch(() => {
+        if (isMounted) setEligibleError(t(language, "eligibleSchemesError"));
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [eligibilityKey, profile, language, user?.id, user?.full_name]);
 
   const playSummary = () => {
     if (!summaryAudio?.base64) return;
     const player = new Audio(`data:${summaryAudio.mime};base64,${summaryAudio.base64}`);
     summaryAudioRef.current = player;
-    setSummaryPlaying(true);
     setSummaryAutoplayBlocked(false);
-    player.onended = () => setSummaryPlaying(false);
-    player.onerror = () => setSummaryPlaying(false);
-    player.play().catch(() => setSummaryPlaying(false));
+    playExclusiveAudio(
+      player,
+      () => setSummaryPlaying(true),
+      () => setSummaryPlaying(false),
+      () => setSummaryPlaying(false)
+    ).catch(() => setSummaryPlaying(false));
   };
 
   const stopSummary = () => {
-    summaryAudioRef.current?.pause();
+    stopAllPlayback();
     setSummaryPlaying(false);
   };
 

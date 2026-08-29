@@ -83,3 +83,80 @@ export function languageToBCP47(language: string): string {
   };
   return map[lang] || (lang.includes("-") ? lang : `${lang}-IN`);
 }
+
+let activeAudioElement: HTMLAudioElement | null = null;
+let isSpeakingUtterance = false;
+
+export function hasActivePlayback(): boolean {
+  if (activeAudioElement && !activeAudioElement.paused && !activeAudioElement.ended) {
+    return true;
+  }
+  if ("speechSynthesis" in window && (window.speechSynthesis.speaking || window.speechSynthesis.pending || isSpeakingUtterance)) {
+    return true;
+  }
+  return false;
+}
+
+export function stopAllPlayback(): void {
+  if (activeAudioElement) {
+    activeAudioElement.pause();
+    activeAudioElement = null;
+  }
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+  isSpeakingUtterance = false;
+}
+
+export function playExclusiveAudio(
+  audioElement: HTMLAudioElement,
+  onPlay?: () => void,
+  onEnd?: () => void,
+  onError?: () => void
+): Promise<void> {
+  stopAllPlayback();
+  activeAudioElement = audioElement;
+
+  audioElement.onended = () => {
+    if (activeAudioElement === audioElement) {
+      activeAudioElement = null;
+    }
+    onEnd?.();
+  };
+
+  audioElement.onerror = () => {
+    if (activeAudioElement === audioElement) {
+      activeAudioElement = null;
+    }
+    onError?.();
+  };
+
+  onPlay?.();
+  return audioElement.play();
+}
+
+export function speakExclusive(
+  utterance: SpeechSynthesisUtterance,
+  onStart?: () => void,
+  onEnd?: () => void,
+  onError?: () => void
+): void {
+  stopAllPlayback();
+  if ("speechSynthesis" in window) {
+    isSpeakingUtterance = true;
+    utterance.onstart = () => {
+      isSpeakingUtterance = true;
+      onStart?.();
+    };
+    utterance.onend = () => {
+      isSpeakingUtterance = false;
+      onEnd?.();
+    };
+    utterance.onerror = () => {
+      isSpeakingUtterance = false;
+      onError?.();
+    };
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
