@@ -25,3 +25,5 @@ frontend/dist/
 frontend/.vite/
 frontend/node_modules/
 data/faiss_index/
+# Local RAG/data cache
+data/.cache/
