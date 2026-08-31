@@ -46,9 +46,20 @@ class ChatService:
         normalized_message = search_service._normalize_query(cleaned_message)
         intent = self._detect_intent(cleaned_message)
         chunks = search_service.search(cleaned_message, top_k=4, threshold=0.10)
+        
+        # Apply profile-aware reranking if profile is available
+        if effective_profile and chunks:
+            from app.services.profile_aware_search import apply_profile_aware_filtering
+            chunks = apply_profile_aware_filtering(chunks, effective_profile, cleaned_message)
+            logger.info(
+                "[RAG] Profile-aware reranking applied: state=%s, occupation=%s, gender=%s",
+                effective_profile.state,
+                effective_profile.occupation,
+                effective_profile.gender,
+            )
 
         logger.info(
-            "Chat Query: '%s' | Intent: '%s' | Chunks retrieved: %d",
+            "Chat Query: '%s' | Intent: '%s' | Chunks retrieved: %d (reranked)",
             cleaned_message,
             intent,
             len(chunks),

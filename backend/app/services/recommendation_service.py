@@ -10,7 +10,7 @@ class RecommendationService:
             scheme
             for scheme in load_schemes()
             if eligibility_engine.evaluate(
-                scheme.id, profile, rules[scheme.id], scheme.alternative_scheme_ids
+                scheme.id, profile, rules.get(scheme.id, {}), scheme.alternative_scheme_ids
             ).status == "eligible"
         ]
 
@@ -18,7 +18,7 @@ class RecommendationService:
         rules = load_rules()
         items: list[RecommendationItem] = []
         for scheme in load_schemes():
-            result = eligibility_engine.evaluate(scheme.id, profile, rules[scheme.id], scheme.alternative_scheme_ids)
+            result = eligibility_engine.evaluate(scheme.id, profile, rules.get(scheme.id, {}), scheme.alternative_scheme_ids)
             if result.status in {"eligible", "needs_more_information"}:
                 items.append(
                     RecommendationItem(

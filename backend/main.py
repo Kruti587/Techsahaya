@@ -30,6 +30,12 @@ app.add_middleware(RateLimitMiddleware)
 @app.on_event("startup")
 def startup_event():
     init_db()
+    
+    # Validate scheme dataset
+    from app.services.data_loader import validate_dataset_on_startup
+    if not validate_dataset_on_startup():
+        logger.error("CRITICAL: Scheme dataset validation failed. Scheme-related features may not work correctly.")
+    
     if not settings.sarvam_api_key:
         logger.warning("SARVAM_API_KEY is not set — voice STT/TTS features will fail at runtime.")
     if not ensure_ffmpeg_on_path():

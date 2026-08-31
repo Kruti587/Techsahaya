@@ -414,7 +414,7 @@ def family_analyze(payload: FamilyAnalysisRequest, user: User = Depends(get_curr
         profile = EligibilityProfile(**member.model_dump())
         eligible_for = []
         for scheme in schemes:
-            result = eligibility_engine.evaluate(scheme.id, profile, rules[scheme.id], scheme.alternative_scheme_ids)
+            result = eligibility_engine.evaluate(scheme.id, profile, rules.get(scheme.id, {}), scheme.alternative_scheme_ids)
             if result.status == "eligible":
                 eligible_for.append({"scheme_id": scheme.id, "scheme_name": scheme.name, "score": result.score})
         members.append({"member": member.name, "relationship": member.relationship, "eligible_schemes": eligible_for})
@@ -432,7 +432,7 @@ def what_if(payload: WhatIfRequest, user: User = Depends(get_current_user)):
     scheme = next((item for item in load_schemes() if item.id == payload.scheme_id), None)
     if not scheme:
         raise HTTPException(status_code=404, detail="Scheme not found")
-    rule = load_rules()[payload.scheme_id]
+    rule = load_rules().get(payload.scheme_id, {})
     before = eligibility_engine.evaluate(payload.scheme_id, payload.current_profile, rule, scheme.alternative_scheme_ids)
     updated = payload.current_profile.model_copy(update=payload.simulated_changes)
     after = eligibility_engine.evaluate(payload.scheme_id, updated, rule, scheme.alternative_scheme_ids)
