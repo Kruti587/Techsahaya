@@ -1,0 +1,613 @@
+[
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Agriculture",
+    "source": "PM-Kisan Official Portal",
+    "text": "PM-Kisan is a central income support scheme for eligible farmer families across India under the Ministry of Agriculture & Farmers Welfare."
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Agriculture",
+    "source": "PM-Kisan Official Portal",
+    "text": "PM-Kisan benefits include direct income support delivered in periodic financial installments to support small and eligible farmer households with basic agricultural needs."
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Agriculture",
+    "source": "PM-Kisan Official Portal",
+    "text": "PM-Kisan eligibility requires a farmer profile, verifiable landholding records, and meeting official age and income criteria. Student status alone does not satisfy PM-Kisan farmer requirements."
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Agriculture",
+    "source": "PM-Kisan Official Portal",
+    "text": "PM-Kisan required documents include land record proof (RTC/Khatoni), bank account proof, identity verification, and mobile linkage."
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Agriculture",
+    "source": "PM-Kisan Official Portal",
+    "text": "PM-Kisan application steps: 1. Verify landholding data. 2. Visit the official PM-Kisan portal (pmkisan.gov.in) or common service center. 3. Submit application and track status online."
+  },
+
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Health",
+    "source": "Ayushman Bharat Official Portal",
+    "text": "Ayushman Bharat PM-JAY is a national health insurance scheme providing health coverage support for eligible low-income and vulnerable families."
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Health",
+    "source": "Ayushman Bharat Official Portal",
+    "text": "Ayushman Bharat PM-JAY benefits include cashless treatment and hospitalization coverage at empanelled public and private hospitals across India."
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Health",
+    "source": "Ayushman Bharat Official Portal",
+    "text": "Ayushman Bharat PM-JAY eligibility is based on socio-economic records and state family criteria verified through official health authority records."
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Health",
+    "source": "Ayushman Bharat Official Portal",
+    "text": "Ayushman Bharat PM-JAY required documents include ration card, family identity card/ID, and official proof of residence."
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Health",
+    "source": "Ayushman Bharat Official Portal",
+    "text": "Ayushman Bharat PM-JAY application steps: 1. Check beneficiary status on beneficiary.nha.gov.in. 2. Verify family details. 3. Access empanelled hospital network."
+  },
+
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Housing",
+    "source": "PMAY-G Official Portal",
+    "text": "Pradhan Mantri Awaas Yojana - Gramin (PMAY-G) provides rural housing assistance and financial support for eligible houseless and kutcha house households under Ministry of Rural Development."
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Housing",
+    "source": "PMAY-G Official Portal",
+    "text": "PMAY-G benefits include financial assistance for pucca house construction, convergence with sanitation (toilet construction), and drinking water linkages."
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Housing",
+    "source": "PMAY-G Official Portal",
+    "text": "PMAY-G eligibility requires a rural household profile with verified housing deprivation parameters."
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Housing",
+    "source": "PMAY-G Official Portal",
+    "text": "PMAY-G required documents include rural residence proof, income certificate, bank account details, and job card/ID."
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Housing",
+    "source": "PMAY-G Official Portal",
+    "text": "PMAY-G application steps: 1. Confirm housing status in Gram Panchayat list. 2. Verify Gram Sabha selection. 3. Track sanction and construction progress on pmayg.nic.in."
+  },
+
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Education",
+    "source": "National Scholarship Portal",
+    "text": "National Scholarship Portal (NSP) is a central digital platform for students to discover, apply for, and track central and state government scholarships."
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Education",
+    "source": "National Scholarship Portal",
+    "text": "National Scholarship Portal benefits include direct scholarship fee support, financial educational stipends, and a unified application portal for students."
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Education",
+    "source": "National Scholarship Portal",
+    "text": "National Scholarship Portal general eligibility requires student status and enrollment in a recognized school or college. Specific income limits and mark thresholds vary by individual scholarship scheme and must be verified on scholarships.gov.in."
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Education",
+    "source": "National Scholarship Portal",
+    "text": "National Scholarship Portal required documents include student ID card, income certificate, marksheet, bank passbook, and category certificate where applicable."
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Education",
+    "source": "National Scholarship Portal",
+    "text": "National Scholarship Portal application steps: 1. Register on scholarships.gov.in. 2. Select eligible scholarship scheme. 3. Fill student details, upload documents, and submit."
+  },
+
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Energy",
+    "source": "PMUY Official Portal",
+    "text": "Pradhan Mantri Ujjwala Yojana (PMUY) provides clean cooking fuel and LPG gas connection support to women in eligible low-income households."
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Energy",
+    "source": "PMUY Official Portal",
+    "text": "PM Ujjwala Yojana benefits include deposit-free LPG gas connection, first stove support, and refill subsidy assistance for women in low-income families."
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Energy",
+    "source": "PMUY Official Portal",
+    "text": "PM Ujjwala Yojana eligibility requires an adult woman belonging to a low-income or vulnerable household without an existing LPG connection."
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Energy",
+    "source": "PMUY Official Portal",
+    "text": "PM Ujjwala Yojana required documents include ration card, residence proof, bank account details, and family identity declaration."
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Energy",
+    "source": "PMUY Official Portal",
+    "text": "PM Ujjwala Yojana application steps: 1. Check household eligibility. 2. Visit nearest LPG distributor or apply online at pmuy.gov.in. 3. Submit application and complete verification."
+  },
+
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "e-Shram Official Portal",
+    "text": "e-Shram is a national database and digital registration platform for unorganized workers, street vendors, domestic workers, and agricultural labourers under Ministry of Labour."
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "e-Shram Official Portal",
+    "text": "e-Shram benefits include a universal e-Shram worker card with UAN, social security scheme linkage, and accidental insurance coverage support."
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "e-Shram Official Portal",
+    "text": "e-Shram eligibility requires an unorganized worker aged between 16 and 59 years who is not a member of EPFO/ESIC or an income tax payer."
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "e-Shram Official Portal",
+    "text": "e-Shram required documents include mobile number, bank account details, and self-declared occupation details."
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "e-Shram Official Portal",
+    "text": "e-Shram application steps: 1. Visit eshram.gov.in or CSC center. 2. Enter Aadhaar-linked mobile number. 3. Fill occupation details and download UAN card."
+  },
+
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Women and Child",
+    "source": "India Post",
+    "text": "Sukanya Samriddhi Yojana is a government-backed small savings financial support scheme for the education and marriage expenses of a girl child."
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Women and Child",
+    "source": "India Post",
+    "text": "Sukanya Samriddhi benefits include high compound interest rate savings, tax benefits, and long-term financial security dedicated to a girl child."
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Women and Child",
+    "source": "India Post",
+    "text": "Sukanya Samriddhi eligibility: Account can be opened by a parent or legal guardian for a girl child below 10 years of age (maximum two accounts per family)."
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Women and Child",
+    "source": "India Post",
+    "text": "Sukanya Samriddhi required documents include girl child birth certificate, guardian identity proof (Aadhaar/PAN), address proof, and passport photos."
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Women and Child",
+    "source": "India Post",
+    "text": "Sukanya Samriddhi application steps: 1. Visit designated Post Office or authorized bank branch. 2. Fill account opening form and attach birth certificate. 3. Deposit initial minimum amount."
+  },
+
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "Karnataka",
+    "category": "Agriculture",
+    "source": "Karnataka Agriculture Department",
+    "text": "Krishi Bhagya Karnataka is a Karnataka state government agricultural welfare scheme for dryland farmers to promote sustainable farming and water conservation."
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "Karnataka",
+    "category": "Agriculture",
+    "source": "Karnataka Agriculture Department",
+    "text": "Krishi Bhagya Karnataka benefits include financial subsidies for farm ponds (Krishi Honda), polythene lining, diesel/solar pump sets, micro-irrigation systems, and shade nets."
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "Karnataka",
+    "category": "Agriculture",
+    "source": "Karnataka Agriculture Department",
+    "text": "Krishi Bhagya Karnataka eligibility requires dryland farmer status residing and farming in Karnataka state, verified with local agriculture office land records."
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "Karnataka",
+    "category": "Agriculture",
+    "source": "Karnataka Agriculture Department",
+    "text": "Krishi Bhagya Karnataka required documents include Karnataka land records (Pahani/RTC), farmer ID/registration, bank passbook, and Karnataka residence proof."
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "Karnataka",
+    "category": "Agriculture",
+    "source": "Karnataka Agriculture Department",
+    "text": "Krishi Bhagya Karnataka application steps: 1. Contact local Raitha Samparka Kendra or District Agriculture Office. 2. Submit farm pond application with land records. 3. Complete field inspection."
+  },
+
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Sanitation",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "text": "Swachh Bharat Mission - Gramin (SBM-G) is a national rural sanitation scheme supporting household toilet construction and clean village initiatives."
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Sanitation",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "text": "Swachh Bharat Mission - Gramin benefits include financial incentive support for individual household latrine (IHHL) construction and community sanitation assets."
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Sanitation",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "text": "Swachh Bharat Mission - Gramin eligibility requires rural household status without an existing functional household toilet, subject to Gram Panchayat verification."
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Sanitation",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "text": "Swachh Bharat Mission - Gramin required documents include rural residence proof, ration card, bank account details, and Gram Panchayat recommendation."
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Sanitation",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "text": "Swachh Bharat Mission - Gramin application steps: 1. Apply at Gram Panchayat office or online via sbm.gov.in. 2. Verify household survey record. 3. Receive construction incentive."
+  },
+
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Livelihood",
+    "source": "PM Vishwakarma Official Portal",
+    "text": "PM Vishwakarma is a central scheme providing holistic end-to-end support to traditional artisans and craftspeople working with hands and tools."
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Livelihood",
+    "source": "PM Vishwakarma Official Portal",
+    "text": "PM Vishwakarma benefits include Vishwakarma Certificate & ID Card, basic and advanced skill training stipend, toolkit incentive up to Rs 15,000, collateral-free credit support, and digital transaction incentives."
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Livelihood",
+    "source": "PM Vishwakarma Official Portal",
+    "text": "PM Vishwakarma eligibility requires an artisan or craftsperson working in one of the 18 eligible traditional trades (carpenter, blacksmith, goldsmith, potter, sculptor, cobbler, tailor, mason, etc.), aged 18+ years, with only one family member eligible."
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Livelihood",
+    "source": "PM Vishwakarma Official Portal",
+    "text": "PM Vishwakarma required documents include trade proof/self-declaration, bank account proof, mobile number, and family details."
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Livelihood",
+    "source": "PM Vishwakarma Official Portal",
+    "text": "PM Vishwakarma application steps: 1. Review trade category on pmvishwakarma.gov.in. 2. Register through Common Service Center (CSC). 3. Complete 3-stage verification (Panchayat/ULB, District, Screening)."
+  },
+
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "Maandhan Official Portal",
+    "text": "Pradhan Mantri Shram Yogi Maandhan (PM-SYM) is a voluntary and contributory pension scheme for unorganized workers to ensure old age protection."
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "Maandhan Official Portal",
+    "text": "PM-SYM benefits include a guaranteed minimum monthly pension of Rs 3,000 after attaining the age of 60 years, with equal 50:50 contribution by Central Government."
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "Maandhan Official Portal",
+    "text": "PM-SYM eligibility: Unorganized worker aged 18 to 40 years with monthly income of Rs 15,000 or less, not covered under EPFO/ESIC/NPS or income tax paying."
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "Maandhan Official Portal",
+    "text": "PM-SYM required documents include auto-debit savings bank account passbook/IFSC and mobile number."
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Labour",
+    "source": "Maandhan Official Portal",
+    "text": "PM-SYM application steps: 1. Visit nearest CSC or self-enroll on maandhan.in. 2. Enter worker details and set auto-debit mandate. 3. Download pension card."
+  },
+
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "chunk_type": "overview",
+    "language": "en",
+    "state": "All",
+    "category": "Disability",
+    "source": "UDID Official Portal",
+    "text": "Unique Disability ID (UDID) project creates a national database and disability smart card for Persons with Disabilities (PwDs) under Department of Empowerment of Persons with Disabilities."
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "chunk_type": "benefits",
+    "language": "en",
+    "state": "All",
+    "category": "Disability",
+    "source": "UDID Official Portal",
+    "text": "UDID card benefits include nationwide single disability certification, streamlined access to central/state disability welfare schemes, educational concessions, and travel concessions."
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "chunk_type": "eligibility",
+    "language": "en",
+    "state": "All",
+    "category": "Disability",
+    "source": "UDID Official Portal",
+    "text": "UDID eligibility requires a person with benchmark disability verified and certified by a competent medical authority."
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "chunk_type": "documents",
+    "language": "en",
+    "state": "All",
+    "category": "Disability",
+    "source": "UDID Official Portal",
+    "text": "UDID required documents include photo, identity proof, address proof, and existing disability certificate (if available)."
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "chunk_type": "application",
+    "language": "en",
+    "state": "All",
+    "category": "Disability",
+    "source": "UDID Official Portal",
+    "text": "UDID application steps: 1. Register on swavlambancard.gov.in. 2. Fill personal and disability details online. 3. Complete medical assessment at designated hospital to receive UDID card."
+  }
+]

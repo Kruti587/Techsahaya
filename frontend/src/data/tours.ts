@@ -1,0 +1,155 @@
+export interface TourStep {
+  route: string;
+  targetSelector: string;
+  title: string;
+  description: string;
+  placement?: "top" | "bottom" | "left" | "right";
+  action?: "focus" | "fill";
+  fieldValue?: string;
+}
+
+export interface TourDefinition {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  steps: TourStep[];
+}
+
+export const TOURS_REGISTRY: Record<string, TourDefinition> = {
+  upload_income_proof: {
+    id: "upload_income_proof",
+    title: "Upload Income Certificate",
+    description: "Step-by-step guidance to securely upload and mask your income proof.",
+    category: "documents",
+    steps: [
+      {
+        route: "/documents",
+        targetSelector: "[data-tour='upload-section']",
+        title: "Document Center",
+        description: "This is where you upload documents safely. Raw documents are processed in memory and discarded.",
+        placement: "bottom"
+      },
+      {
+        route: "/documents",
+        targetSelector: "[data-tour='doc-type-select']",
+        title: "Choose Document Type",
+        description: "Select 'Income Certificate' from the list of common welfare documents.",
+        placement: "bottom",
+        action: "focus"
+      },
+      {
+        route: "/documents",
+        targetSelector: "[data-tour='upload-button']",
+        title: "Upload Document",
+        description: "Tap here to select your PDF or image file (under 5MB).",
+        placement: "top"
+      }
+    ]
+  },
+  complete_profile: {
+    id: "complete_profile",
+    title: "Complete Citizen Profile",
+    description: "Update your profile details to unlock accurate scheme matching.",
+    category: "profile",
+    steps: [
+      {
+        route: "/profile",
+        targetSelector: "[data-tour='profile-header']",
+        title: "Citizen Profile",
+        description: "Your profile information is used for deterministic eligibility evaluation.",
+        placement: "bottom"
+      },
+      {
+        route: "/profile",
+        targetSelector: "[data-tour='profile-state-select']",
+        title: "Select State",
+        description: "Choose your domicile state to find state-specific welfare benefits.",
+        placement: "bottom",
+        action: "focus"
+      },
+      {
+        route: "/profile",
+        targetSelector: "[data-tour='profile-occupation-select']",
+        title: "Select Occupation",
+        description: "Indicate your primary occupation (Farmer, Student, Worker, Artisan, etc.).",
+        placement: "bottom",
+        action: "focus"
+      },
+      {
+        route: "/profile",
+        targetSelector: "[data-tour='profile-save-button']",
+        title: "Save Profile",
+        description: "Save your details to immediately refresh your eligibility score.",
+        placement: "top"
+      }
+    ]
+  },
+  explore_welfare_gaps: {
+    id: "explore_welfare_gaps",
+    title: "Discover Missed Welfare Benefits",
+    description: "Find schemes you might qualify for based on your profile.",
+    category: "discovery",
+    steps: [
+      {
+        route: "/welfare-gaps",
+        targetSelector: "[data-tour='welfare-gaps-header']",
+        title: "Missed Benefit Detector",
+        description: "We analyze your profile against national and state schemes to highlight missed entitlements.",
+        placement: "bottom"
+      },
+      {
+        route: "/welfare-gaps",
+        targetSelector: "[data-tour='welfare-gaps-list']",
+        title: "Potential Schemes",
+        description: "Review the potential schemes and click 'Check Eligibility' to see satisfied and missing rules.",
+        placement: "top"
+      }
+    ]
+  },
+  verify_eligibility: {
+    id: "verify_eligibility",
+    title: "Deterministic Eligibility Checker",
+    description: "Understand exactly why you are eligible or what is missing.",
+    category: "eligibility",
+    steps: [
+      {
+        route: "/eligibility",
+        targetSelector: "[data-tour='eligibility-scheme-select']",
+        title: "Select a Scheme",
+        description: "Pick the government scheme you want to verify your eligibility for.",
+        placement: "bottom",
+        action: "focus"
+      },
+      {
+        route: "/eligibility",
+        targetSelector: "[data-tour='eligibility-check-btn']",
+        title: "Run Rule Engine",
+        description: "Evaluate transparent rules: age, income threshold, occupation, landholding, and required documents.",
+        placement: "top"
+      }
+    ]
+  },
+  family_optimizer: {
+    id: "family_optimizer",
+    title: "Family Benefit Optimizer",
+    description: "Analyze entitlements across all members of your household.",
+    category: "family",
+    steps: [
+      {
+        route: "/family",
+        targetSelector: "[data-tour='family-members-section']",
+        title: "Family Members",
+        description: "Add family members (children, spouse, elders) to calculate cumulative benefits.",
+        placement: "bottom"
+      },
+      {
+        route: "/family",
+        targetSelector: "[data-tour='family-analyze-btn']",
+        title: "Analyze Family Entitlements",
+        description: "Generate an entitlement matrix for your entire household.",
+        placement: "top"
+      }
+    ]
+  }
+};

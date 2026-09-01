@@ -1,0 +1,53 @@
+{
+  "default_language": "en",
+  "languages": [
+    {
+      "code": "en",
+      "label": "English",
+      "native_label": "English",
+      "direction": "ltr",
+      "sarvam_code": "en-IN",
+      "bcp47": "en-IN"
+    },
+    {
+      "code": "hi",
+      "label": "Hindi",
+      "native_label": "हिन्दी",
+      "direction": "ltr",
+      "sarvam_code": "hi-IN",
+      "bcp47": "hi-IN"
+    },
+    {
+      "code": "kn",
+      "label": "Kannada",
+      "native_label": "ಕನ್ನಡ",
+      "direction": "ltr",
+      "sarvam_code": "kn-IN",
+      "bcp47": "kn-IN"
+    },
+    {
+      "code": "ta",
+      "label": "Tamil",
+      "native_label": "தமிழ்",
+      "direction": "ltr",
+      "sarvam_code": "ta-IN",
+      "bcp47": "ta-IN"
+    },
+    {
+      "code": "te",
+      "label": "Telugu",
+      "native_label": "తెలుగు",
+      "direction": "ltr",
+      "sarvam_code": "te-IN",
+      "bcp47": "te-IN"
+    },
+    {
+      "code": "mr",
+      "label": "Marathi",
+      "native_label": "मराठी",
+      "direction": "ltr",
+      "sarvam_code": "mr-IN",
+      "bcp47": "mr-IN"
+    }
+  ]
+}
