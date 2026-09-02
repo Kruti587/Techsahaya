@@ -5,6 +5,37 @@ from app.models.schemas import EligibilityProfile, EligibilityResult
 
 class EligibilityEngine:
     def evaluate(self, scheme_id: str, profile: EligibilityProfile, rule: dict[str, Any], alternative_schemes: list[str]) -> EligibilityResult:
+        try:
+            return self._evaluate_internal(scheme_id, profile, rule, alternative_schemes)
+        except Exception as e:
+            import logging
+            import asyncio
+            from app.services.discord_service import discord_service
+            logger = logging.getLogger("techsahaya.eligibility_engine")
+            logger.exception("Eligibility engine failure: %s", e)
+            
+            asyncio.create_task(
+                discord_service.send_admin_notification(
+                    title="⚠️ ELIGIBILITY SYSTEM ERROR",
+                    message=f"**Component:** Eligibility Engine\n**Error:** {str(e)}\n**Scheme ID:** {scheme_id}",
+                    event_type="error",
+                    metadata={"scheme_id": scheme_id}
+                )
+            )
+            # Return a degraded but safe response
+            return EligibilityResult(
+                eligible=False,
+                status="system_error",
+                matched=[],
+                failed=["A system error occurred during evaluation."],
+                missing=[],
+                score=0,
+                explanation="System encountered an unexpected error while evaluating this scheme.",
+                next_action="Please try again later or contact support.",
+                alternative_schemes=[]
+            )
+
+    def _evaluate_internal(self, scheme_id: str, profile: EligibilityProfile, rule: dict[str, Any], alternative_schemes: list[str]) -> EligibilityResult:
         matched: list[str] = []
         failed: list[str] = []
         missing: list[str] = []

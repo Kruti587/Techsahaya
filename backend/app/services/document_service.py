@@ -208,60 +208,79 @@ class DocumentService:
         declared_type: Optional[str] = None,
         language: str = "en",
     ) -> DocumentRecord:
-        original_name = (file.filename or "").lower()
-        if "aadhaar" in original_name or "aadhar" in original_name or "pan" in original_name:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Please do not upload Aadhaar or PAN images. Use self-declared profile fields or common verification documents (income certificate, land record, ration card, disability certificate, caste certificate, generic sample document).",
+        try:
+            original_name = (file.filename or "").lower()
+            if "aadhaar" in original_name or "aadhar" in original_name or "pan" in original_name:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Please do not upload Aadhaar or PAN images. Use self-declared profile fields or common verification documents (income certificate, land record, ration card, disability certificate, caste certificate, generic sample document).",
+                )
+            content_type = file.content_type or self._content_type_from_name(file.filename or "")
+            if content_type in {"application/octet-stream", "text/plain"}:
+                content_type = self._content_type_from_name(file.filename or "")
+            if content_type not in self.allowed_types:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsupported file type")
+            masked_name = re.sub(r"\d", "X", file.filename or "document")
+    
+            doc_type = declared_type if (declared_type and declared_type in self.canonical_types) else self._classify(file.filename or "document")
+    
+            # In-memory ephemeral OCR (never saved to disk, zero external APIs)
+            extracted_fields = self._extract_ephemeral_fields(content, content_type, doc_type, language=language)
+    
+            masked_fields = {
+                "document_type": doc_type,
+                "mime_type": content_type,
+                "name_hint": user.full_name.split(" ")[0] if user.full_name else "Citizen",
+                "identifier_masked": "XXXX-XXXX",
+            }
+            document = DocumentRecord(
+                user_id=user.id,
+                document_type=doc_type,
+                status="processed",
+                verification_state="processed_in_memory",
+                masked_fields=masked_fields,
+                file_name=masked_name,
+                mime_type=content_type,
+                file_size=len(content),
+                retained_in_storage=False,
             )
-        content_type = file.content_type or self._content_type_from_name(file.filename or "")
-        if content_type in {"application/octet-stream", "text/plain"}:
-            content_type = self._content_type_from_name(file.filename or "")
-        if content_type not in self.allowed_types:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsupported file type")
-        masked_name = re.sub(r"\d", "X", file.filename or "document")
+            db.add(document)
+            db.commit()
+            db.refresh(document)
+    
+            # Store derived structured data in Redis with short ephemeral TTL (e.g. 5 minutes)
+            ephemeral_payload = {
+                "document_id": document.id,
+                "user_id": user.id,
+                "document_type": doc_type,
+                "extracted_fields": extracted_fields,
+                "field_confidences": extracted_fields.get("field_confidences", {}),
+                "ocr_quality": extracted_fields.get("ocr_quality", "good"),
+                "ocr_confidence_score": extracted_fields.get("ocr_confidence_score"),
+                "created_at": datetime.utcnow().isoformat(),
+            }
+            ephemeral_store.set(f"doc:{document.id}", ephemeral_payload, ttl_seconds=settings.redis_ephemeral_ttl)
+            setattr(document, "ephemeral_extracted", extracted_fields)
 
-        doc_type = declared_type if (declared_type and declared_type in self.canonical_types) else self._classify(file.filename or "document")
-
-        # In-memory ephemeral OCR (never saved to disk, zero external APIs)
-        extracted_fields = self._extract_ephemeral_fields(content, content_type, doc_type, language=language)
-
-        masked_fields = {
-            "document_type": doc_type,
-            "mime_type": content_type,
-            "name_hint": user.full_name.split(" ")[0] if user.full_name else "Citizen",
-            "identifier_masked": "XXXX-XXXX",
-        }
-        document = DocumentRecord(
-            user_id=user.id,
-            document_type=doc_type,
-            status="processed",
-            verification_state="processed_in_memory",
-            masked_fields=masked_fields,
-            file_name=masked_name,
-            mime_type=content_type,
-            file_size=len(content),
-            retained_in_storage=False,
-        )
-        db.add(document)
-        db.commit()
-        db.refresh(document)
-
-        # Store derived structured data in Redis with short ephemeral TTL (e.g. 5 minutes)
-        ephemeral_payload = {
-            "document_id": document.id,
-            "user_id": user.id,
-            "document_type": doc_type,
-            "extracted_fields": extracted_fields,
-            "field_confidences": extracted_fields.get("field_confidences", {}),
-            "ocr_quality": extracted_fields.get("ocr_quality", "good"),
-            "ocr_confidence_score": extracted_fields.get("ocr_confidence_score"),
-            "created_at": datetime.utcnow().isoformat(),
-        }
-        ephemeral_store.set(f"doc:{document.id}", ephemeral_payload, ttl_seconds=settings.redis_ephemeral_ttl)
-        setattr(document, "ephemeral_extracted", extracted_fields)
-
-        return document
+            return document
+        except HTTPException:
+            raise
+        except Exception as e:
+            import asyncio
+            from app.services.discord_service import discord_service
+            logger.exception("OCR Processing failed: %s", e)
+            
+            asyncio.create_task(
+                discord_service.send_admin_notification(
+                    title="📄 OCR PROCESSING ALERT",
+                    message=f"**Status:** Processing failed\n**Reason:** {str(e)}",
+                    event_type="warning"
+                )
+            )
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="OCR processing encountered an unexpected error."
+            )
 
     def _extract_ephemeral_fields(self, content: bytes, content_type: str, doc_type: str, language: str = "en") -> dict[str, Any]:
         """Runs in-memory local OCR / text extraction without writing bytes to disk or calling third-party vision APIs.

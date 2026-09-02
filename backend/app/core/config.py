@@ -61,6 +61,10 @@ class Settings(BaseSettings):
     languages_config_path: str = "./data/config/languages.json"
     tours_config_path: str = "./data/config/tours.json"
 
+    # Discord Admin Notifications
+    discord_bot_token: str = ""
+    discord_admin_channel_id: str = ""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
