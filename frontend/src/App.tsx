@@ -1,3 +1,4 @@
+import { ComposeEmailCard } from "./components/ComposeEmailCard";
 import { Route, Routes } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
 import { ProtectedRoute, RoleProtectedRoute } from "./components/ProtectedRoute";
@@ -33,10 +34,14 @@ import { SignupPage } from "./pages/SignupPage";
 import { WelfareGapsPage } from "./pages/WelfareGapsPage";
 import { WhatIfPage } from "./pages/WhatIfPage";
 import { ConsentPage } from "./pages/ConsentPage";
+import { ScrollProgressBar } from "./components/ScrollProgressBar";
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <ScrollProgressBar />
+      <ComposeEmailCard />
+      <Routes>
       <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
       <Route path="/how-it-works" element={<PublicLayout><HowItWorksPage /></PublicLayout>} />
       <Route path="/schemes" element={<PublicLayout><SchemesPage /></PublicLayout>} />
@@ -73,5 +78,6 @@ export default function App() {
       <Route path="/admin/users" element={<RoleProtectedRoute roles={["admin"]}><AppShell><AdminUsersPage /></AppShell></RoleProtectedRoute>} />
       <Route path="/admin/audit" element={<RoleProtectedRoute roles={["admin"]}><AppShell><AdminAuditPage /></AppShell></RoleProtectedRoute>} />
     </Routes>
+    </>
   );
 }

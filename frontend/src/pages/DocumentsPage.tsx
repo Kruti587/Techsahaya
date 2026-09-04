@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FileCheck2, FileText, RefreshCcw, ShieldCheck, UploadCloud } from "lucide-react";
+import { AlertTriangle, FileCheck2, FileText, RefreshCcw, ShieldCheck, UploadCloud } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
@@ -163,6 +163,7 @@ export function DocumentsPage() {
   const [documents, setDocuments] = useState<any[]>([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [digilockerCertified, setDigilockerCertified] = useState(false);
 
   const load = async () => {
     const res = await api.get("/api/documents");
@@ -218,10 +219,40 @@ export function DocumentsPage() {
         <div className="rounded-3xl bg-white p-5 shadow-card" data-tour="upload-section">
           <h2 className="mb-2 text-lg font-semibold">{t(language, "uploadDocument")}</h2>
           <p className="mb-4 text-sm text-slate-600">{t(language, "uploadHelp")}</p>
+
+          {/* DigiLocker / Cybersecurity Verification Notice */}
+          <div className="mb-4 rounded-2xl border-2 border-amber-400 bg-amber-50 p-4">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 rounded-xl bg-amber-400 p-2 text-white flex-shrink-0">
+                <AlertTriangle size={20} />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-amber-900 text-sm">{t(language, "digilockerNoticeTitle")}</p>
+                <p className="mt-1 text-xs text-amber-800 leading-relaxed">{t(language, "digilockerNoticeDesc")}</p>
+              </div>
+            </div>
+            <label className="mt-4 flex cursor-pointer items-start gap-3" htmlFor="digilocker-confirm">
+              <input
+                id="digilocker-confirm"
+                type="checkbox"
+                className="mt-0.5 h-5 w-5 flex-shrink-0 accent-amber-600 cursor-pointer"
+                checked={digilockerCertified}
+                onChange={(e) => setDigilockerCertified(e.target.checked)}
+              />
+              <span className="text-sm font-semibold text-amber-900 leading-snug">
+                {t(language, "digilockerCheckboxLabel")}
+              </span>
+            </label>
+          </div>
+
           <form
             className="space-y-3"
             onSubmit={async (e) => {
               e.preventDefault();
+              if (!digilockerCertified) {
+                setError(t(language, "digilockerMustCertify"));
+                return;
+              }
               const input = document.getElementById("upload") as HTMLInputElement;
               const select = document.getElementById("doc-type") as HTMLSelectElement;
               const file = input.files?.[0];
@@ -249,6 +280,7 @@ export function DocumentsPage() {
               setProfile({ ...profile, available_documents: res.data.available_documents || profile.available_documents });
               setError("");
               input.value = "";
+              setDigilockerCertified(false);
               await load();
             }}
           >
@@ -273,14 +305,15 @@ export function DocumentsPage() {
             </div>
 
             <label className="grid gap-1 text-sm font-semibold" htmlFor="upload">
-              Select File (PDF, PNG, JPG)
+              {t(language, "chooseDocument")} (PDF, PNG, JPG)
               <input id="upload" aria-label={t(language, "uploadDocument")} className="min-h-12 rounded-xl border p-3 font-normal" type="file" accept=".pdf,.png,.jpg,.jpeg" />
             </label>
             <div className="flex flex-wrap gap-2 pt-1">
               <button
                 type="submit"
                 data-tour="upload-button"
-                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-4 font-semibold text-white shadow-sm hover:opacity-90 transition"
+                disabled={!digilockerCertified}
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-4 font-semibold text-white shadow-sm hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <UploadCloud size={18} /> {t(language, "uploadDocument")}
               </button>

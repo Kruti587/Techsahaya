@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none">
+  <!-- Tech Sahaya Family Emblem (Vector Artwork) -->
+  <g id="emblem" transform="translate(45, 10)">
+    <!-- Left Golden Sun / Warm Family Aura -->
+    <circle cx="95" cy="72" r="32" fill="#FDD663" stroke="#1A2B49" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Left Sprout Stem & Bud -->
+    <path d="M64 78C56 72 50 82 46 80" stroke="#1A2B49" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="43" cy="80" r="4.5" fill="#1A2B49"/>
+
+    <!-- Left Bottom Leaf -->
+    <path d="M52 92C60 88 74 94 72 106C62 108 50 102 52 92Z" fill="#81C995" stroke="#1A2B49" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Right Blue Family Member Body -->
+    <path d="M128 48C140 44 158 64 156 100C154 116 138 124 126 122C116 112 118 64 128 48Z" fill="#93B4D7" stroke="#1A2B49" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Right Sprout Stem & Bud -->
+    <path d="M156 86C164 88 170 80 178 84" stroke="#1A2B49" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="180" cy="84" r="4.5" fill="#1A2B49"/>
+
+    <!-- Right Bottom Leaf -->
+    <path d="M138 116C152 110 162 122 158 132C146 136 134 128 138 116Z" fill="#81C995" stroke="#1A2B49" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Center Member Body (Mint Green) -->
+    <path d="M96 66C104 66 112 76 110 118C108 126 84 126 82 118C80 76 88 66 96 66Z" fill="#81C995" stroke="#1A2B49" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Top Left Member Head (Coral Pink) -->
+    <circle cx="86" cy="30" r="14" fill="#F28B82" stroke="#1A2B49" stroke-width="4.5"/>
+
+    <!-- Top Right Member Head (Mint Green) -->
+    <circle cx="140" cy="42" r="14" fill="#81C995" stroke="#1A2B49" stroke-width="4.5"/>
+
+    <!-- Center Member Head (Coral Pink) -->
+    <circle cx="96" cy="62" r="10.5" fill="#F28B82" stroke="#1A2B49" stroke-width="4.5"/>
+  </g>
+
+  <!-- Typography: TECH SAHAYA -->
+  <text x="160" y="195" text-anchor="middle" font-family="'Outfit', 'Inter', system-ui, -apple-system, sans-serif" font-size="28" font-weight="800" fill="#1A2B49" letter-spacing="4">
+    TECH SAHAYA
+  </text>
+</svg>

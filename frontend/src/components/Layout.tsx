@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
-import { HandHelping, House, CircleUser, GitCompareArrows, MessageSquareText, Network, Search, ShieldCheck, Users, WalletCards } from "lucide-react";
+import { House, CircleUser, GitCompareArrows, MessageSquareText, Network, Search, ShieldCheck, Users, WalletCards } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
+import { Logo } from "./Logo";
 
 const navItems = [
   { to: "/", label: "Home", icon: House },
@@ -21,7 +22,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-20 border-b border-emerald-900/10 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
           <Link to="/" className="flex items-center gap-3 text-sahaya-green">
-            <div className="rounded-xl bg-sahaya-green p-2 text-white"><HandHelping size={20} /></div>
+            <Logo size={40} />
             <div>
               <div className="font-bold">Tech Sahaya</div>
               <div className="text-xs text-slate-500">Public-service welfare assistant</div>

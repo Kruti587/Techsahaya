@@ -1,4 +1,4 @@
-import { Bell, ChevronsLeft, ChevronsRight, CircleUser, Files, GitCompareArrows, HandHelping, LayoutDashboard, LogOut, Menu, MessageSquareText, Network, Search, ShieldCheck, UserCog, Users, WalletCards, X } from "lucide-react";
+import { Bell, ChevronsLeft, ChevronsRight, CircleUser, Files, GitCompareArrows, LayoutDashboard, LogOut, Menu, MessageSquareText, Network, Search, ShieldCheck, UserCog, Users, WalletCards, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
@@ -6,6 +6,7 @@ import { t, type TranslationKey } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
 import { FloatingChatWidget } from "./FloatingChatWidget";
 import { SpotlightOverlay } from "./SpotlightOverlay";
+import { Logo } from "./Logo";
 
 type NavItem = {
   to: string;
@@ -97,7 +98,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
           <Link to="/dashboard" className="flex items-center gap-3 text-sahaya-green">
-            <div className="rounded-xl bg-sahaya-green p-2 text-white"><HandHelping size={20} /></div>
+            <Logo size={40} />
             <div>
               <div className="font-bold">Tech Sahaya</div>
               <div className="text-xs text-slate-500">{user?.role === "admin" ? t(language, "administration") : user?.role === "csc_operator" ? t(language, "cscAssistance") : t(language, "citizenPlatform")}</div>

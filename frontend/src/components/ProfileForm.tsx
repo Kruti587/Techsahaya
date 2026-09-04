@@ -5,6 +5,24 @@ import { t } from "../utils/i18n";
 
 const defaults: EligibilityProfile = { available_documents: [] };
 
+const INDIA_STATES = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+  "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+];
+
+const DISABILITY_TYPES = [
+  "Blindness", "Low Vision", "Deaf", "Hard of Hearing", "Locomotor Disability",
+  "Intellectual Disability", "Mental Illness", "Autism Spectrum Disorder",
+  "Cerebral Palsy", "Muscular Dystrophy", "Chronic Neurological Conditions",
+  "Speech and Language Disability", "Thalassemia", "Hemophilia",
+  "Sickle Cell Disease", "Multiple Disabilities", "Acid Attack Victims", "Parkinson's Disease"
+];
+
 export function ProfileForm({
   initialValue,
   onSubmit,
@@ -16,10 +34,17 @@ export function ProfileForm({
 }) {
   const { language } = useAppContext();
   const [form, setForm] = useState<EligibilityProfile>(initialValue || defaults);
+  const [disabilityType, setDisabilityType] = useState<string>(
+    (initialValue as any)?.disability_type || ""
+  );
+
   useEffect(() => {
     setForm(initialValue || defaults);
+    setDisabilityType((initialValue as any)?.disability_type || "");
   }, [initialValue]);
-  const update = (key: keyof EligibilityProfile, value: string | number | boolean) => setForm((prev) => ({ ...prev, [key]: value }));
+
+  const update = (key: keyof EligibilityProfile, value: string | number | boolean) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
 
   const buttonText = submitLabel || t(language, "save");
 
@@ -37,31 +62,113 @@ export function ProfileForm({
       className="grid gap-4 md:grid-cols-2"
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit(form);
+        const submission = form.disability
+          ? { ...form, disability_type: disabilityType }
+          : { ...form, disability_type: undefined };
+        onSubmit(submission);
       }}
     >
-      <input className="min-h-12 rounded-xl border p-3" placeholder={t(language, "age")} type="number" value={form.age || ""} onChange={(e) => update("age", Number(e.target.value))} />
-      <select className="min-h-12 rounded-xl border p-3" value={form.gender || ""} onChange={(e) => update("gender", e.target.value)}>
+      {/* Age: 1–120 */}
+      <input
+        className="min-h-12 rounded-xl border p-3"
+        placeholder={t(language, "age")}
+        type="number"
+        min={1}
+        max={120}
+        value={form.age || ""}
+        onChange={(e) => update("age", Number(e.target.value))}
+      />
+
+      {/* Gender */}
+      <select
+        className="min-h-12 rounded-xl border p-3"
+        value={form.gender || ""}
+        onChange={(e) => update("gender", e.target.value)}
+      >
         <option value="">{t(language, "gender")}</option>
         <option value="female">{t(language, "female")}</option>
         <option value="male">{t(language, "male")}</option>
       </select>
-      <input data-tour="profile-state-select" className="min-h-12 rounded-xl border p-3" placeholder={t(language, "state")} value={form.state || ""} onChange={(e) => update("state", e.target.value)} />
-      <input data-tour="profile-occupation-select" className="min-h-12 rounded-xl border p-3" placeholder={t(language, "occupation")} value={form.occupation || ""} onChange={(e) => update("occupation", e.target.value)} />
-      <input data-tour="profile-income-input" className="min-h-12 rounded-xl border p-3" placeholder={t(language, "income")} type="number" value={form.income || ""} onChange={(e) => update("income", Number(e.target.value))} />
-      <input className="min-h-12 rounded-xl border p-3" placeholder={t(language, "landholding")} type="number" value={form.landholding || ""} onChange={(e) => update("landholding", Number(e.target.value))} />
-      <label className="flex min-h-12 items-center gap-2 rounded-xl border p-3">
-        <input type="checkbox" checked={form.disability || false} onChange={(e) => update("disability", e.target.checked)} />
+
+      {/* State — dropdown */}
+      <select
+        data-tour="profile-state-select"
+        className="min-h-12 rounded-xl border p-3"
+        value={form.state || ""}
+        onChange={(e) => update("state", e.target.value)}
+      >
+        <option value="">{t(language, "state")}</option>
+        {INDIA_STATES.map((s) => (
+          <option key={s} value={s}>{s}</option>
+        ))}
+      </select>
+
+      {/* Occupation */}
+      <input
+        data-tour="profile-occupation-select"
+        className="min-h-12 rounded-xl border p-3"
+        placeholder={t(language, "occupation")}
+        value={form.occupation || ""}
+        onChange={(e) => update("occupation", e.target.value)}
+      />
+
+      {/* Income */}
+      <input
+        data-tour="profile-income-input"
+        className="min-h-12 rounded-xl border p-3"
+        placeholder={t(language, "income")}
+        type="number"
+        min={0}
+        value={form.income || ""}
+        onChange={(e) => update("income", Number(e.target.value))}
+      />
+
+      {/* Landholding: min 0 */}
+      <input
+        className="min-h-12 rounded-xl border p-3"
+        placeholder={t(language, "landholding")}
+        type="number"
+        min={0}
+        step={0.1}
+        value={form.landholding ?? ""}
+        onChange={(e) => update("landholding", Number(e.target.value))}
+      />
+
+      {/* Disability checkbox */}
+      <label className="flex min-h-12 items-center gap-2 rounded-xl border p-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={form.disability || false}
+          onChange={(e) => update("disability", e.target.checked)}
+        />
         {t(language, "disability")}
       </label>
 
-      <div className="md:col-span-2 space-y-2">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+      {/* Disability type — shown only when checked */}
+      {form.disability && (
+        <select
+          className="min-h-12 rounded-xl border p-3"
+          value={disabilityType}
+          onChange={(e) => setDisabilityType(e.target.value)}
+        >
+          <option value="">Select disability type...</option>
+          {DISABILITY_TYPES.map((d) => (
+            <option key={d} value={d}>{d}</option>
+          ))}
+        </select>
+      )}
+
+      {/* Required documents — label text BLACK */}
+      <div className={`space-y-2 ${form.disability ? "" : "md:col-span-2"}`}>
+        <label className="text-sm font-medium text-black">
           {t(language, "requiredDocuments") || "Available Verification Documents"}
         </label>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {DOCUMENT_OPTIONS.map((doc) => (
-            <label key={doc.value} className="flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 p-3 text-sm cursor-pointer hover:border-sahaya-green transition">
+            <label
+              key={doc.value}
+              className="flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 p-3 text-sm cursor-pointer hover:border-sahaya-green transition"
+            >
               <input
                 type="checkbox"
                 className="h-4 w-4 rounded text-sahaya-green focus:ring-sahaya-green"
@@ -74,13 +181,20 @@ export function ProfileForm({
                   update("available_documents", next as never);
                 }}
               />
-              <span className="text-slate-800 dark:text-slate-200">{doc.label}</span>
+              <span className="text-black dark:text-slate-200">{doc.label}</span>
             </label>
           ))}
         </div>
       </div>
 
-      <button data-tour="profile-save-button" className="min-h-12 rounded-xl bg-sahaya-green px-4 font-semibold text-white md:col-span-2 shadow-sm hover:opacity-90 transition" type="submit">{buttonText}</button>
+      {/* If disability shown, requiredDocuments above only spans 1 col, so we need the button to span 2 */}
+      <button
+        data-tour="profile-save-button"
+        className="min-h-12 rounded-xl bg-sahaya-green px-4 font-semibold text-white md:col-span-2 shadow-sm hover:opacity-90 transition"
+        type="submit"
+      >
+        {buttonText}
+      </button>
     </form>
   );
 }

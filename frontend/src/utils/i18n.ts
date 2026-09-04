@@ -1,5 +1,9 @@
 const dictionary = {
   en: {
+    digilockerNoticeTitle: "DigiLocker / Official Watermark Verification Mandatory",
+    digilockerNoticeDesc: "Cybersecurity Integrity Gate: To prevent fraudulent certificates, please upload documents directly issued via DigiLocker, e-District portals, or certificates bearing an official Government Digital Signature / QR Watermark. Unverified or altered scans will fail verification.",
+    digilockerCheckboxLabel: "I certify this document is DigiLocker verified or contains an official government QR / digital signature watermark.",
+    digilockerMustCertify: "Security Requirement: Please confirm your document is DigiLocker verified or contains an official digital watermark before proceeding.",
     login: "Login",
     getStarted: "Get Started",
     findMyBenefits: "Find My Benefits",
@@ -217,6 +221,10 @@ const dictionary = {
     docGenericSample: "Generic Sample Document"
   },
   hi: {
+    digilockerNoticeTitle: "डिजीलॉकर / आधिकारिक वॉटरमार्क सत्यापन अनिवार्य",
+    digilockerNoticeDesc: "साइबर सुरक्षा प्रमाणन: जाली या नकली प्रमाणपत्रों की रोकथाम के लिए, कृपया सीधे डिजिलॉकर से जारी या आधिकारिक डिजिटल हस्ताक्षर/QR वॉटरमार्क वाले प्रमाणपत्र ही अपलोड करें। बिना सत्यापन वाले दस्तावेज़ अस्वीकार कर दिए जाएंगे।",
+    digilockerCheckboxLabel: "मैं प्रमाणित करता/करती हूँ कि यह दस्तावेज़ डिजिलॉकर से सत्यापित है या इसमें आधिकारिक सरकारी QR / डिजिटल वॉटरमार्क मौजूद है।",
+    digilockerMustCertify: "सुरक्षा आवश्यकता: कृपया पुष्टि करें कि आपका दस्तावेज़ डिजिलॉकर सत्यापित है या इसमें आधिकारिक वॉटरमार्क मौजूद है।",
     login: "लॉगिन",
     getStarted: "शुरू करें",
     findMyBenefits: "मेरे लाभ खोजें",
@@ -434,6 +442,10 @@ const dictionary = {
     docGenericSample: "सामान्य नमूना दस्तावेज़ (Generic Document)"
   },
   kn: {
+    digilockerNoticeTitle: "ಡಿಜಿಲಾಕರ್ / ಅಧಿಕೃತ ವಾಟರ್‌ಮಾರ್ಕ್ ಪರಿಶೀಲನೆ ಕಡ್ಡಾಯ",
+    digilockerNoticeDesc: "ಸೈಬರ್ ಭದ್ರತಾ ಗೇಟ್: ನಕಲಿ ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ತಡೆಗಟ್ಟಲು, ದಯವಿಟ್ಟು ಡಿಜಿಲಾಕರ್ ಮೂಲಕ ಪಡೆದ ಅಥವಾ ಅಧಿಕೃತ ಸರ್ಕಾರಿ ಡಿಜಿಟಲ್ ಸಹಿ/QR ವಾಟರ್‌ಮಾರ್ಕ್ ಹೊಂದಿರುವ ದಾಖಲೆಗಳನ್ನು ಮಾತ್ರ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ. ತಿರುಚಿದ ದಾಖಲೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ.",
+    digilockerCheckboxLabel: "ಈ ದಾಖಲೆಯು ಡಿಜಿಲಾಕರ್ ಪರಿಶೀಲಿತವಾಗಿದೆ ಅಥವಾ ಅಧಿಕೃತ ಸರ್ಕಾರಿ QR / ಡಿಜಿಟಲ್ ಸಹಿ ವಾಟರ್‌ಮಾರ್ಕ್ ಹೊಂದಿದೆ ಎಂದು ನಾನು ಪ್ರಮಾಣೀಕರಿಸುತ್ತೇನೆ.",
+    digilockerMustCertify: "ಭದ್ರತಾ ಅಗತ್ಯತೆ: ಮುಂದುವರಿಯುವ ಮೊದಲು ನಿಮ್ಮ ದಾಖಲೆಯು ಡಿಜಿಲಾಕರ್ ಅಥವಾ ಅಧಿಕೃತ ವಾಟರ್‌ಮಾರ್ಕ್ ಹೊಂದಿದೆ ಎಂದು ದೃಢೀಕರಿಸಿ.",
     login: "ಲಾಗಿನ್",
     getStarted: "ಪ್ರಾರಂಭಿಸಿ",
     findMyBenefits: "ನನ್ನ ಪ್ರಯೋಜನಗಳನ್ನು ಹುಡುಕಿ",
@@ -651,6 +663,10 @@ const dictionary = {
     docGenericSample: "ಸಾಮಾನ್ಯ ಮಾದರಿ ದಾಖಲೆ (Generic Document)"
   },
   te: {
+    digilockerNoticeTitle: "డిజిలాకర్ / అధికారిక వాటర్‌మార్క్ ధృవీకరణ తప్పనిసరి",
+    digilockerNoticeDesc: "సైబర్ సెక్యూరిటీ గేట్: నకిలీ సర్టిఫికెట్లను నిరోధించడానికి, దయచేసి డిజిలాకర్ ద్వారా జారీ చేయబడిన లేదా అధికారిక డిజిటల్ సంతకం/QR వాటర్‌మార్క్ ఉన్న పత్రాలను మాత్రమే అప్‌లోడ్ చేయండి.",
+    digilockerCheckboxLabel: "ఈ పత్రం డిజిలాకర్ ధృవీకరించబడిందని లేదా అధికారిక ప్రభుత్వ QR / డిజిటల్ వాటర్‌మార్క్ కలిగి ఉందని నేను ధృవీకరిస్తున్నాను.",
+    digilockerMustCertify: "భద్రతా నిబంధన: దయచేసి మీ పత్రం డిజిలాకర్ లేదా అధికారిక వాటర్‌మార్క్ కలిగి ఉందని ధృవీకరించండి.",
     login: "లాగిన్",
     getStarted: "ప్రారంభించండి",
     findMyBenefits: "నా ప్రయోజనాలను కనుగొనండి",
@@ -868,6 +884,10 @@ const dictionary = {
     docGenericSample: "సాధారణ నమూనా పత్రం (Generic Document)"
   },
   ta: {
+    digilockerNoticeTitle: "டிஜிலாக்கர் / அதிகாரப்பூர்வ வாட்டர்மார்க் சரிபார்ப்பு கட்டாயம்",
+    digilockerNoticeDesc: "சைபர் பாதுகாப்பு வழிகாட்டுதல்: போலி சான்றிதழ்களைத் தடுக்க, தயவுசெய்து டிஜிலாக்கர் மூலம் பெறப்பட்ட அல்லது அதிகாரப்பூர்வ டிஜிட்டல் கையொப்பம்/QR வாட்டர்மார்க் கொண்ட ஆவணங்களை மட்டுமே பதிவேற்றவும்.",
+    digilockerCheckboxLabel: "இந்த ஆவணம் டிஜிலாக்கரிலிருந்து பெறப்பட்டது அல்லது அதிகாரப்பூர்வ அரசு QR / டிஜிட்டல் வாட்டர்மார்க் கொண்டுள்ளது என உறுதியளிக்கிறேன்.",
+    digilockerMustCertify: "பாதுகாப்புத் தேவை: உங்கள் ஆவணம் டிஜிலாக்கர் சரிபார்க்கப்பட்டது என்பதை உறுதிப்படுத்தவும்.",
     login: "உள்நுழை",
     getStarted: "தொடங்குங்கள்",
     findMyBenefits: "எனக்கான பலன்களைக் கண்டறியவும்",
@@ -1085,6 +1105,10 @@ const dictionary = {
     docGenericSample: "பொது மாதிரி ஆவணம் (Generic Document)"
   },
   ml: {
+    digilockerNoticeTitle: "ഡിജിലോക്കർ / ഔദ്യോഗിക വാട്ടർമാർക്ക് പരിശോധന നിർബന്ധം",
+    digilockerNoticeDesc: "സൈബർ സുരക്ഷാ പരിശോധന: വ്യാജ സർട്ടിഫിക്കറ്റുകൾ തടയുന്നതിന്, ഡിജിലോക്കർ വഴി ലഭിച്ചതോ ഔദ്യോഗിക ഡിജിറ്റൽ ഒപ്പ്/QR വാട്ടർമാർക്ക് ഉള്ളതോ ആയ രേഖകൾ മാത്രം അപ്‌ലോഡ് ചെയ്യുക.",
+    digilockerCheckboxLabel: "ഈ രേഖ ഡിജിലോക്കർ പരിശോധിച്ചതാണെന്നോ ഔദ്യോഗിക സർക്കാർ QR / ഡിജിറ്റൽ വാട്ടർമാർക്ക് ഉള്ളതാണെന്നോ ഞാൻ സാക്ഷ്യപ്പെടുത്തുന്നു.",
+    digilockerMustCertify: "സുരക്ഷാ നിർദ്ദേശം: നിങ്ങളുടെ രേഖ ഡിജിലോക്കർ പരിശോധിച്ചതാണെന്ന് ദയവായി സ്ഥിരീകരിക്കുക.",
     login: "ലോഗിൻ",
     getStarted: "ആരംഭിക്കുക",
     findMyBenefits: "എന്റെ ആനുകൂല്യങ്ങൾ കണ്ടെത്തുക",
@@ -1302,6 +1326,10 @@ const dictionary = {
     docGenericSample: "സാധാരണ മാതൃകാ രേഖ (Generic Document)"
   },
   bn: {
+    digilockerNoticeTitle: "ডিজিলকার / সরকারি ওয়াটারমার্ক যাচাইকরণ বাধ্যতামূলক",
+    digilockerNoticeDesc: "সাইবার নিরাপত্তা সতর্কতা: জাল নথি রোধ করতে, অনুগ্রহ করে ডিজিলকার থেকে প্রাপ্ত অথবা সরকারি ডিজিটাল স্বাক্ষর/QR ওয়াটারমার্কযুক্ত আসল নথি আপলোড করুন।",
+    digilockerCheckboxLabel: "আমি প্রত্যয়ন করছি যে এই নথিটি ডিজিলকার যাচাইকৃত অথবা এতে সরকারি QR / ডিজিটাল ওয়াটারমার্ক রয়েছে।",
+    digilockerMustCertify: "নিরাপত্তা প্রয়োজন: অনুগ্রহ করে নিশ্চিত করুন যে আপনার নথিটি ডিজিলকার যাচাইকৃত।",
     login: "লগইন",
     getStarted: "শুরু করুন",
     findMyBenefits: "আমার সুবিধাগুলি খুঁজুন",
@@ -1519,6 +1547,10 @@ const dictionary = {
     docGenericSample: "সাধারণ নমুনা নথি (Generic Document)"
   },
   mr: {
+    digilockerNoticeTitle: "डिजिलॉकर / अधिकृत वॉटरमार्क पडताळणी अनिवार्य",
+    digilockerNoticeDesc: "सायबर सुरक्षा पडताळणी: बनावट किंवा खोट्या कागदपत्रांना आळा घालण्यासाठी, कृपया थेट डिजिलॉकरवरून प्राप्त किंवा अधिकृत डिजिटल स्वाक्षरी/QR वॉटरमार्क असलेली कागदपत्रेच अपलोड करा. अन्यथा पडताळणी अयशस्वी होईल.",
+    digilockerCheckboxLabel: "मी प्रमाणित करतो/करते की हे दस्तऐवज डिजिलॉकर सत्यापित आहे किंवा त्यावर अधिकृत सरकारी QR / डिजिटल वॉटरमार्क आहे.",
+    digilockerMustCertify: "सुरक्षा आवश्यकता: कृपया पुष्टी करा की आपले दस्तऐवज डिजिलॉकर सत्यापित आहे किंवा त्यावर अधिकृत वॉटरमार्क आहे.",
     login: "लॉगिन",
     getStarted: "सुरू करा",
     findMyBenefits: "माझे लाभ शोधा",
@@ -1736,6 +1768,10 @@ const dictionary = {
     docGenericSample: "सामान्य नमुना दस्तऐवज (Generic Document)"
   },
   gu: {
+    digilockerNoticeTitle: "ડિજીલોકર / સત્તાવાર વૉટરમાર્ક ચકાસણી ફરજિયાત",
+    digilockerNoticeDesc: "સાયબર સુરક્ષા ચકાસણી: નકલી દસ્તાવેજો રોકવા માટે, કૃપા કરીને ડિજીલોકર દ્વારા મેળવેલ અથવા સત્તાવાર ડિજિટલ હસ્તાક્ષર/QR વૉટરમાર્ક વાળા દસ્તાવેજો જ અપલોડ કરો.",
+    digilockerCheckboxLabel: "હું પ્રમાણિત કરું છું કે આ દસ્તાવેજ ડિજીલોકરથી ચકાસાયેલ છે અથવા સત્તાવાર સરકારી QR / ડિજિટલ વૉટરમાર્ક ધરાવે છે.",
+    digilockerMustCertify: "સુરક્ષા આવશ્યકતા: કૃપા કરીને ખાતરી કરો કે તમારો દસ્તાવેજ ડિજીલોકર ચકાસાયેલ છે.",
     login: "લૉગિન",
     getStarted: "શરૂ કરો",
     findMyBenefits: "મારા લાભો શોધો",

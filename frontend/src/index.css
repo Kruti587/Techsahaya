@@ -33,3 +33,13 @@ textarea:focus-visible {
 ::selection {
   background: #d9efe6;
 }
+
+/* Marquee Concepts Animation for Footer */
+@keyframes marqueeConcepts {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-concepts {
+  animation: marqueeConcepts 26s linear infinite;
+}

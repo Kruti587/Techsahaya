@@ -25,6 +25,7 @@ export function SignupPage() {
       <div className="mx-auto w-full max-w-2xl rounded-3xl border bg-white p-6 shadow-card">
         <h1 className="text-3xl font-bold">Create your Tech Sahaya account</h1>
         <p className="mt-2 text-slate-600">Sign up, review consent, complete profile setup, and continue to your citizen dashboard.</p>
+        <p className="mt-1 text-xs text-red-600 font-medium"><span className="text-red-600">*</span> Required field</p>
         <form className="mt-6 grid gap-4 md:grid-cols-2" onSubmit={async (e) => {
           e.preventDefault();
           if (form.password !== form.confirm) { setError("Passwords do not match"); return; }
@@ -33,7 +34,10 @@ export function SignupPage() {
           if (result) setError(result); else navigate("/login");
         }}>
           <input className="min-h-12 rounded-xl border px-4" placeholder="Full Name" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
-          <input className="min-h-12 rounded-xl border px-4" placeholder="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <div className="relative">
+            <input className="min-h-12 w-full rounded-xl border px-4 pr-6" placeholder="Email *" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            <span className="absolute right-3 top-3 text-red-600 font-bold text-sm" aria-hidden="true">*</span>
+          </div>
           <div className="relative">
             <input className="min-h-12 w-full rounded-xl border px-4 pr-12" placeholder="Password" type={showPassword ? "text" : "password"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
             <button type="button" className="absolute right-3 top-3" onClick={() => setShowPassword((s) => !s)}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button>
@@ -54,7 +58,12 @@ export function SignupPage() {
           <label className="flex items-center gap-2 text-sm md:col-span-2"><input type="checkbox" checked={form.consent_given} onChange={(e) => setForm({ ...form, consent_given: e.target.checked })} /> I agree to the privacy-first terms and consent notice.</label>
           {error && <div className="rounded-xl bg-red-50 p-3 text-sm text-red-700 md:col-span-2">{error}</div>}
           <button className="min-h-12 rounded-xl bg-sahaya-green text-white md:col-span-2">Sign Up</button>
-          <Link to="/login" className="text-sm text-sahaya-green md:col-span-2">Already have an account? Login</Link>
+          <p className="text-sm text-slate-600 md:col-span-2">
+            Already have an account?{" "}
+            <Link to="/login" className="font-semibold text-sahaya-green underline hover:text-emerald-700">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>

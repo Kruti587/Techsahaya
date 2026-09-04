@@ -21,6 +21,7 @@ import { api } from "../services/api";
 import { t } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
 import { cleanTextForSpeech, languageToBCP47, playExclusiveAudio, speakExclusive, stopAllPlayback } from "../utils/speechUtils";
+import { SahayaAvatar, type AvatarState } from "./SahayaAvatar";
 
 interface Message {
   id: string;
@@ -358,6 +359,8 @@ export function FloatingChatWidget() {
     }
   };
 
+  const avatarState: AvatarState = recording ? "listening" : loading ? "thinking" : playingAudioId ? "speaking" : "idle";
+
   return (
     <>
       {/* Floating Action Button */}
@@ -370,7 +373,7 @@ export function FloatingChatWidget() {
             className="group relative flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-xl hover:bg-emerald-700 hover:scale-105 active:scale-95 transition-all duration-200"
             aria-label="Open Ask Sahaya Chatbot"
           >
-            <Bot size={28} className="transition-transform group-hover:rotate-6" />
+            <SahayaAvatar state={avatarState} size={28} />
             <span className="absolute -top-1 -right-1 flex h-4 w-4">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white" />
@@ -390,7 +393,7 @@ export function FloatingChatWidget() {
           <div className="flex items-center justify-between bg-emerald-700 px-4 py-3 text-white">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white">
-                <Bot size={20} />
+                <SahayaAvatar state={avatarState} size={24} />
               </div>
               <div>
                 <div className="text-sm font-bold leading-tight">{t(language, "askSahaya")}</div>
