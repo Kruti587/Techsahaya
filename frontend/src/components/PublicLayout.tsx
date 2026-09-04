@@ -49,10 +49,10 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
               </NavLink>
             ))}
           </nav>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <select
               aria-label="Language selector"
-              className="min-h-12 rounded-xl border border-stone-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm transition hover:border-sahaya-green"
+              className="h-11 rounded-xl border border-stone-300 bg-white px-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sahaya-green focus:outline-none focus:ring-1 focus:ring-sahaya-green cursor-pointer"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             >
@@ -64,13 +64,13 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
             </select>
             <Link
               to="/login"
-              className="hidden min-h-12 items-center rounded-xl border border-stone-300 px-4 text-sm font-semibold text-slate-700 transition hover:bg-stone-100 md:inline-flex"
+              className="hidden h-11 items-center justify-center rounded-xl border border-stone-300 bg-white px-5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-stone-50 md:inline-flex leading-none"
             >
               {t(language, "login")}
             </Link>
             <Link
               to="/signup"
-              className="inline-flex min-h-12 items-center rounded-xl bg-sahaya-green px-5 text-sm font-bold text-white shadow-md transition hover:bg-emerald-900"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-sahaya-green px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 leading-none"
             >
               {t(language, "getStarted")}
             </Link>

@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { Lock, ArrowRight } from "lucide-react";
 import { SchemeCard } from "../components/SchemeCard";
 import { useAppContext } from "../context/AppContext";
 import { t, type TranslationKey } from "../utils/i18n";
@@ -14,7 +16,7 @@ const audienceFilters: Array<{ labelKey: TranslationKey; terms: string[] }> = [
 ];
 
 export function SchemesPage() {
-  const { schemes, language } = useAppContext();
+  const { schemes, language, user } = useAppContext();
   const [q, setQ] = useState("");
   const [category, setCategory] = useState("");
   const [state, setState] = useState("");
@@ -123,11 +125,42 @@ export function SchemesPage() {
       </div>
 
       {filtered.length > 0 ? (
-        <div className="grid gap-4 lg:grid-cols-2">
-          {filtered.map((scheme) => (
-            <SchemeCard key={scheme.id} scheme={scheme} />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {(user ? filtered : filtered.slice(0, 4)).map((scheme) => (
+              <SchemeCard key={scheme.id} scheme={scheme} />
+            ))}
+          </div>
+
+          {!user && filtered.length > 4 && (
+            <div className="rounded-3xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-white to-amber-50 p-6 md:p-8 text-center shadow-card">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-sahaya-green mb-3">
+                <Lock size={22} />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-slate-900 font-serif">
+                Login to see {filtered.length - 4}+ more schemes &amp; benefits
+              </h3>
+              <p className="mx-auto mt-2 max-w-lg text-sm text-slate-600">
+                You are viewing a preview. Sign in to your Tech Sahaya citizen account to browse all verified government welfare schemes, check your eligibility, and prepare documents.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  to="/login"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-sahaya-green px-6 text-sm font-bold text-white shadow hover:bg-emerald-900 transition"
+                >
+                  <span>Login to View All Schemes</span>
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  to="/signup"
+                  className="inline-flex h-11 items-center justify-center rounded-xl border border-stone-300 bg-white px-6 text-sm font-semibold text-slate-700 shadow-sm hover:bg-stone-50 transition"
+                >
+                  Create Account
+                </Link>
+              </div>
+            </div>
+          )}
+        </>
       ) : (
         <div className="rounded-3xl border border-dashed bg-white p-8 text-center shadow-card">
           <h2 className="text-xl font-semibold">{t(language, "noSchemes")}</h2>
