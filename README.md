@@ -47,8 +47,8 @@ The platform combines deterministic eligibility logic, structured scheme data, R
 ### 🧠 Intelligence Layer
 
 - Ask Sahaya chat interface for scheme explanation and guidance.
-- Retrieval-first RAG pipeline using local scheme chunks.
-- FAISS-ready semantic search with safe fallback retrieval.
+- Retrieval-first RAG pipeline using semantic scheme chunks.
+- Persistent TF-IDF + FAISS semantic search with a safe fallback retrieval path (index cached under `data/.cache/` and reused via dataset hash).
 - Evidence-first answers with scheme name, source, verification status, and confidence.
 - AI explanation layer is separated from eligibility decisions.
 - Eligibility is always decided by deterministic rules.
@@ -152,10 +152,11 @@ Techsahaya/
 │   ├── package.json
 │   └── Dockerfile
 ├── data/
-│   ├── chunks/            # RAG retrieval chunks
+│   ├── .cache/            # generated RAG cache (chunks, TF-IDF vectors, FAISS index) - gitignored
+│   ├── chunks/            # legacy static chunks (superseded by runtime chunking)
 │   ├── personas/          # local walkthrough personas
 │   ├── rules/             # deterministic eligibility rules
-│   └── schemes/           # structured scheme records
+│   └── schemes/           # structured scheme records (schemes.json, 58 records)
 ├── docs/
 │   └── supabase_rls.sql   # Supabase table and RLS reference
 ├── docker-compose.yml
@@ -185,28 +186,17 @@ Each scheme supports:
 - Last verified date
 - Alternative scheme mapping
 
-Included scheme records:
-
-- PM-Kisan
-- Ayushman Bharat PM-JAY
-- PMAY-G
-- National Scholarship Portal
-- PM Ujjwala Yojana
-- e-Shram
-- Sukanya Samriddhi
-- Krishi Bhagya Karnataka
-- Swachh Bharat Mission Gramin
-- PM Vishwakarma
-- PM-SYM
-- UDID
+The catalogue ships with **58 structured scheme records** covering national schemes (PM-Kisan, Ayushman Bharat PM-JAY, PMAY-G, National Scholarship Portal, PM Ujjwala Yojana, e-Shram, Sukanya Samriddhi, PM Vishwakarma, PM-SYM, UDID, and more) alongside state-specific schemes (e.g. Krishi Bhagya Karnataka).
 
 Data locations:
 
 ```text
-data/schemes/schemes.json
-data/rules/*.json
-data/chunks/scheme_chunks.json
+data/schemes/schemes.json           # master scheme dataset (58 records, 16 fields each)
+data/rules/*.json                   # deterministic eligibility rules (available schemes)
+data/.cache/*                       # generated RAG cache (chunks, TF-IDF vectors, FAISS index)
 ```
+
+> **RAG retrieval chunks** are generated automatically at startup from `schemes.json` (4 semantic chunks per scheme via `backend/app/services/scheme_chunker.py`) and cached under `data/.cache/`. The cache is rebuilt automatically on first run or whenever the dataset hash changes, so it is **gitignored and not committed**.
 
 ## ✅ Eligibility Engine
 
@@ -725,4 +715,6 @@ The repository includes the source files required to run the project. Sensitive 
 - `node_modules`
 - frontend build output
 - runtime logs
-- cache files
+- generated RAG cache files (`data/.cache/`)
+
+The RAG index and retrieval cache under `data/.cache/` are generated artifacts. They are excluded from Git and rebuilt automatically (hash-based) on first run, so a fresh clone runs without any manual setup.

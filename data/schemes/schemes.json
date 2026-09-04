@@ -4,17 +4,36 @@
     "name": "PM-Kisan",
     "description": "Income support scheme for eligible farmer families. Verify official rules before application.",
     "category": "Agriculture",
-    "state_scope": ["All"],
-    "benefits": ["Income support in periodic installments", "Basic farmer support"],
-    "eligibility": ["Farmer profile required", "Landholding information required", "Official rules should be verified before application"],
-    "required_documents": ["land record", "bank account proof"],
-    "application_steps": ["Verify landholding data", "Visit official PM-Kisan portal or service center", "Submit application and track status"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Income support in periodic installments",
+      "Basic farmer support"
+    ],
+    "eligibility": [
+      "Farmer profile required",
+      "Landholding information required",
+      "Official rules should be verified before application"
+    ],
+    "required_documents": [
+      "land record",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Verify landholding data",
+      "Visit official PM-Kisan portal or service center",
+      "Submit application and track status"
+    ],
     "department": "Ministry of Agriculture & Farmers Welfare",
     "official_link": "https://pmkisan.gov.in/",
     "source_name": "PM-Kisan Official Portal",
     "source_reference": "Source-backed summary based on public scheme information. Verify latest notification.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["e-shram", "krishi-bhagya-karnataka"],
+    "alternative_scheme_ids": [
+      "e-shram",
+      "krishi-bhagya-karnataka"
+    ],
     "data_note": "Benefits and eligibility must be verified against current official releases."
   },
   {
@@ -22,186 +41,2188 @@
     "name": "Ayushman Bharat PM-JAY",
     "description": "Health coverage support for eligible vulnerable families. Verify official rules before application.",
     "category": "Health",
-    "state_scope": ["All"],
-    "benefits": ["Hospitalization coverage support", "Cashless treatment at empanelled hospitals"],
-    "eligibility": ["Socio-economic eligibility should be verified through official records", "State and family criteria may apply"],
-    "required_documents": ["ration card", "family id"],
-    "application_steps": ["Check beneficiary status", "Verify family record", "Use empanelled hospital network"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Hospitalization coverage support",
+      "Cashless treatment at empanelled hospitals"
+    ],
+    "eligibility": [
+      "Socio-economic eligibility should be verified through official records",
+      "State and family criteria may apply"
+    ],
+    "required_documents": [
+      "ration card",
+      "family id"
+    ],
+    "application_steps": [
+      "Check beneficiary status",
+      "Verify family record",
+      "Use empanelled hospital network"
+    ],
     "department": "National Health Authority",
     "official_link": "https://beneficiary.nha.gov.in/",
     "source_name": "Ayushman Bharat Official Portal",
     "source_reference": "Source-backed summary based on public scheme information. Verify current beneficiary rules.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["karnataka-aarogya-scheme"]
+    "alternative_scheme_ids": [
+      "cmchis-tamilnadu",
+      "mjpjay-maharashtra",
+      "kasp-kerala"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "pmay-g",
     "name": "PMAY-G",
     "description": "Rural housing support for eligible households. Verify official rules before application.",
     "category": "Housing",
-    "state_scope": ["All"],
-    "benefits": ["Rural housing assistance", "Convergence with sanitation and livelihood support where applicable"],
-    "eligibility": ["Rural household criteria required", "Housing deprivation criteria should be officially verified"],
-    "required_documents": ["residence proof", "income certificate"],
-    "application_steps": ["Confirm housing status", "Check panchayat or district workflow", "Track sanction and construction stages"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Rural housing assistance",
+      "Convergence with sanitation and livelihood support where applicable"
+    ],
+    "eligibility": [
+      "Rural household criteria required",
+      "Housing deprivation criteria should be officially verified"
+    ],
+    "required_documents": [
+      "residence proof",
+      "income certificate"
+    ],
+    "application_steps": [
+      "Confirm housing status",
+      "Check panchayat or district workflow",
+      "Track sanction and construction stages"
+    ],
     "department": "Ministry of Rural Development",
     "official_link": "https://pmayg.nic.in/",
     "source_name": "PMAY-G Official Portal",
     "source_reference": "Source-backed summary based on public scheme information. Verify current deprivation criteria.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["karnataka-housing-support"]
+    "alternative_scheme_ids": [],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "national-scholarship-portal",
     "name": "National Scholarship Portal",
     "description": "Scholarship discovery and application entry point for eligible students. Verify official rules before application.",
     "category": "Education",
-    "state_scope": ["All"],
-    "benefits": ["Scholarship access", "Centralized application workflow"],
-    "eligibility": ["Student status required", "Income and category criteria vary by scholarship"],
-    "required_documents": ["student id", "income certificate"],
-    "application_steps": ["Choose scholarship", "Fill student details", "Upload required documents and submit"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Scholarship access",
+      "Centralized application workflow"
+    ],
+    "eligibility": [
+      "Student status required",
+      "Income and category criteria vary by scholarship"
+    ],
+    "required_documents": [
+      "student id",
+      "income certificate"
+    ],
+    "application_steps": [
+      "Choose scholarship",
+      "Fill student details",
+      "Upload required documents and submit"
+    ],
     "department": "Ministry of Electronics & Information Technology / Education-linked departments",
     "official_link": "https://scholarships.gov.in/",
     "source_name": "National Scholarship Portal",
     "source_reference": "Source-backed summary based on portal overview. Verify scholarship-specific rules.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["sukanya-samriddhi"]
+    "alternative_scheme_ids": [
+      "sukanya-samriddhi",
+      "vidyasiri-karnataka",
+      "kanyashree-westbengal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "pm-ujjwala-yojana",
     "name": "PM Ujjwala Yojana",
     "description": "Support for LPG access to eligible households. Verify official rules before application.",
     "category": "Energy",
-    "state_scope": ["All"],
-    "benefits": ["LPG connection support", "Household clean cooking access"],
-    "eligibility": ["Low-income or vulnerable household criteria may apply", "Household record verification required"],
-    "required_documents": ["ration card", "residence proof"],
-    "application_steps": ["Check household eligibility", "Visit distributor or official portal", "Complete verification"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "LPG connection support",
+      "Household clean cooking access"
+    ],
+    "eligibility": [
+      "Low-income or vulnerable household criteria may apply",
+      "Household record verification required"
+    ],
+    "required_documents": [
+      "ration card",
+      "residence proof"
+    ],
+    "application_steps": [
+      "Check household eligibility",
+      "Visit distributor or official portal",
+      "Complete verification"
+    ],
     "department": "Ministry of Petroleum and Natural Gas",
     "official_link": "https://www.pmuy.gov.in/",
     "source_name": "PMUY Official Portal",
     "source_reference": "Source-backed summary based on public scheme information. Verify current beneficiary categories.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["ayushman-bharat-pmjay"]
+    "alternative_scheme_ids": [
+      "ayushman-bharat-pmjay"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "e-shram",
     "name": "e-Shram",
     "description": "National database and support linkage for unorganized workers. Verify official rules before application.",
     "category": "Labour",
-    "state_scope": ["All"],
-    "benefits": ["Worker registration", "Linkage to social security pathways"],
-    "eligibility": ["Unorganized worker profile required", "Occupation-based self-declaration may apply"],
-    "required_documents": ["mobile number", "occupation proof"],
-    "application_steps": ["Register worker details", "Confirm occupation", "Use generated record for downstream benefits"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Worker registration",
+      "Linkage to social security pathways"
+    ],
+    "eligibility": [
+      "Unorganized worker profile required",
+      "Occupation-based self-declaration may apply"
+    ],
+    "required_documents": [
+      "mobile number",
+      "occupation proof"
+    ],
+    "application_steps": [
+      "Register worker details",
+      "Confirm occupation",
+      "Use generated record for downstream benefits"
+    ],
     "department": "Ministry of Labour and Employment",
     "official_link": "https://eshram.gov.in/",
     "source_name": "e-Shram Official Portal",
     "source_reference": "Source-backed summary based on public registration portal. Verify current onboarding requirements.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["pm-kisan"]
+    "alternative_scheme_ids": [
+      "pm-kisan"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "sukanya-samriddhi",
     "name": "Sukanya Samriddhi / Girl Child Savings Support",
     "description": "Girl-child oriented savings and financial support pathway. Verify official rules before application.",
     "category": "Women and Child",
-    "state_scope": ["All"],
-    "benefits": ["Long-term savings support", "Girl child financial planning"],
-    "eligibility": ["Girl child age conditions apply", "Guardian-managed account workflow"],
-    "required_documents": ["birth certificate", "guardian id proof"],
-    "application_steps": ["Check age and guardian requirements", "Visit bank or post office", "Open and maintain account"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Long-term savings support",
+      "Girl child financial planning"
+    ],
+    "eligibility": [
+      "Girl child age conditions apply",
+      "Guardian-managed account workflow"
+    ],
+    "required_documents": [
+      "birth certificate",
+      "guardian id proof"
+    ],
+    "application_steps": [
+      "Check age and guardian requirements",
+      "Visit bank or post office",
+      "Open and maintain account"
+    ],
     "department": "Department of Economic Affairs / Post Office network",
     "official_link": "https://www.indiapost.gov.in/",
     "source_name": "India Post",
     "source_reference": "Source-backed summary based on public scheme overview. Verify current operating rules.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["national-scholarship-portal"]
+    "alternative_scheme_ids": [
+      "national-scholarship-portal",
+      "vahli-dikri-gujarat",
+      "kanyashree-westbengal",
+      "kanya-sumangala-up"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "krishi-bhagya-karnataka",
     "name": "Krishi Bhagya Karnataka",
     "description": "Karnataka farmer-oriented support scheme. Verify official rules before application.",
     "category": "Agriculture",
-    "state_scope": ["Karnataka"],
-    "benefits": ["State-level agriculture support", "Potential farm resilience assistance"],
-    "eligibility": ["Karnataka farmer profile required", "State-specific agriculture conditions apply"],
-    "required_documents": ["state residence proof", "land record"],
-    "application_steps": ["Check district agriculture office guidance", "Verify state-specific criteria", "Submit application through state channel"],
+    "state_scope": [
+      "Karnataka"
+    ],
+    "benefits": [
+      "State-level agriculture support",
+      "Potential farm resilience assistance"
+    ],
+    "eligibility": [
+      "Karnataka farmer profile required",
+      "State-specific agriculture conditions apply"
+    ],
+    "required_documents": [
+      "state residence proof",
+      "land record"
+    ],
+    "application_steps": [
+      "Check district agriculture office guidance",
+      "Verify state-specific criteria",
+      "Submit application through state channel"
+    ],
     "department": "Government of Karnataka Agriculture Department",
     "official_link": "https://raitamitra.karnataka.gov.in/",
     "source_name": "Karnataka Agriculture Department",
     "source_reference": "Source-backed summary based on public state agriculture information. Verify current district-level eligibility.",
     "last_verified": "2026-08-24",
-    "alternative_scheme_ids": ["pm-kisan"]
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "mksy-gujarat",
+      "cmupt-tamilnadu"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "swachh-bharat-mission-gramin",
     "name": "Swachh Bharat Mission - Gramin",
     "description": "Rural sanitation and household toilet support pathway. Verify current eligibility and local process before application.",
     "category": "Sanitation",
-    "state_scope": ["All"],
-    "benefits": ["Sanitation support", "Household toilet and village sanitation convergence where applicable"],
-    "eligibility": ["Rural household information required", "Local authority verification required", "Current official rules should be verified"],
-    "required_documents": ["residence proof", "ration card"],
-    "application_steps": ["Check gram panchayat guidance", "Verify household sanitation status", "Apply through official rural sanitation channel"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Sanitation support",
+      "Household toilet and village sanitation convergence where applicable"
+    ],
+    "eligibility": [
+      "Rural household information required",
+      "Local authority verification required",
+      "Current official rules should be verified"
+    ],
+    "required_documents": [
+      "residence proof",
+      "ration card"
+    ],
+    "application_steps": [
+      "Check gram panchayat guidance",
+      "Verify household sanitation status",
+      "Apply through official rural sanitation channel"
+    ],
     "department": "Department of Drinking Water and Sanitation",
     "official_link": "https://swachhbharatmission.ddws.gov.in/",
     "source_name": "Swachh Bharat Mission - Gramin Official Portal",
     "source_reference": "Source-backed summary based on public official portal information. Verify current local workflow.",
     "last_verified": "2026-08-25",
-    "alternative_scheme_ids": ["pmay-g"]
+    "alternative_scheme_ids": [
+      "pmay-g"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "pm-vishwakarma",
     "name": "PM Vishwakarma",
     "description": "Support pathway for traditional artisans and craftspeople. Verify trade-specific eligibility on the official portal.",
     "category": "Livelihood",
-    "state_scope": ["All"],
-    "benefits": ["Skill and livelihood support", "Tool and credit-linked support where applicable"],
-    "eligibility": ["Traditional artisan or craft occupation information required", "Official trade category verification required"],
-    "required_documents": ["occupation proof", "bank account proof"],
-    "application_steps": ["Review eligible trade category", "Register through official portal or service center", "Complete verification and training workflow"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Skill and livelihood support",
+      "Tool and credit-linked support where applicable"
+    ],
+    "eligibility": [
+      "Traditional artisan or craft occupation information required",
+      "Official trade category verification required"
+    ],
+    "required_documents": [
+      "occupation proof",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Review eligible trade category",
+      "Register through official portal or service center",
+      "Complete verification and training workflow"
+    ],
     "department": "Ministry of Micro, Small and Medium Enterprises",
     "official_link": "https://pmvishwakarma.gov.in/",
     "source_name": "PM Vishwakarma Official Portal",
     "source_reference": "Source-backed summary based on public official portal information. Verify current trade list and benefits.",
     "last_verified": "2026-08-25",
-    "alternative_scheme_ids": ["e-shram"]
+    "alternative_scheme_ids": [
+      "e-shram"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "pm-sym",
     "name": "Pradhan Mantri Shram Yogi Maandhan",
     "description": "Pension-oriented support pathway for eligible unorganized workers. Verify contribution and eligibility rules before applying.",
     "category": "Labour",
-    "state_scope": ["All"],
-    "benefits": ["Pension support pathway", "Social security linkage for eligible workers"],
-    "eligibility": ["Unorganized worker profile required", "Age and income rules must be verified on official source"],
-    "required_documents": ["occupation proof", "bank account proof"],
-    "application_steps": ["Check worker eligibility", "Visit official portal or CSC", "Complete enrolment and contribution workflow"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Pension support pathway",
+      "Social security linkage for eligible workers"
+    ],
+    "eligibility": [
+      "Unorganized worker profile required",
+      "Age and income rules must be verified on official source"
+    ],
+    "required_documents": [
+      "occupation proof",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Check worker eligibility",
+      "Visit official portal or CSC",
+      "Complete enrolment and contribution workflow"
+    ],
     "department": "Ministry of Labour and Employment",
     "official_link": "https://maandhan.in/",
     "source_name": "Maandhan Official Portal",
     "source_reference": "Source-backed summary based on public official portal information. Verify current contribution and eligibility rules.",
     "last_verified": "2026-08-25",
-    "alternative_scheme_ids": ["e-shram"]
+    "alternative_scheme_ids": [
+      "e-shram",
+      "jai-bangla-westbengal",
+      "sandhya-suraksha-karnataka"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   },
   {
     "id": "udid",
     "name": "Unique Disability ID",
     "description": "National disability identity and certification pathway for persons with disabilities. Verify process through the official portal.",
     "category": "Disability",
-    "state_scope": ["All"],
-    "benefits": ["Disability certificate pathway", "Access support for disability-linked welfare services"],
-    "eligibility": ["Disability status and medical authority verification required", "State workflow may apply"],
-    "required_documents": ["disability certificate", "residence proof"],
-    "application_steps": ["Register on official UDID portal", "Submit required details", "Complete medical authority verification"],
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Disability certificate pathway",
+      "Access support for disability-linked welfare services"
+    ],
+    "eligibility": [
+      "Disability status and medical authority verification required",
+      "State workflow may apply"
+    ],
+    "required_documents": [
+      "disability certificate",
+      "residence proof"
+    ],
+    "application_steps": [
+      "Register on official UDID portal",
+      "Submit required details",
+      "Complete medical authority verification"
+    ],
     "department": "Department of Empowerment of Persons with Disabilities",
     "official_link": "https://www.swavlambancard.gov.in/",
     "source_name": "UDID Official Portal",
     "source_reference": "Source-backed summary based on public official portal information. Verify current application workflow.",
     "last_verified": "2026-08-25",
-    "alternative_scheme_ids": ["ayushman-bharat-pmjay"]
+    "alternative_scheme_ids": [
+      "ayushman-bharat-pmjay"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "mksy-gujarat",
+    "name": "Mukhyamantri Kisan Sahay Yojana",
+    "description": "Gujarat state crop-loss compensation scheme for farmers, covering losses from natural calamities such as drought and unseasonal rainfall. Verify official rules and current relief slabs before application.",
+    "category": "Agriculture",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "benefits": [
+      "Direct financial compensation per hectare for certified crop loss",
+      "No premium required from farmers",
+      "Coverage for Kharif season crop damage"
+    ],
+    "eligibility": [
+      "Permanent resident and farmer of Gujarat",
+      "Owner or legally entitled cultivator of the land",
+      "Revenue department loss survey and certification required",
+      "Landholding cap applies for maximum assistance"
+    ],
+    "required_documents": [
+      "residence proof of Gujarat",
+      "land record / 8-A extract",
+      "bank account proof",
+      "loss survey certificate"
+    ],
+    "application_steps": [
+      "Report and get crop loss surveyed by revenue authorities",
+      "Apply through the nearest e-Gram center or official agriculture portal",
+      "Track compensation via Direct Benefit Transfer"
+    ],
+    "department": "Department of Agriculture, Farmers Welfare and Co-operation, Government of Gujarat",
+    "official_link": "https://agri.gujarat.gov.in/",
+    "source_name": "Gujarat Department of Agriculture Official Portal",
+    "source_reference": "Source-backed summary based on public state agriculture information. Verify current compensation slabs and season notification.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "krishi-bhagya-karnataka"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "vahli-dikri-gujarat",
+    "name": "Vahli Dikri Yojana",
+    "description": "Gujarat girl-child financial support scheme providing staged payouts to encourage education and delay early marriage. Verify current payout stages and income limits on the official portal.",
+    "category": "Women and Child",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "benefits": [
+      "Staged financial support paid at defined milestones for up to two daughters",
+      "Encourages continued education for girl children"
+    ],
+    "eligibility": [
+      "Family must be a resident of Gujarat",
+      "Applies to first two daughters of a family",
+      "Household income criteria apply and should be verified officially"
+    ],
+    "required_documents": [
+      "birth certificate",
+      "residence proof",
+      "income certificate",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Register the girl child soon after birth through the Anganwadi or women and child development office",
+      "Submit required documents at each milestone",
+      "Track payout status through the official department"
+    ],
+    "department": "Women and Child Development Department, Government of Gujarat",
+    "official_link": "https://wcd.gujarat.gov.in/",
+    "source_name": "Government of Gujarat WCD Department",
+    "source_reference": "Source-backed summary based on public scheme information. Verify current payout amounts and income ceiling.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "sukanya-samriddhi",
+      "kanyashree-westbengal",
+      "kanya-sumangala-up"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "kasp-kerala",
+    "name": "Karunya Arogya Suraksha Padhathi (KASP)",
+    "description": "Kerala's health coverage scheme for economically vulnerable families, integrated with Ayushman Bharat PM-JAY at the state level. Verify current family coverage and hospital network before application.",
+    "category": "Health",
+    "state_scope": [
+      "Kerala"
+    ],
+    "benefits": [
+      "Cashless hospitalization support at empanelled hospitals",
+      "Family-based annual health coverage"
+    ],
+    "eligibility": [
+      "Family must be identified under state socio-economic criteria",
+      "Kerala residency required",
+      "Coverage details vary; verify with the official portal"
+    ],
+    "required_documents": [
+      "ration card",
+      "family id",
+      "residence proof"
+    ],
+    "application_steps": [
+      "Check family beneficiary status on the official portal",
+      "Visit an empanelled hospital or Akshaya center for verification",
+      "Use the KASP/Ayushman card for cashless treatment"
+    ],
+    "department": "State Health Agency, Government of Kerala",
+    "official_link": "https://sha.kerala.gov.in/",
+    "source_name": "Kerala State Health Agency",
+    "source_reference": "Source-backed summary based on public scheme information. Verify current beneficiary list and coverage limits.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "ayushman-bharat-pmjay",
+      "mjpjay-maharashtra",
+      "cmchis-tamilnadu"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "kudumbashree-kerala",
+    "name": "Kudumbashree",
+    "description": "Kerala's women-oriented poverty eradication and self-help group network offering livelihood, microfinance, and family welfare linkage support. Verify local unit process before joining.",
+    "category": "Women and Child",
+    "state_scope": [
+      "Kerala"
+    ],
+    "benefits": [
+      "Self-help group and microfinance access for women",
+      "Livelihood and skill development linkage",
+      "Family welfare scheme convergence at the local level"
+    ],
+    "eligibility": [
+      "Woman resident of Kerala",
+      "Household and neighbourhood group membership criteria apply",
+      "Local unit verification required"
+    ],
+    "required_documents": [
+      "residence proof",
+      "ration card"
+    ],
+    "application_steps": [
+      "Contact the local Kudumbashree neighbourhood group or Community Development Society",
+      "Complete household enrolment",
+      "Access linked livelihood and welfare schemes"
+    ],
+    "department": "State Poverty Eradication Mission, Government of Kerala",
+    "official_link": "https://www.kudumbashree.org/",
+    "source_name": "Kudumbashree Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current local enrolment process.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "e-shram",
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "kerala-farmer-registry",
+    "name": "Kerala Farmer Registry (AIMS Kerala)",
+    "description": "Kerala's digital farmer registration and land-linked data platform used to access state agriculture support and subsidies. Verify current registration requirements on the official portal.",
+    "category": "Agriculture",
+    "state_scope": [
+      "Kerala"
+    ],
+    "benefits": [
+      "Digital farmer identity for accessing state and central agriculture schemes",
+      "Streamlined subsidy and support linkage"
+    ],
+    "eligibility": [
+      "Farmer or cultivator based in Kerala",
+      "Landholding or cultivation record required for registration"
+    ],
+    "required_documents": [
+      "land record",
+      "residence proof",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Register on the official AIMS Kerala farmer portal",
+      "Link landholding and cultivation details",
+      "Use the registry record to apply for linked agriculture schemes"
+    ],
+    "department": "Department of Agriculture Development and Farmers' Welfare, Government of Kerala",
+    "official_link": "https://aims.kerala.gov.in/",
+    "source_name": "AIMS Kerala Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current registration workflow.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "krishi-bhagya-karnataka"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "sandhya-suraksha-karnataka",
+    "name": "Sandhya Suraksha Yojane",
+    "description": "Karnataka state pension scheme providing monthly financial assistance to eligible elderly, destitute, and unorganized-sector workers. Verify current pension amount and income limits on the official portal.",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "benefits": [
+      "Monthly pension support for eligible senior citizens",
+      "Support for eligible destitute and unorganized workers"
+    ],
+    "eligibility": [
+      "Karnataka residency required",
+      "Age criteria for senior citizens apply",
+      "Income and occupation criteria for unorganized workers should be officially verified"
+    ],
+    "required_documents": [
+      "age proof",
+      "residence proof",
+      "income certificate",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Check eligibility at the local Nadakacheri or taluk office",
+      "Submit application with required documents",
+      "Track pension disbursement status"
+    ],
+    "department": "Department of Social Welfare, Government of Karnataka",
+    "official_link": "https://sw.karnataka.gov.in/",
+    "source_name": "Karnataka Social Welfare Department",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current pension slab and eligibility rules.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-sym",
+      "jai-bangla-westbengal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "vidyasiri-karnataka",
+    "name": "Vidyasiri Scholarship Scheme",
+    "description": "Karnataka scholarship and hostel-support scheme for eligible students from backward classes and economically weaker sections. Verify current eligibility category and benefit amount before application.",
+    "category": "Education",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "benefits": [
+      "Financial support for students not accommodated in government hostels",
+      "Scholarship linkage for eligible categories"
+    ],
+    "eligibility": [
+      "Karnataka student residing outside government hostel facilities",
+      "Category and income criteria apply and should be verified officially"
+    ],
+    "required_documents": [
+      "student id",
+      "caste certificate where applicable",
+      "income certificate",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Apply through the official Karnataka scholarship/Vidyasiri portal",
+      "Upload required documents",
+      "Track application and disbursement status"
+    ],
+    "department": "Department of Backward Classes Welfare, Government of Karnataka",
+    "official_link": "https://vidyasiri.karnataka.gov.in/",
+    "source_name": "Vidyasiri Karnataka Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current eligibility and benefit rules.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "cmupt-tamilnadu",
+    "name": "Chief Minister's Uzhavar Pathukappu Thittam",
+    "description": "Tamil Nadu farmers' security and welfare scheme providing accident relief, health, educational, and marriage assistance to registered small and marginal farmer members and their dependents. Verify current assistance amounts on the official portal.",
+    "category": "Agriculture",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "benefits": [
+      "Accident and disability relief for farmer members",
+      "Educational assistance for dependents",
+      "Funeral and marriage assistance",
+      "Monthly support during certain incapacitating illnesses"
+    ],
+    "eligibility": [
+      "Small/marginal farmer owning land within the state-defined wetland/dryland limit",
+      "Cultivating tenants also eligible",
+      "Member age group 18 to 65 years",
+      "Free registration"
+    ],
+    "required_documents": [
+      "land record",
+      "residence proof",
+      "age proof",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Register as a member through the district Revenue Administration office",
+      "Maintain registration and update dependent details",
+      "Claim assistance through the official CMUPT back-office application when an eligible event occurs"
+    ],
+    "department": "Commissionerate of Revenue Administration and Disaster Management, Government of Tamil Nadu",
+    "official_link": "https://www.landreforms.tn.gov.in/UPT.html",
+    "source_name": "CRA Tamil Nadu Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current assistance amounts and registration rules.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "krishi-bhagya-karnataka",
+      "mksy-gujarat"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "cmchis-tamilnadu",
+    "name": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS)",
+    "description": "Tamil Nadu family health insurance scheme providing cashless treatment for identified illnesses through a network of empanelled hospitals. Verify current family income eligibility and coverage limit before application.",
+    "category": "Health",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "benefits": [
+      "Cashless hospitalization coverage for identified treatments",
+      "Family-based health coverage through empanelled hospitals"
+    ],
+    "eligibility": [
+      "Tamil Nadu resident family",
+      "Family income eligibility criteria apply and should be verified officially"
+    ],
+    "required_documents": [
+      "family card / ration card",
+      "residence proof",
+      "income certificate"
+    ],
+    "application_steps": [
+      "Check family eligibility on the official CMCHIS portal",
+      "Visit an empanelled hospital for verification",
+      "Use the CMCHIS card for cashless treatment"
+    ],
+    "department": "Tamil Nadu Health Systems Project / Department of Health and Family Welfare",
+    "official_link": "https://www.cmchistn.com/",
+    "source_name": "CMCHIS Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current income ceiling and coverage limit.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "ayushman-bharat-pmjay",
+      "kasp-kerala",
+      "mjpjay-maharashtra"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "mjpjay-maharashtra",
+    "name": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY)",
+    "description": "Maharashtra's flagship health insurance scheme providing cashless treatment for identified secondary and tertiary illnesses through empanelled hospitals, integrated with Ayushman Bharat PM-JAY. Verify current coverage limits and eligible ration card categories before application.",
+    "category": "Health",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "benefits": [
+      "Cashless hospitalization coverage for identified diseases and surgeries",
+      "Coverage extended to all families in the state since 2024",
+      "Integrated coverage with Ayushman Bharat PM-JAY where applicable"
+    ],
+    "eligibility": [
+      "Maharashtra resident family",
+      "Valid ration card or identification document required",
+      "Farmers in officially notified distressed districts also eligible"
+    ],
+    "required_documents": [
+      "ration card (Yellow / Antyodaya / Annapurna / Orange)",
+      "residence proof",
+      "aadhaar or valid id"
+    ],
+    "application_steps": [
+      "Visit a network hospital and consult the on-site Arogya Mitra",
+      "Complete document verification at the hospital",
+      "Avail cashless treatment through the empanelled hospital network"
+    ],
+    "department": "Public Health and Family Welfare Department, Government of Maharashtra",
+    "official_link": "https://www.jeevandayee.gov.in/",
+    "source_name": "MJPJAY Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current coverage scope and eligible categories.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "ayushman-bharat-pmjay",
+      "cmchis-tamilnadu",
+      "kasp-kerala"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "majhi-kanya-bhagyashree-maharashtra",
+    "name": "Majhi Kanya Bhagyashree Yojana",
+    "description": "Maharashtra girl-child welfare scheme providing financial support to encourage girl child education and discourage gender-biased sex selection. Verify current benefit structure and income limits on the official portal.",
+    "category": "Women and Child",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "benefits": [
+      "Financial support linked to the birth and education milestones of girl children",
+      "Encourages families with one or two daughters"
+    ],
+    "eligibility": [
+      "Maharashtra resident family",
+      "Applies to families with one or two daughters",
+      "Household income criteria apply and should be verified officially"
+    ],
+    "required_documents": [
+      "birth certificate",
+      "residence proof",
+      "income certificate",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Register the girl child through the local Anganwadi or Women and Child Development office",
+      "Submit required documents",
+      "Track benefit disbursement at each milestone"
+    ],
+    "department": "Women and Child Development Department, Government of Maharashtra",
+    "official_link": "https://womenchild.maharashtra.gov.in/",
+    "source_name": "Government of Maharashtra WCD Department",
+    "source_reference": "Source-backed summary based on public scheme information. Verify current benefit amount and eligibility rules.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "sukanya-samriddhi",
+      "vahli-dikri-gujarat",
+      "kanyashree-westbengal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "jai-bangla-westbengal",
+    "name": "Jai Bangla Pension Scheme",
+    "description": "West Bengal's umbrella social security pension programme consolidating multiple state pension schemes for senior citizens, widows, persons with disabilities, and eligible occupational groups. Verify the applicable sub-scheme and current pension amount on the official portal.",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "benefits": [
+      "Monthly pension support across consolidated sub-schemes (old age, widow, disability, occupational pensions)",
+      "Direct benefit transfer to beneficiary bank account"
+    ],
+    "eligibility": [
+      "Permanent resident of West Bengal",
+      "Age, category, or occupational criteria vary by sub-scheme",
+      "Must not be receiving another government pension for the same purpose"
+    ],
+    "required_documents": [
+      "age proof",
+      "residence proof",
+      "caste certificate where applicable",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Identify the relevant sub-scheme (old age, widow, disability, occupational pension)",
+      "Submit Form P at the Block Development Office or a Duare Sarkar camp",
+      "Track application and disbursement status"
+    ],
+    "department": "Government of West Bengal, Jai Bangla Pension Scheme Cell",
+    "official_link": "https://socialsecurity.wb.gov.in/",
+    "source_name": "West Bengal Jai Bangla Pension Scheme Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current sub-scheme rules and pension amount.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-sym",
+      "sandhya-suraksha-karnataka"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "kanyashree-westbengal",
+    "name": "Kanyashree Prakalpa",
+    "description": "West Bengal's girl-child conditional cash transfer scheme supporting continued education and delaying early marriage, recognized with a UN Public Service Award. Verify current installment amounts and eligibility on the official portal.",
+    "category": "Education",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "benefits": [
+      "Annual scholarship support for unmarried girl students",
+      "One-time grant on reaching age 18 while remaining unmarried and continuing education or training"
+    ],
+    "eligibility": [
+      "Girl student resident in West Bengal",
+      "Age and enrolment criteria apply",
+      "Must remain unmarried to continue receiving benefits"
+    ],
+    "required_documents": [
+      "student id",
+      "birth certificate",
+      "residence proof",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Apply through the school or the official Kanyashree portal",
+      "Submit required documents for verification",
+      "Track annual scholarship and one-time grant status"
+    ],
+    "department": "Department of Women and Child Development and Social Welfare, Government of West Bengal",
+    "official_link": "https://www.wbkanyashree.gov.in/",
+    "source_name": "Kanyashree Prakalpa Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current installment amounts and age criteria.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "sukanya-samriddhi",
+      "national-scholarship-portal",
+      "kanya-sumangala-up"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "kanya-sumangala-up",
+    "name": "Mukhyamantri Kanya Sumangala Yojana",
+    "description": "Uttar Pradesh's conditional cash transfer scheme supporting girl children from birth through graduation, paid in staged installments. Verify current installment amounts and income limit on the official portal.",
+    "category": "Women and Child",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "benefits": [
+      "Staged financial assistance from birth through graduation/diploma admission",
+      "Direct benefit transfer at each of six defined stages"
+    ],
+    "eligibility": [
+      "Family resident in Uttar Pradesh",
+      "Applies to a maximum of two daughters per family",
+      "Family annual income below the officially notified limit"
+    ],
+    "required_documents": [
+      "birth certificate",
+      "residence proof",
+      "income certificate",
+      "bank account proof",
+      "school/admission proof for later stages"
+    ],
+    "application_steps": [
+      "Register as a citizen on the official portal",
+      "Complete mobile OTP verification and fill parent/child details",
+      "Apply for the specific stage/installment as the girl child becomes eligible"
+    ],
+    "department": "Directorate of Women Welfare, Government of Uttar Pradesh",
+    "official_link": "https://mksy.up.gov.in/",
+    "source_name": "Mukhyamantri Kanya Sumangala Yojana Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current installment amounts and income ceiling.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "sukanya-samriddhi",
+      "kanyashree-westbengal",
+      "vahli-dikri-gujarat"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "up-old-age-pension",
+    "name": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension)",
+    "description": "Uttar Pradesh state pension scheme providing monthly financial support to eligible elderly residents from economically weaker households. Verify current pension amount and income limit on the official portal.",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "benefits": [
+      "Monthly pension support for eligible senior citizens",
+      "Direct benefit transfer to bank account"
+    ],
+    "eligibility": [
+      "Uttar Pradesh residency required",
+      "Minimum age criteria for senior citizens apply",
+      "Household income should be within the officially notified limit"
+    ],
+    "required_documents": [
+      "age proof",
+      "residence proof",
+      "income certificate",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Apply through the official UP social welfare pension portal or common service center",
+      "Submit required documents for verification",
+      "Track pension disbursement status"
+    ],
+    "department": "Department of Social Welfare, Government of Uttar Pradesh",
+    "official_link": "https://sspy-up.gov.in/",
+    "source_name": "Uttar Pradesh Social Welfare Department (SSPY) Official Portal",
+    "source_reference": "Source-backed summary based on public official portal information. Verify current pension amount and income ceiling.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-sym",
+      "sandhya-suraksha-karnataka",
+      "jai-bangla-westbengal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pmfby",
+    "name": "Pradhan Mantri Fasal Bima Yojana",
+    "description": "Crop insurance support for farmers against notified crop losses and risks. Verify season, crop, area, and state notification before application.",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Crop insurance coverage",
+      "Financial protection against notified crop losses",
+      "Digital claim and application support"
+    ],
+    "eligibility": [
+      "Farmer cultivating a notified crop in a notified area",
+      "Crop and season must be covered under the state notification",
+      "Insurable interest and required land/cultivation records must be verified"
+    ],
+    "required_documents": [
+      "land record or cultivation proof",
+      "bank account proof",
+      "identity proof",
+      "sowing/crop details where required"
+    ],
+    "application_steps": [
+      "Check notified crops and application deadline",
+      "Apply through the PMFBY portal, bank, CSC, or authorized channel",
+      "Keep policy details and report losses through the prescribed process"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "official_link": "https://pmfby.gov.in/",
+    "source_name": "PMFBY Official Portal",
+    "source_reference": "Verified against the official PMFBY portal and current operational guidance. Verify state and season-specific rules.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "pm-kusum",
+      "krishi-bhagya-karnataka"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-kusum",
+    "name": "PM-KUSUM",
+    "description": "Agricultural solar-energy support scheme helping farmers install solar pumps and solarize agricultural power systems. Verify state implementation and beneficiary contribution.",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Support for standalone solar agricultural pumps",
+      "Solarization of eligible grid-connected agricultural pumps",
+      "Opportunity for eligible farmers and groups to develop decentralized solar power plants"
+    ],
+    "eligibility": [
+      "Farmer, farmer group, water user association, cooperative, FPO, PACS, or other eligible beneficiary under the applicable component",
+      "Agricultural land or eligible pump/connection requirements apply"
+    ],
+    "required_documents": [
+      "identity proof",
+      "land record",
+      "bank account proof",
+      "electricity connection or pump details where applicable"
+    ],
+    "application_steps": [
+      "Check the applicable PM-KUSUM component and state notification",
+      "Apply through the designated state implementing department or portal",
+      "Complete technical and beneficiary verification"
+    ],
+    "department": "Ministry of New and Renewable Energy",
+    "official_link": "https://pmkusum.mnre.gov.in/",
+    "source_name": "PM-KUSUM National Portal",
+    "source_reference": "Verified against the official PM-KUSUM national portal. State-level implementation conditions vary.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "pmfby",
+      "krishi-bhagya-karnataka"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "enam",
+    "name": "e-NAM",
+    "description": "National electronic agricultural market platform connecting participating APMC markets and enabling transparent online agricultural commodity trading.",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Online market access",
+      "Transparent price discovery",
+      "Online payment and market information"
+    ],
+    "eligibility": [
+      "Farmer or seller dealing in commodities at a participating e-NAM market",
+      "APMC registration and KYC requirements apply"
+    ],
+    "required_documents": [
+      "identity proof",
+      "mobile number",
+      "bank account details",
+      "APMC or farmer registration details"
+    ],
+    "application_steps": [
+      "Register on the e-NAM portal or through the participating mandi",
+      "Complete KYC and APMC linkage",
+      "Use the platform for market information and eligible transactions"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Small Farmers Agribusiness Consortium",
+    "official_link": "https://enam.gov.in/",
+    "source_name": "e-NAM Official Portal",
+    "source_reference": "Verified against the official e-NAM portal and farmer registration guidance.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "pmfby"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "kisan-credit-card",
+    "name": "Kisan Credit Card (KCC)",
+    "description": "Institutional credit facility for eligible farmers to meet short-term agricultural and related working-capital needs. Verify current lending terms with the participating bank.",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Access to agricultural credit",
+      "Working-capital support for eligible farm activities",
+      "Credit access through participating banks"
+    ],
+    "eligibility": [
+      "Eligible farmers and agricultural cultivators",
+      "Tenant farmers, sharecroppers, and other eligible categories may qualify subject to bank rules"
+    ],
+    "required_documents": [
+      "identity proof",
+      "address proof",
+      "land or cultivation records",
+      "bank-required documents"
+    ],
+    "application_steps": [
+      "Approach a participating bank or eligible financial institution",
+      "Submit the KCC application and required farm records",
+      "Complete bank appraisal and documentation"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Participating Banks",
+    "official_link": "https://www.myscheme.gov.in/",
+    "source_name": "myScheme National Government Scheme Platform",
+    "source_reference": "Scheme identity and broad beneficiary pathway should be verified against current bank and government guidance before use.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "pmfby",
+      "pm-kusum"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "soil-health-card",
+    "name": "Soil Health Card Scheme",
+    "description": "Soil-testing and nutrient-management support that helps farmers understand soil health and recommended fertilizer use.",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Soil nutrient assessment",
+      "Fertilizer and nutrient recommendations",
+      "Improved soil management guidance"
+    ],
+    "eligibility": [
+      "Farmers seeking soil testing and recommendations",
+      "Testing availability depends on the local agriculture department and soil-testing facilities"
+    ],
+    "required_documents": [
+      "farmer identity details",
+      "land or field details"
+    ],
+    "application_steps": [
+      "Contact the local agriculture department or soil-testing facility",
+      "Provide field details and arrange soil sample testing",
+      "Collect and use the soil health recommendations"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "official_link": "https://soilhealth.dac.gov.in/",
+    "source_name": "Soil Health Card Portal",
+    "source_reference": "Source-backed scheme summary. Verify current local testing workflow.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "paramparagat-krishi-vikas-yojana"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "paramparagat-krishi-vikas-yojana",
+    "name": "Paramparagat Krishi Vikas Yojana (PKVY)",
+    "description": "Support for organic farming clusters and sustainable agricultural practices under the national organic farming framework.",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Organic farming support",
+      "Cluster-based training and input support where applicable",
+      "Sustainable farming practices"
+    ],
+    "eligibility": [
+      "Farmers participating through eligible organic farming clusters or state implementation channels",
+      "State and cluster conditions apply"
+    ],
+    "required_documents": [
+      "farmer identity proof",
+      "land record",
+      "bank account proof",
+      "cluster or farming records where required"
+    ],
+    "application_steps": [
+      "Contact the state agriculture department or designated implementing agency",
+      "Join or register through an eligible cluster",
+      "Complete verification and follow the approved organic farming plan"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "official_link": "https://pgsindia-ncof.gov.in/",
+    "source_name": "National Centre of Organic and Natural Farming",
+    "source_reference": "Source-backed scheme summary. Verify current implementation and cluster eligibility.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "soil-health-card",
+      "pm-kisan"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "agriculture-infrastructure-fund",
+    "name": "Agriculture Infrastructure Fund",
+    "description": "Financing support for eligible post-harvest and community agricultural infrastructure projects.",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Access to institutional financing for eligible agricultural infrastructure",
+      "Support for post-harvest and community farm assets",
+      "Interest and credit-linked support subject to scheme rules"
+    ],
+    "eligibility": [
+      "Eligible farmers, FPOs, cooperatives, agri-entrepreneurs, startups, and other notified beneficiaries",
+      "Project and lending criteria apply"
+    ],
+    "required_documents": [
+      "project proposal",
+      "identity and registration documents",
+      "bank documents",
+      "land or asset documents where applicable"
+    ],
+    "application_steps": [
+      "Prepare an eligible infrastructure project",
+      "Apply through the designated financing channel or portal",
+      "Complete lender and scheme-level appraisal"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "official_link": "https://agriinfra.dac.gov.in/",
+    "source_name": "Agriculture Infrastructure Fund Portal",
+    "source_reference": "Source-backed scheme summary. Verify current project eligibility and financing terms.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "enam",
+      "pm-kisan"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-vidyalaxmi",
+    "name": "PM-Vidyalaxmi",
+    "description": "Education-loan support for eligible students admitted on merit to notified quality higher educational institutions, with collateral-free and guarantor-free loan provisions under applicable rules.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Access to education loans",
+      "Collateral-free and guarantor-free loan support for eligible students",
+      "Interest support for eligible income groups under scheme conditions"
+    ],
+    "eligibility": [
+      "Student securing merit-based admission in an eligible Quality Higher Educational Institution",
+      "Family income and other conditions apply for interest support"
+    ],
+    "required_documents": [
+      "admission letter",
+      "student identity proof",
+      "academic records",
+      "income documents where applicable",
+      "bank or loan documents"
+    ],
+    "application_steps": [
+      "Confirm institution and course eligibility",
+      "Apply through the designated PM-Vidyalaxmi process",
+      "Submit admission, identity, and financial documents to the lender"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "official_link": "https://www.vidyalakshmi.co.in/",
+    "source_name": "Ministry of Education / Vidyalakshmi ecosystem",
+    "source_reference": "Verified against current Ministry of Education information on PM-Vidyalaxmi.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "national-scholarship-portal",
+      "central-sector-scholarship-college-university"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "central-sector-scholarship-college-university",
+    "name": "Central Sector Scheme of Scholarship for College and University Students",
+    "description": "Merit-cum-means scholarship support for eligible students pursuing regular higher education.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Financial scholarship support for higher education",
+      "Direct benefit transfer to eligible beneficiaries"
+    ],
+    "eligibility": [
+      "Meritorious students meeting the prescribed academic percentile criteria",
+      "Family income and course/institution conditions apply",
+      "Other scholarship restrictions may apply"
+    ],
+    "required_documents": [
+      "class 12 academic record",
+      "student identity proof",
+      "income certificate",
+      "bank account details"
+    ],
+    "application_steps": [
+      "Check the current National Scholarship Portal notification",
+      "Register and apply through the portal",
+      "Complete institution verification and track disbursement"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "official_link": "https://scholarships.gov.in/",
+    "source_name": "National Scholarship Portal / Ministry of Education",
+    "source_reference": "Verified against Ministry of Education scholarship information. Check the current year's notification for exact thresholds and amounts.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "national-scholarship-portal",
+      "pm-vidyalaxmi"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-yasasvi",
+    "name": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI)",
+    "description": "Scholarship and educational support framework for eligible OBC, EBC and DNT students under notified components.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Educational scholarship support",
+      "School and higher-education support through applicable components"
+    ],
+    "eligibility": [
+      "Student belonging to an eligible OBC, EBC, or DNT category",
+      "Academic, income, age, and institution conditions vary by component"
+    ],
+    "required_documents": [
+      "student identity proof",
+      "category certificate",
+      "income certificate",
+      "academic records",
+      "bank account details"
+    ],
+    "application_steps": [
+      "Check the applicable PM-YASASVI component and current notification",
+      "Apply through the designated portal",
+      "Complete school/institution and document verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://socialjustice.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's current scheme listings. Exact component rules should be checked before application.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "national-scholarship-portal",
+      "post-matric-obc-ebc-dnt"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "post-matric-obc-ebc-dnt",
+    "name": "Post-Matric Scholarship for OBC, EBC & DNT Students",
+    "description": "Post-matric financial assistance for eligible OBC, EBC and DNT students pursuing recognized education.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Post-matric scholarship support",
+      "Financial assistance for eligible educational expenses"
+    ],
+    "eligibility": [
+      "Student from eligible OBC, EBC, or DNT category",
+      "Income, course, institution, and other conditions apply"
+    ],
+    "required_documents": [
+      "student identity proof",
+      "category certificate",
+      "income certificate",
+      "academic admission proof",
+      "bank account details"
+    ],
+    "application_steps": [
+      "Check the current scholarship notification",
+      "Apply through the National Scholarship Portal or notified channel",
+      "Complete institution and department verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://scholarships.gov.in/",
+    "source_name": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's 2026 scheme listings. Confirm current state implementation and eligibility.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-yasasvi",
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pre-matric-obc-ebc-dnt",
+    "name": "Pre-Matric Scholarship for OBC, EBC & DNT Students",
+    "description": "Pre-matric educational support for eligible students from OBC, EBC and DNT communities under current notified rules.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "School-level scholarship support",
+      "Financial assistance for eligible students"
+    ],
+    "eligibility": [
+      "Student from eligible OBC, EBC, or DNT category",
+      "Class, income, school, and other criteria apply"
+    ],
+    "required_documents": [
+      "student identity proof",
+      "category certificate",
+      "income certificate",
+      "school enrollment proof",
+      "bank account details"
+    ],
+    "application_steps": [
+      "Check the current scholarship notification",
+      "Apply through the designated scholarship portal",
+      "Complete school and department verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://scholarships.gov.in/",
+    "source_name": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's 2026 scheme listings. Confirm current state implementation and eligibility.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-yasasvi",
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "top-class-education-sc",
+    "name": "Top Class Education for SC Students",
+    "description": "Higher-education scholarship support for eligible Scheduled Caste students admitted to notified institutions.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Financial support for eligible higher education",
+      "Scholarship assistance for notified educational expenses"
+    ],
+    "eligibility": [
+      "SC student admitted to an eligible institution",
+      "Family income and institutional criteria apply"
+    ],
+    "required_documents": [
+      "SC certificate",
+      "admission proof",
+      "income certificate",
+      "academic records",
+      "bank account details"
+    ],
+    "application_steps": [
+      "Check current eligible institution and income criteria",
+      "Apply through the National Scholarship Portal",
+      "Complete institutional verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://scholarships.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's current educational scheme listings.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "national-scholarship-portal",
+      "pm-yasasvi"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "shreshta",
+    "name": "SHRESHTA",
+    "description": "Residential education pathway for eligible Scheduled Caste students in targeted high-quality schools.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Residential school education support",
+      "Access to selected quality schools for eligible students"
+    ],
+    "eligibility": [
+      "Eligible SC students meeting the current admission and selection criteria",
+      "Class, income, and school conditions apply"
+    ],
+    "required_documents": [
+      "student identity proof",
+      "SC certificate",
+      "academic records",
+      "income certificate where required"
+    ],
+    "application_steps": [
+      "Check the current SHRESHTA admission notification",
+      "Complete the prescribed selection or entrance process",
+      "Submit documents for verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://socialjustice.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's current scheme listings.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "top-class-education-sc",
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "national-overseas-scholarship-sc",
+    "name": "National Overseas Scholarship for SC Students",
+    "description": "Overseas higher-education scholarship support for eligible students from notified disadvantaged categories, including SC students under the applicable component.",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Financial support for eligible overseas higher education",
+      "Support toward notified education and living expenses"
+    ],
+    "eligibility": [
+      "Eligible category student meeting academic, income, age, admission, and course requirements",
+      "Current country and institution rules apply"
+    ],
+    "required_documents": [
+      "category certificate",
+      "academic records",
+      "foreign university admission or offer",
+      "income certificate",
+      "passport or identity documents"
+    ],
+    "application_steps": [
+      "Check the current overseas scholarship notification",
+      "Apply through the designated government portal",
+      "Complete document and eligibility verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://socialjustice.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's current scheme listings. Check the current cycle for exact eligibility and award limits.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "top-class-education-sc",
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "aicte-pragati",
+    "name": "AICTE Pragati Scholarship for Girl Students",
+    "description": "Scholarship support for eligible girl students pursuing approved technical education programmes.",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Financial scholarship support for eligible technical education students",
+      "Support toward educational expenses"
+    ],
+    "eligibility": [
+      "Girl student admitted to an eligible AICTE-approved technical programme",
+      "Family income and other scheme conditions apply"
+    ],
+    "required_documents": [
+      "student identity proof",
+      "admission proof",
+      "income certificate",
+      "academic records",
+      "bank account details"
+    ],
+    "application_steps": [
+      "Check the current AICTE scholarship notification",
+      "Apply through the notified scholarship portal",
+      "Complete institute and document verification"
+    ],
+    "department": "All India Council for Technical Education",
+    "official_link": "https://www.aicte-india.org/",
+    "source_name": "AICTE Official Portal",
+    "source_reference": "Source-backed scholarship entry. Verify current academic year conditions and award limits.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "national-scholarship-portal",
+      "central-sector-scholarship-college-university"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "ugc-single-girl-child-pg",
+    "name": "UGC Indira Gandhi Scholarship for Single Girl Child",
+    "description": "Higher-education scholarship support for eligible single girl children pursuing notified postgraduate studies.",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Postgraduate scholarship support",
+      "Financial assistance for eligible single girl students"
+    ],
+    "eligibility": [
+      "Single girl child meeting the current UGC eligibility rules",
+      "Programme, age, admission, and institution conditions apply"
+    ],
+    "required_documents": [
+      "student identity proof",
+      "admission proof",
+      "single-girl-child declaration or certificate as required",
+      "academic records",
+      "bank details"
+    ],
+    "application_steps": [
+      "Check the current UGC scholarship notification",
+      "Apply through the designated scholarship portal",
+      "Complete institution verification"
+    ],
+    "department": "University Grants Commission",
+    "official_link": "https://www.ugc.gov.in/",
+    "source_name": "UGC Official Portal",
+    "source_reference": "Source-backed scheme entry. Verify current cycle-specific eligibility before application.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "aicte-pragati",
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "cbse-single-girl-child",
+    "name": "CBSE Merit Scholarship Scheme for Single Girl Child",
+    "description": "Merit scholarship support for eligible single girl children studying in CBSE-affiliated schools under current scheme rules.",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "School-level merit scholarship support",
+      "Financial assistance for eligible girl students"
+    ],
+    "eligibility": [
+      "Eligible single girl child studying in a CBSE-affiliated school",
+      "Academic, tuition-fee, and other current criteria apply"
+    ],
+    "required_documents": [
+      "CBSE academic record",
+      "school certificate",
+      "single-girl-child declaration",
+      "income or fee documents where required",
+      "bank details"
+    ],
+    "application_steps": [
+      "Check the current CBSE scholarship notification",
+      "Submit the application through the CBSE process",
+      "Complete school verification"
+    ],
+    "department": "Central Board of Secondary Education",
+    "official_link": "https://www.cbse.gov.in/",
+    "source_name": "CBSE Official Portal",
+    "source_reference": "Source-backed scheme entry. Verify the current application cycle and criteria.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "aicte-pragati",
+      "national-scholarship-portal"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pmay-u-2",
+    "name": "PMAY-U 2.0",
+    "description": "Urban housing assistance framework for eligible urban families, including EWS and other notified income groups, under current component rules.",
+    "category": "EWS / Housing",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Support for eligible urban housing",
+      "Assistance through applicable housing components",
+      "Interest subsidy or other support where eligibility conditions are met"
+    ],
+    "eligibility": [
+      "Eligible urban household",
+      "Income category and housing ownership conditions apply",
+      "Component-specific conditions must be satisfied"
+    ],
+    "required_documents": [
+      "identity proof",
+      "address proof",
+      "income certificate",
+      "property or housing documents where applicable",
+      "bank details"
+    ],
+    "application_steps": [
+      "Identify the applicable PMAY-U 2.0 component",
+      "Apply through the official urban housing channel or designated local authority",
+      "Complete household and property verification"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "official_link": "https://pmay-urban.gov.in/",
+    "source_name": "PMAY-U Official Portal",
+    "source_reference": "Source-backed housing scheme entry. Verify current component, income limits, and city-level implementation.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pmay-g",
+      "pm-ujjwala-yojana"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-svanidhi",
+    "name": "PM SVANidhi",
+    "description": "Working-capital and digital transaction support for eligible street vendors, especially useful for economically vulnerable urban workers.",
+    "category": "Livelihood / EWS",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Collateral-free working-capital loan support",
+      "Digital transaction incentives under applicable rules",
+      "Credit-building pathway for eligible vendors"
+    ],
+    "eligibility": [
+      "Eligible street vendor identified under the scheme's current coverage rules",
+      "Urban local body and vendor verification requirements apply"
+    ],
+    "required_documents": [
+      "vendor identification or certificate",
+      "identity proof",
+      "bank account details",
+      "address information"
+    ],
+    "application_steps": [
+      "Confirm vendor eligibility with the urban local body or designated channel",
+      "Apply through the notified lender or digital process",
+      "Complete KYC and loan documentation"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "official_link": "https://pmsvanidhi.mohua.gov.in/",
+    "source_name": "PM SVANidhi Official Portal",
+    "source_reference": "Source-backed livelihood scheme entry. Verify current loan tranche and incentive rules.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pmay-u-2",
+      "stand-up-india"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-jan-dhan",
+    "name": "Pradhan Mantri Jan-Dhan Yojana",
+    "description": "Financial inclusion programme providing access to basic banking services for eligible individuals and households.",
+    "category": "Financial Inclusion",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Basic bank account access",
+      "Access to eligible financial inclusion services",
+      "Linkage to government benefit transfers and other services"
+    ],
+    "eligibility": [
+      "Individuals eligible to open a basic bank account under applicable banking rules"
+    ],
+    "required_documents": [
+      "identity proof",
+      "address or KYC documents"
+    ],
+    "application_steps": [
+      "Visit a participating bank or banking correspondent",
+      "Complete KYC and account-opening formalities",
+      "Link eligible services and benefits as required"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "official_link": "https://pmjdy.gov.in/",
+    "source_name": "PMJDY Official Portal",
+    "source_reference": "Source-backed financial inclusion scheme entry. Verify current account features and eligibility.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-svanidhi",
+      "pm-ujjwala-yojana"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "avyay",
+    "name": "Atal Vayo Abhyuday Yojana (AVYAY)",
+    "description": "Senior-citizen welfare framework supporting care, shelter, active ageing, and related services through eligible implementing organizations.",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Support for senior citizen welfare services",
+      "Institutional care and support through eligible projects",
+      "Active ageing and related assistance"
+    ],
+    "eligibility": [
+      "Senior citizens may benefit through eligible service institutions and programme components",
+      "Specific component and local implementation conditions apply"
+    ],
+    "required_documents": [
+      "age proof",
+      "identity proof",
+      "residence proof",
+      "additional documents as required by the implementing organization"
+    ],
+    "application_steps": [
+      "Identify an eligible AVYAY-supported service or institution",
+      "Contact the implementing organization or relevant authority",
+      "Complete beneficiary verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://socialjustice.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's current scheme listings.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "up-old-age-pension",
+      "sandhya-suraksha-karnataka"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "rashtriya-vayoshri-yojana",
+    "name": "Rashtriya Vayoshri Yojana",
+    "description": "Assistive-device support for eligible senior citizens with age-related disabilities or impairments under current scheme rules.",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Assistive living devices for eligible seniors",
+      "Support for improving mobility and daily functioning"
+    ],
+    "eligibility": [
+      "Senior citizen meeting current scheme conditions",
+      "Disability or impairment assessment and economic criteria may apply"
+    ],
+    "required_documents": [
+      "age proof",
+      "identity proof",
+      "income or economic-status proof",
+      "medical/disability assessment where required"
+    ],
+    "application_steps": [
+      "Check current implementation through the designated agency or camp",
+      "Complete eligibility and assessment",
+      "Receive eligible assistive devices through the notified process"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://socialjustice.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Source-backed senior-citizen scheme entry. Verify current beneficiary criteria and implementation schedule.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "avyay",
+      "udid"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "ignoaps",
+    "name": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    "description": "Old-age pension support under the National Social Assistance Programme for eligible economically vulnerable elderly persons.",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Monthly social assistance pension",
+      "Direct support for eligible elderly persons"
+    ],
+    "eligibility": [
+      "Senior citizen meeting current age and economic-status criteria",
+      "State-level verification and contribution rules may apply"
+    ],
+    "required_documents": [
+      "age proof",
+      "residence proof",
+      "income or economic-status certificate",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Apply through the state or local social welfare channel",
+      "Submit age and economic-status documents",
+      "Complete verification and track pension disbursement"
+    ],
+    "department": "Ministry of Rural Development / State Social Welfare Departments",
+    "official_link": "https://nsap.nic.in/",
+    "source_name": "National Social Assistance Programme",
+    "source_reference": "Source-backed scheme entry. Verify current central and state pension amounts and eligibility.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "avyay",
+      "sandhya-suraksha-karnataka",
+      "up-old-age-pension"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "elderline-14567",
+    "name": "Elderline National Helpline for Senior Citizens",
+    "description": "National helpline service providing information, guidance, and support referrals for senior citizens.",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Information and guidance",
+      "Support referrals",
+      "Help with accessing senior-citizen services"
+    ],
+    "eligibility": [
+      "Senior citizens and persons seeking assistance for senior citizens"
+    ],
+    "required_documents": [
+      "Basic caller information where required"
+    ],
+    "application_steps": [
+      "Call the national senior citizen helpline",
+      "Explain the issue or service needed",
+      "Follow the referral or assistance guidance provided"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://socialjustice.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Service listing is supported by the Department's official portal. Confirm current helpline operating details before publishing.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "avyay",
+      "ignoaps"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pmmvy",
+    "name": "Pradhan Mantri Matru Vandana Yojana",
+    "description": "Maternity benefit scheme providing financial assistance to eligible pregnant women and lactating mothers under current rules.",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Maternity-related financial assistance",
+      "Support linked to pregnancy and childbirth conditions"
+    ],
+    "eligibility": [
+      "Eligible pregnant women and lactating mothers meeting current scheme criteria",
+      "Pregnancy, parity, category, and other conditions apply"
+    ],
+    "required_documents": [
+      "identity proof",
+      "bank account details",
+      "pregnancy or health records",
+      "child birth documents where applicable"
+    ],
+    "application_steps": [
+      "Contact the local Anganwadi Centre or designated health/women-and-child-development channel",
+      "Submit beneficiary and pregnancy details",
+      "Complete verification and track benefit payments"
+    ],
+    "department": "Ministry of Women & Child Development",
+    "official_link": "https://pmmvy.wcd.gov.in/",
+    "source_name": "PMMVY Official Portal",
+    "source_reference": "Source-backed maternity benefit scheme entry. Verify current eligibility and benefit stages.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "sukanya-samriddhi",
+      "vahli-dikri-gujarat"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "stand-up-india",
+    "name": "Stand-Up India",
+    "description": "Bank-loan facilitation scheme supporting eligible women and SC/ST entrepreneurs for setting up greenfield enterprises.",
+    "category": "Women / Entrepreneurship",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Institutional credit for eligible greenfield enterprises",
+      "Support for entrepreneurship and business establishment"
+    ],
+    "eligibility": [
+      "Woman entrepreneur or SC/ST entrepreneur",
+      "Enterprise must meet current greenfield and lending conditions",
+      "Borrower and project appraisal requirements apply"
+    ],
+    "required_documents": [
+      "identity proof",
+      "category certificate where applicable",
+      "business plan",
+      "address proof",
+      "bank and financial documents"
+    ],
+    "application_steps": [
+      "Prepare an eligible business proposal",
+      "Apply through a participating bank or official Stand-Up India channel",
+      "Complete credit appraisal and documentation"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "official_link": "https://www.standupmitra.in/",
+    "source_name": "Stand-Up India Official Portal",
+    "source_reference": "Source-backed entrepreneurship scheme entry. Verify current loan limits and eligibility.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-svanidhi",
+      "pm-daksh"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-daksh",
+    "name": "PM-DAKSH",
+    "description": "Skill development and training support for eligible disadvantaged groups to improve employability and livelihood opportunities.",
+    "category": "Skill Development",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Skill training",
+      "Employability support",
+      "Livelihood-oriented training for eligible beneficiaries"
+    ],
+    "eligibility": [
+      "Eligible SC, OBC, EBC, DNT, Safai Karamchari, and other notified beneficiary groups",
+      "Income and age conditions may apply"
+    ],
+    "required_documents": [
+      "identity proof",
+      "category certificate where applicable",
+      "income certificate",
+      "bank account details"
+    ],
+    "application_steps": [
+      "Check eligible training programmes",
+      "Register through the official PM-DAKSH channel",
+      "Complete beneficiary verification and training enrollment"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://pmdaksh.dosje.gov.in/",
+    "source_name": "PM-DAKSH Official Portal",
+    "source_reference": "Verified against the Department's current economic-development scheme listings.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-yasasvi",
+      "stand-up-india"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-suraj",
+    "name": "PM-SURAJ",
+    "description": "Credit and support facilitation platform aimed at improving access to credit and livelihood opportunities for disadvantaged beneficiaries.",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Credit facilitation",
+      "Livelihood and entrepreneurship support",
+      "Access pathway for eligible disadvantaged groups"
+    ],
+    "eligibility": [
+      "Eligibility depends on the linked credit or development programme",
+      "Beneficiary category and lender conditions apply"
+    ],
+    "required_documents": [
+      "identity proof",
+      "category or beneficiary proof where applicable",
+      "bank documents",
+      "business or livelihood documents where required"
+    ],
+    "application_steps": [
+      "Check the current PM-SURAJ service pathway",
+      "Select the relevant linked programme",
+      "Complete lender and beneficiary verification"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://socialjustice.gov.in/",
+    "source_name": "Department of Social Justice & Empowerment",
+    "source_reference": "Verified against the Department's current portal references. Confirm the current linked programme and application route.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-daksh",
+      "stand-up-india"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "udid-card",
+    "name": "UDID Card / Disability Certificate",
+    "description": "National digital disability identity and certification pathway used to access disability-linked welfare services.",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Digital disability identity",
+      "Disability certification pathway",
+      "Improved access to disability-linked welfare services"
+    ],
+    "eligibility": [
+      "Person with a disability subject to assessment and certification by the designated medical authority"
+    ],
+    "required_documents": [
+      "identity proof",
+      "address proof",
+      "medical records where required",
+      "disability-related documents"
+    ],
+    "application_steps": [
+      "Register on the official UDID portal",
+      "Submit personal and medical information",
+      "Attend assessment by the designated medical authority and complete certification"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "official_link": "https://www.swavlambancard.gov.in/",
+    "source_name": "UDID Official Portal",
+    "source_reference": "Source-backed disability identity scheme entry.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "ayushman-bharat-pmjay",
+      "rashtriya-vayoshri-yojana"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "namaste",
+    "name": "NAMASTE",
+    "description": "Support framework for mechanised sanitation work, safety, training, and livelihood transition for eligible sanitation workers.",
+    "category": "Livelihood / Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Occupational safety support",
+      "Skill and livelihood assistance",
+      "Support for sanitation-worker welfare"
+    ],
+    "eligibility": [
+      "Eligible sanitation workers and identified sewer/septic tank workers under current programme criteria"
+    ],
+    "required_documents": [
+      "identity proof",
+      "worker or occupation details",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Complete identification or survey through the designated local authority",
+      "Undergo required training or safety process",
+      "Access eligible support and livelihood services"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "official_link": "https://bmsnamaste.dosje.gov.in/",
+    "source_name": "NAMASTE Official Portal",
+    "source_reference": "Verified against the Department's current economic-development scheme listings.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-daksh",
+      "e-shram"
+    ],
+    "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
   }
 ]

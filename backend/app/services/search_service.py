@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import math
 import re
 from typing import Any
@@ -7,6 +8,9 @@ from typing import Any
 import numpy as np
 
 from app.services.data_loader import load_chunks, load_schemes
+from app.services.vector_index_manager import VectorIndexManager, compute_chunks_hash
+
+logger = logging.getLogger("techsahaya.search_service")
 
 try:
     import faiss  # type: ignore
@@ -16,6 +20,7 @@ except Exception:  # pragma: no cover
 
 class SearchService:
     def __init__(self) -> None:
+        self.index_manager = VectorIndexManager()
         self.reload_data()
 
     def reload_data(self) -> None:
@@ -37,45 +42,93 @@ class SearchService:
             self.chunk_vectors = np.zeros((0, 0), dtype="float32")
             return
 
-        corpus = [self._tokenize(chunk["text"]) for chunk in self.chunks]
-        vocab_set = set()
-        for doc in corpus:
-            vocab_set.update(doc)
-        
-        self.vocab = {term: idx for idx, term in enumerate(sorted(vocab_set))}
-        num_docs = len(self.chunks)
-        num_terms = len(self.vocab)
+        hash_value = compute_chunks_hash(self.chunks)
 
-        doc_freq = np.zeros(num_terms, dtype="float32")
-        for doc in corpus:
-            unique_terms = set(doc)
-            for term in unique_terms:
-                doc_freq[self.vocab[term]] += 1.0
+        # Reuse persistent chunk vectors when the dataset chunk hash is unchanged.
+        cached_vectors = self._try_load_cached_vectors(hash_value)
+        if cached_vectors is not None:
+            self.chunk_vectors, self.vocab, self.idf = cached_vectors
+            num_docs, num_terms = self.chunk_vectors.shape
+        else:
+            corpus = [self._tokenize(chunk["text"]) for chunk in self.chunks]
+            vocab_set = set()
+            for doc in corpus:
+                vocab_set.update(doc)
 
-        self.idf = np.log((num_docs + 1.0) / (doc_freq + 1.0)) + 1.0
+            self.vocab = {term: idx for idx, term in enumerate(sorted(vocab_set))}
+            num_docs = len(self.chunks)
+            num_terms = len(self.vocab)
 
-        tf_idf_matrix = np.zeros((num_docs, num_terms), dtype="float32")
-        for i, doc in enumerate(corpus):
-            if not doc:
-                continue
-            term_counts: dict[str, float] = {}
-            for term in doc:
-                term_counts[term] = term_counts.get(term, 0.0) + 1.0
-            
-            doc_len = float(len(doc))
-            for term, count in term_counts.items():
-                idx = self.vocab[term]
-                tf_idf_matrix[i, idx] = (count / doc_len) * self.idf[idx]
-            
-            norm = np.linalg.norm(tf_idf_matrix[i])
-            if norm > 0:
-                tf_idf_matrix[i] /= norm
+            doc_freq = np.zeros(num_terms, dtype="float32")
+            for doc in corpus:
+                unique_terms = set(doc)
+                for term in unique_terms:
+                    doc_freq[self.vocab[term]] += 1.0
 
-        self.chunk_vectors = tf_idf_matrix
+            self.idf = np.log((num_docs + 1.0) / (doc_freq + 1.0)) + 1.0
+
+            tf_idf_matrix = np.zeros((num_docs, num_terms), dtype="float32")
+            for i, doc in enumerate(corpus):
+                if not doc:
+                    continue
+                term_counts: dict[str, float] = {}
+                for term in doc:
+                    term_counts[term] = term_counts.get(term, 0.0) + 1.0
+
+                doc_len = float(len(doc))
+                for term, count in term_counts.items():
+                    idx = self.vocab[term]
+                    tf_idf_matrix[i, idx] = (count / doc_len) * self.idf[idx]
+
+                norm = np.linalg.norm(tf_idf_matrix[i])
+                if norm > 0:
+                    tf_idf_matrix[i] /= norm
+
+            self.chunk_vectors = tf_idf_matrix
+            self._persist_vectors(hash_value)
 
         if self.faiss_available and num_docs > 0 and num_terms > 0:
-            self.index = faiss.IndexFlatIP(num_terms)
-            self.index.add(self.chunk_vectors)
+            self.index = self.index_manager.load_index(self.chunk_vectors, hash_value)
+
+    def _persist_vectors(self, hash_value: str) -> None:
+        """Persist TF-IDF vectors, vocab and idf keyed by the chunk hash."""
+        try:
+            import json
+            payload = {
+                "hash": hash_value,
+                "vocab": self.vocab,
+                "idf": self.idf.tolist(),
+                "vectors": self.chunk_vectors.tolist(),
+            }
+            vector_cache_file = self.index_manager.cache_dir / "tfidf_vectors.json"
+            with vector_cache_file.open("w", encoding="utf-8") as f:
+                json.dump(payload, f)
+            logger.debug("[INDEX] Persisted %d TF-IDF vectors", len(self.chunk_vectors))
+        except Exception as exc:
+            logger.warning("[INDEX] Failed to persist TF-IDF vectors: %s", exc)
+
+    def _try_load_cached_vectors(self, hash_value: str):
+        """Return cached (vectors, vocab, idf) if the hash matches, else None."""
+        try:
+            vector_cache_file = self.index_manager.cache_dir / "tfidf_vectors.json"
+            if not vector_cache_file.exists():
+                return None
+            import json
+            with vector_cache_file.open("r", encoding="utf-8") as f:
+                payload = json.load(f)
+            if payload.get("hash") != hash_value:
+                return None
+            vocab = payload["vocab"]
+            idf = np.array(payload["idf"], dtype="float32")
+            vectors = np.array(payload["vectors"], dtype="float32")
+            logger.info(
+                "[INDEX] Loaded %d TF-IDF vectors from cache (hash %s...)",
+                len(vectors), hash_value[:8],
+            )
+            return vectors, vocab, idf
+        except Exception as exc:
+            logger.warning("[INDEX] Failed to load cached TF-IDF vectors: %s", exc)
+            return None
 
     def search(self, query: str, top_k: int = 4, threshold: float = 0.15) -> list[dict[str, Any]]:
         if not query.strip() or len(self.vocab) == 0:
@@ -148,13 +201,29 @@ class SearchService:
 
         scored_chunks.sort(key=lambda item: item[0], reverse=True)
 
-        # Enforce scheme isolation if specific scheme target exists
-        if targeted_scheme_ids:
-            isolated = [c for s, c in scored_chunks if c["scheme_id"] in targeted_scheme_ids]
-            if isolated:
-                return isolated[:top_k]
+        # Return up to `top_k` distinct schemes (best chunk each) so that
+        # complementary relevant schemes surface alongside targeted ones
+        # instead of a single scheme monopolising every slot.
+        distinct: list[dict[str, Any]] = []
+        seen_schemes: set[str] = set()
+        for _, c in scored_chunks:
+            if c["scheme_id"] not in seen_schemes:
+                distinct.append(c)
+                seen_schemes.add(c["scheme_id"])
+            if len(distinct) >= top_k:
+                break
 
-        return [c for s, c in scored_chunks[:top_k]]
+        # Keep explicitly targeted schemes on top, but NEVER eliminate
+        # complementary All-India schemes; both are already ranked above.
+        if targeted_scheme_ids and distinct:
+            ordered = sorted(
+                distinct,
+                key=lambda c: (c["scheme_id"] in targeted_scheme_ids, ),
+                reverse=True,
+            )
+            return ordered
+
+        return distinct
 
     def _normalize_query(self, query: str) -> str:
         hints = {

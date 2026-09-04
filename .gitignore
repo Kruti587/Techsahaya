@@ -25,3 +25,4 @@ frontend/dist/
 frontend/.vite/
 frontend/node_modules/
 data/faiss_index/
+data/.cache/

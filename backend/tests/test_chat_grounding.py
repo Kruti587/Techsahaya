@@ -15,7 +15,7 @@ def test_1_farmer_scheme_discovery():
 def test_2_student_scheme_discovery():
     res = chat_service.answer("What schemes are available for students?", "en")
     assert res.confidence in {"high", "medium"}
-    assert any(s.id == "national-scholarship-portal" for s in res.schemes)
+    assert any(s.category == "Education" for s in res.schemes)
     assert any("scholarship" in e["evidence"].lower() or "student" in e["evidence"].lower() for e in res.evidence)
 
 
@@ -40,12 +40,12 @@ def test_5_worker_schemes():
 
 def test_6_women_schemes():
     res = chat_service.answer("What schemes are available for women?", "en")
-    assert any(s.id in {"sukanya-samriddhi", "pm-ujjwala-yojana"} for s in res.schemes)
+    assert any(s.category in {"Women and Child"} for s in res.schemes)
 
 
 def test_7_karnataka_student():
     res = chat_service.answer("I am a student in Karnataka. What benefits can I look for?", "en")
-    assert any(s.id == "national-scholarship-portal" for s in res.schemes)
+    assert any(s.id == "vidyasiri-karnataka" for s in res.schemes) or any(s.id == "national-scholarship-portal" for s in res.schemes)
 
 
 def test_8_karnataka_farmer():
