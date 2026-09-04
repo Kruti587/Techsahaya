@@ -4,19 +4,27 @@ import { t, type TranslationKey } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
 import { Logo } from "./Logo";
 import { Footer } from "./Footer";
+import { FloatingChatWidget } from "./FloatingChatWidget";
+import { BackToTop } from "./BackToTop";
 
 const items: { to: string; labelKey: TranslationKey }[] = [
   { to: "/", labelKey: "home" },
   { to: "/how-it-works", labelKey: "howItWorks" },
   { to: "/schemes", labelKey: "schemes" },
   { to: "/security", labelKey: "securityPrivacy" },
-  { to: "/about", labelKey: "about" }
+  { to: "/about", labelKey: "about" },
 ];
 
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   const { language, setLanguage, offline } = useAppContext();
   return (
-    <div className="min-h-screen bg-stone-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-stone-50 flex flex-col justify-between relative">
+      {/* Floating Chatbot widget visible across public site */}
+      <FloatingChatWidget />
+
+      {/* Back to Top floating pill button in the middle of page */}
+      <BackToTop />
+
       <header className="border-b bg-white sticky top-0 z-30">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
           <Link to="/" className="flex items-center gap-3 text-sahaya-green">

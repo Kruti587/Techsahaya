@@ -1,9 +1,10 @@
-import { ComposeEmailCard } from "./components/ComposeEmailCard";
 import { Route, Routes } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
 import { ProtectedRoute, RoleProtectedRoute } from "./components/ProtectedRoute";
 import { PublicLayout } from "./components/PublicLayout";
 import { AboutPage } from "./pages/AboutPage";
+import { CookiePolicyPage } from "./pages/CookiePolicyPage";
+import { AccessibilityPage } from "./pages/AccessibilityPage";
 import { AccessRestrictedPage } from "./pages/AccessRestrictedPage";
 import { AdminAuditPage } from "./pages/AdminAuditPage";
 import { AdminDashboardPage } from "./pages/AdminDashboardPage";
@@ -40,13 +41,16 @@ export default function App() {
   return (
     <>
       <ScrollProgressBar />
-      <ComposeEmailCard />
       <Routes>
       <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
       <Route path="/how-it-works" element={<PublicLayout><HowItWorksPage /></PublicLayout>} />
       <Route path="/schemes" element={<PublicLayout><SchemesPage /></PublicLayout>} />
       <Route path="/schemes/:schemeId" element={<PublicLayout><SchemeDetailsPage /></PublicLayout>} />
       <Route path="/security" element={<PublicLayout><SecurityPage /></PublicLayout>} />
+      <Route path="/privacy-policy" element={<PublicLayout><PrivacyPage /></PublicLayout>} />
+      <Route path="/cookies" element={<PublicLayout><CookiePolicyPage /></PublicLayout>} />
+      <Route path="/cookie-policy" element={<PublicLayout><CookiePolicyPage /></PublicLayout>} />
+      <Route path="/accessibility" element={<PublicLayout><AccessibilityPage /></PublicLayout>} />
       <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />

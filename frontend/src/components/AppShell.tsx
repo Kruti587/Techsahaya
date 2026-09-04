@@ -7,6 +7,7 @@ import { SUPPORTED_LANGUAGES } from "../utils/languages";
 import { FloatingChatWidget } from "./FloatingChatWidget";
 import { SpotlightOverlay } from "./SpotlightOverlay";
 import { Logo } from "./Logo";
+import { BackToTop } from "./BackToTop";
 
 type NavItem = {
   to: string;
@@ -93,6 +94,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-stone-50 pb-20 lg:pb-0 relative">
       <SpotlightOverlay />
+      <BackToTop />
       {user?.role !== "admin" && <FloatingChatWidget />}
 
       <header className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur">

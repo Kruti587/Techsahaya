@@ -33,10 +33,20 @@ export function SignupPage() {
           const result = await signup({ full_name: form.full_name, email: form.email, password: form.password, preferred_language: form.preferred_language, phone_number: form.phone_number || undefined, consent_given: form.consent_given });
           if (result) setError(result); else navigate("/login");
         }}>
-          <input className="min-h-12 rounded-xl border px-4" placeholder="Full Name" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
-          <div className="relative">
-            <input className="min-h-12 w-full rounded-xl border px-4 pr-6" placeholder="Email *" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-            <span className="absolute right-3 top-3 text-red-600 font-bold text-sm" aria-hidden="true">*</span>
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">
+              Full Name
+            </label>
+            <input className="min-h-12 w-full rounded-xl border px-4" placeholder="Enter your full name" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">
+              Email Address <span className="text-red-600 font-bold">* (Required)</span>
+            </label>
+            <div className="relative">
+              <input className="min-h-12 w-full rounded-xl border border-stone-300 px-4 pr-8 focus:border-sahaya-green" placeholder="citizen@example.com *" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              <span className="absolute right-3 top-3 text-red-600 font-bold text-sm" title="Email is required">*</span>
+            </div>
           </div>
           <div className="relative">
             <input className="min-h-12 w-full rounded-xl border px-4 pr-12" placeholder="Password" type={showPassword ? "text" : "password"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />

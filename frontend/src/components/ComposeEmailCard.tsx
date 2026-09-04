@@ -10,7 +10,9 @@ import {
   Image as ImageIcon,
   CheckCircle2,
   Loader2,
+  ExternalLink,
 } from "lucide-react";
+import { useAppContext } from "../context/AppContext";
 
 export type User = {
   id: string;
@@ -42,77 +44,75 @@ export interface ComposeEmailCardProps {
   onClose?: () => void;
 }
 
-const defaultSampleData: EmailData = {
-  from: {
-    id: "1",
-    name: "Liam Johnson",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Liam",
-    email: "liam@zentra.com",
-  },
-  to: [
-    {
-      id: "2",
-      name: "Sophie Turner",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie",
-      email: "sophie@finpay.com",
-    },
-    {
-      id: "3",
-      name: "Jackson Miller",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jackson",
-      email: "jackson@finpay.com",
-    },
-  ],
-  subject: "Quick intro — Zentra CRM",
-  body: `Hi guys,
-
-I'm Liam Johnson, Head of Product at Zentra. We're building a CRM focused on helping teams manage clients, deals, and internal workflows in one clean, flexible system.`,
-  attachments: [
-    {
-      id: "a1",
-      name: "Zentra overview",
-      type: "pdf",
-      size: "17 MB",
-      icon: "PDF",
-    },
-    {
-      id: "a2",
-      name: "Zentra use case FinTech",
-      type: "pdf",
-      size: "17 MB",
-      icon: "PDF",
-    },
-  ],
+const defaultRecipient: User = {
+  id: "tech-sahaya-support",
+  name: "Tech Sahaya Citizen Helpdesk",
+  avatar: "/favicon.svg",
+  email: "support@techsahaya.gov.in",
 };
 
 export function ComposeEmailCard({
-  data = defaultSampleData,
   isOpen: controlledIsOpen,
   onSend,
   onClose,
 }: ComposeEmailCardProps) {
+  const { user } = useAppContext();
   const [internalOpen, setInternalOpen] = useState(false);
   const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalOpen;
 
-  const [emailData, setEmailData] = useState<EmailData>(data);
+  const [emailData, setEmailData] = useState<EmailData>({
+    from: {
+      id: "sender-citizen",
+      name: user?.full_name || "",
+      avatar: "",
+      email: user?.email || "",
+    },
+    to: [defaultRecipient],
+    subject: "Citizen Support Inquiry — Tech Sahaya",
+    body: "",
+    attachments: [],
+  });
+
   const [minimized, setMinimized] = useState(false);
   const [newRecipient, setNewRecipient] = useState("");
   const [sending, setSending] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Sync state if initial data changes
+  // Sync user info if user logs in
   useEffect(() => {
-    if (data) {
-      setEmailData(data);
+    if (user) {
+      setEmailData((prev) => ({
+        ...prev,
+        from: {
+          ...prev.from,
+          name: prev.from.name || user.full_name || "",
+          email: prev.from.email || user.email || "",
+        },
+      }));
     }
-  }, [data]);
+  }, [user]);
 
-  // Global listener for opening support email drawer from footer / buttons
+  // Global listener for opening support email modal from footer / notify buttons
   useEffect(() => {
-    const handleOpen = () => {
+    const handleOpen = (e?: any) => {
       setInternalOpen(true);
       setMinimized(false);
+      if (e?.detail?.email) {
+        setEmailData((prev) => ({
+          ...prev,
+          from: {
+            ...prev.from,
+            email: e.detail.email,
+          },
+        }));
+      }
+      if (e?.detail?.subject) {
+        setEmailData((prev) => ({
+          ...prev,
+          subject: e.detail.subject,
+        }));
+      }
     };
     window.addEventListener("open-support-email", handleOpen);
     return () => window.removeEventListener("open-support-email", handleOpen);
@@ -121,7 +121,6 @@ export function ComposeEmailCard({
   const handleClose = () => {
     setInternalOpen(false);
     if (onClose) onClose();
-    console.log("Card Closed");
   };
 
   const handleRemoveRecipient = (id: string) => {
@@ -136,7 +135,7 @@ export function ComposeEmailCard({
       e.preventDefault();
       const val = newRecipient.trim().replace(/,/g, "");
       if (val) {
-        const rawName = val.split("@")[0] || "User";
+        const rawName = val.split("@")[0] || "Recipient";
         const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
         const newUser: User = {
           id: `usr_${Date.now()}`,
@@ -159,50 +158,63 @@ export function ComposeEmailCard({
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files || !files.length) return;
-    const newAtts: Attachment[] = [];
-    for (let i = 0; i < files.length; i++) {
-      const f = files[i];
-      const sizeMB = (f.size / (1024 * 1024)).toFixed(1);
-      const sizeStr = parseFloat(sizeMB) > 0.1 ? `${sizeMB} MB` : `${Math.round(f.size / 1024)} KB`;
-      let icon: "PDF" | "IMAGE" | "DOC" = "DOC";
-      if (f.name.toLowerCase().endsWith(".pdf")) icon = "PDF";
-      else if (f.type.startsWith("image/") || /\.(png|jpg|jpeg|gif|svg)$/i.test(f.name)) icon = "IMAGE";
+    if (!files || files.length === 0) return;
 
-      newAtts.push({
-        id: `att_${Date.now()}_${i}`,
-        name: f.name,
-        type: f.name.split(".").pop() || "file",
-        size: sizeStr,
-        icon,
-      });
-    }
+    const newAttachments: Attachment[] = Array.from(files).map((file, idx) => {
+      const isPdf = file.type.includes("pdf");
+      const isImg = file.type.includes("image");
+      return {
+        id: `att_${Date.now()}_${idx}`,
+        name: file.name,
+        type: isPdf ? "pdf" : isImg ? "image" : "doc",
+        size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+        icon: isPdf ? "PDF" : isImg ? "IMAGE" : "DOC",
+      };
+    });
+
     setEmailData((prev) => ({
       ...prev,
-      attachments: [...prev.attachments, ...newAtts],
+      attachments: [...prev.attachments, ...newAttachments],
     }));
     e.target.value = "";
   };
 
-  const handleSend = () => {
+  const handleSendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!emailData.from.email) {
+      setToastMessage("Please provide your email address so we can reply.");
+      setTimeout(() => setToastMessage(null), 3000);
+      return;
+    }
+    if (!emailData.body.trim()) {
+      setToastMessage("Please enter your message text.");
+      setTimeout(() => setToastMessage(null), 3000);
+      return;
+    }
+
     setSending(true);
     if (onSend) onSend(emailData);
-    console.log("Sent Email:", emailData);
 
     setTimeout(() => {
       setSending(false);
-      setToastMessage(`✓ Email dispatched to ${emailData.to.length} recipient(s)!`);
+      setToastMessage(`✓ Inquiry sent to ${emailData.to.map((t) => t.email).join(", ")}!`);
       handleClose();
 
       setTimeout(() => {
         setToastMessage(null);
-      }, 3500);
+      }, 4000);
     }, 700);
   };
 
   const handleOpenGmail = () => {
     const toStr = emailData.to.map((u) => u.email).join(",");
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(toStr)}&su=${encodeURIComponent(emailData.subject)}&body=${encodeURIComponent(emailData.body)}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      toStr
+    )}&su=${encodeURIComponent(emailData.subject)}&body=${encodeURIComponent(
+      `${emailData.body}\n\n---\nFrom: ${emailData.from.name || "Citizen"} <${
+        emailData.from.email || "No email"
+      }>`
+    )}`;
     window.open(gmailUrl, "_blank");
     setToastMessage("✓ Pre-filled draft opened in Gmail!");
     setTimeout(() => setToastMessage(null), 3500);
@@ -218,41 +230,21 @@ export function ComposeEmailCard({
         </div>
       )}
 
-      {/* Floating launcher when closed */}
-      {!isOpen && (
-        <button
-          type="button"
-          onClick={() => {
-            setInternalOpen(true);
-            setMinimized(false);
-          }}
-          aria-label="Contact Support via Email"
-          className="fixed bottom-6 right-6 z-[9980] flex items-center gap-2.5 rounded-full border border-amber-500/30 bg-gradient-to-r from-sahaya-green to-emerald-900 px-5 py-3 text-sm font-semibold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-amber-400"
-        >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sahaya-saffron opacity-75"></span>
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-sahaya-saffron"></span>
-          </span>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-          </svg>
-          <span>Email Support</span>
-        </button>
-      )}
+      {/* NO FLOATING BUTTON WHEN CLOSED: It is exclusively accessible via the footer section! */}
 
       {/* Compose Email Modal Card */}
       {isOpen && (
         <div
           role="dialog"
           aria-label="Compose Email"
-          className={`fixed bottom-6 right-6 z-[9990] flex flex-col overflow-hidden rounded-2xl border border-emerald-900/20 bg-white/95 text-sahaya-ink shadow-2xl backdrop-blur-xl transition-all duration-300 ${
+          className={`fixed bottom-6 right-6 z-[9990] flex flex-col overflow-hidden rounded-2xl border border-emerald-900/20 bg-white text-sahaya-ink shadow-2xl backdrop-blur-xl transition-all duration-300 ${
             minimized
               ? "w-80 shadow-lg"
               : "w-[calc(100vw-32px)] max-w-[520px] max-h-[calc(100vh-48px)]"
           }`}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-emerald-900/10 bg-sahaya-ink px-4 py-3 text-white">
+          <div className="flex items-center justify-between border-b border-emerald-900/10 bg-[#0b1f18] px-4 py-3 text-white">
             <div className="flex items-center gap-2.5">
               <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
               <span className="text-sm font-bold tracking-tight">
@@ -262,11 +254,11 @@ export function ComposeEmailCard({
             <div className="flex items-center gap-1.5">
               <button
                 type="button"
-                onClick={() => setMinimized(!minimized)}
+                onClick={() => setMinimized((m) => !m)}
                 className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-white/80 transition hover:bg-white/20 hover:text-white"
-                title={minimized ? "Expand window" : "Minimize window"}
+                title={minimized ? "Expand" : "Minimize"}
               >
-                <Minus size={15} />
+                <Minus size={14} />
               </button>
               <button
                 type="button"
@@ -280,33 +272,47 @@ export function ComposeEmailCard({
           </div>
 
           {!minimized && (
-            <>
+            <form onSubmit={handleSendEmail} className="flex flex-col overflow-hidden">
               {/* Body Content */}
-              <div className="flex flex-col gap-3.5 overflow-y-auto p-4 text-xs">
-                {/* From Row */}
-                <div className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-2.5">
-                  <img
-                    src={emailData.from.avatar}
-                    alt={emailData.from.name}
-                    className="h-9 w-9 rounded-full border border-sahaya-green/40 object-cover bg-emerald-50"
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-bold text-slate-800 text-xs">
-                      {emailData.from.name}
-                    </span>
-                    <span className="text-[11px] text-slate-500">
-                      {emailData.from.email}
-                    </span>
+              <div className="flex flex-col gap-3.5 overflow-y-auto p-4 text-xs max-h-[60vh]">
+                {/* From Inputs: BLANK by default unless logged in */}
+                <div className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-2">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    Your Information (Sender)
                   </div>
-                  <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-sahaya-green">
-                    Sender
-                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      placeholder="Your Name (Optional)"
+                      value={emailData.from.name}
+                      onChange={(e) =>
+                        setEmailData((prev) => ({
+                          ...prev,
+                          from: { ...prev.from, name: e.target.value },
+                        }))
+                      }
+                      className="rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs text-slate-800 outline-none focus:border-sahaya-green"
+                    />
+                    <input
+                      type="email"
+                      required
+                      placeholder="Your Email *"
+                      value={emailData.from.email}
+                      onChange={(e) =>
+                        setEmailData((prev) => ({
+                          ...prev,
+                          from: { ...prev.from, email: e.target.value },
+                        }))
+                      }
+                      className="rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs text-slate-800 outline-none focus:border-sahaya-green"
+                    />
+                  </div>
                 </div>
 
-                {/* To Recipients */}
+                {/* To Recipients: FILLED with support@techsahaya.gov.in */}
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                    To
+                    To (Recipient)
                   </span>
                   <div className="flex min-h-10 flex-wrap items-center gap-1.5 rounded-xl border border-stone-200 bg-white p-2 transition focus-within:border-sahaya-green focus-within:ring-2 focus-within:ring-sahaya-green/10">
                     {emailData.to.map((u) => (
@@ -314,28 +320,26 @@ export function ComposeEmailCard({
                         key={u.id}
                         className="inline-flex items-center gap-1.5 rounded-full border border-emerald-700/20 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-sahaya-green"
                       >
-                        <img
-                          src={u.avatar}
-                          alt={u.name}
-                          className="h-4 w-4 rounded-full"
-                        />
-                        <span>{u.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveRecipient(u.id)}
-                          className="text-slate-400 hover:text-rose-600"
-                        >
-                          &times;
-                        </button>
+                        <span className="h-2 w-2 rounded-full bg-emerald-600"></span>
+                        <span>{u.name} ({u.email})</span>
+                        {emailData.to.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveRecipient(u.id)}
+                            className="text-slate-400 hover:text-rose-600"
+                          >
+                            &times;
+                          </button>
+                        )}
                       </span>
                     ))}
                     <input
                       type="text"
-                      placeholder="+ Add recipient email..."
+                      placeholder="+ Add cc email..."
                       value={newRecipient}
                       onChange={(e) => setNewRecipient(e.target.value)}
                       onKeyDown={handleAddRecipient}
-                      className="min-w-[130px] flex-1 border-none bg-transparent p-1 text-xs text-slate-800 outline-none placeholder:text-slate-400"
+                      className="min-w-[120px] flex-1 border-none bg-transparent p-1 text-xs text-slate-800 outline-none placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -361,7 +365,9 @@ export function ComposeEmailCard({
                     Message
                   </span>
                   <textarea
-                    rows={4}
+                    rows={5}
+                    required
+                    placeholder="Describe your inquiry, scheme question, or feedback here..."
                     value={emailData.body}
                     onChange={(e) =>
                       setEmailData((prev) => ({ ...prev, body: e.target.value }))
@@ -370,112 +376,103 @@ export function ComposeEmailCard({
                   />
                 </div>
 
-                {/* Attachments */}
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
+                {/* Attachments list */}
+                {emailData.attachments.length > 0 && (
+                  <div className="flex flex-col gap-2">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                       Attachments ({emailData.attachments.length})
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="inline-flex items-center gap-1 rounded-lg border border-dashed border-sahaya-saffron/50 bg-amber-50/60 px-2.5 py-1 text-[11px] font-semibold text-sahaya-saffron transition hover:bg-amber-100 hover:border-sahaya-saffron"
-                    >
-                      <Plus size={12} />
-                      <span>Attach File</span>
-                    </button>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      multiple
-                      className="hidden"
-                      onChange={handleFileUpload}
-                    />
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {emailData.attachments.map((att) => (
-                      <div
-                        key={att.id}
-                        className="flex items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-2.5 py-1.5 transition hover:bg-stone-100"
-                      >
-                        <span
-                          className={`rounded px-1.5 py-0.5 text-[9px] font-extrabold uppercase ${
-                            att.icon === "PDF"
-                              ? "bg-rose-100 text-rose-700"
-                              : att.icon === "IMAGE"
-                              ? "bg-purple-100 text-purple-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      {emailData.attachments.map((att) => (
+                        <div
+                          key={att.id}
+                          className="flex items-center justify-between gap-2 rounded-xl border border-stone-200 bg-stone-50/80 p-2 text-xs transition hover:bg-stone-100"
                         >
-                          {att.icon}
-                        </span>
-                        <div className="flex flex-col leading-none">
-                          <span
-                            className="max-w-[130px] truncate text-[11px] font-semibold text-slate-700"
-                            title={att.name}
+                          <div className="flex items-center gap-2 overflow-hidden">
+                            <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-sahaya-green font-bold text-[10px]">
+                              {att.icon === "PDF" ? "PDF" : <ImageIcon size={13} />}
+                            </span>
+                            <div className="flex flex-col overflow-hidden">
+                              <span className="truncate font-semibold text-slate-800">
+                                {att.name}
+                              </span>
+                              <span className="text-[10px] text-slate-400">
+                                {att.size}
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveAttachment(att.id)}
+                            className="rounded p-1 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600"
+                            title="Remove file"
                           >
-                            {att.name}
-                          </span>
-                          <span className="text-[9px] text-slate-400">{att.size}</span>
+                            <Trash2 size={13} />
+                          </button>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveAttachment(att.id)}
-                          className="text-slate-400 hover:text-rose-600"
-                          title="Remove file"
-                        >
-                          &times;
-                        </button>
-                      </div>
-                    ))}
-                    {!emailData.attachments.length && (
-                      <span className="text-[11px] text-slate-400 italic">
-                        No attachments added yet
-                      </span>
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
-              {/* Action Footer */}
-              <div className="flex items-center justify-between border-t border-stone-200 bg-stone-50 px-4 py-3">
-                <button
-                  type="button"
-                  onClick={handleClose}
-                  className="text-xs font-semibold text-slate-500 hover:text-rose-600 transition"
-                >
-                  Discard
-                </button>
-                <div className="flex items-center gap-2.5">
+              {/* Bottom Actions Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone-200 bg-stone-50 px-4 py-3">
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    multiple
+                    className="hidden"
+                    onChange={handleFileUpload}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-stone-100 hover:text-sahaya-green"
+                  >
+                    <Paperclip size={13} />
+                    <span>Attach</span>
+                  </button>
                   <button
                     type="button"
                     onClick={handleOpenGmail}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-stone-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-red-500 hover:bg-red-50 hover:text-red-700"
-                    title="Open in Gmail Web App"
+                    className="flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-red-50 hover:text-red-700"
+                    title="Open draft in official Gmail client"
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#ea4335">
-                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                    </svg>
+                    <ExternalLink size={13} />
                     <span>Open in Gmail</span>
                   </button>
+                </div>
 
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
+                    onClick={handleClose}
+                    className="rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-stone-200"
+                  >
+                    Discard
+                  </button>
+                  <button
+                    type="submit"
                     disabled={sending}
-                    onClick={handleSend}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-sahaya-green px-4 py-2 text-xs font-bold text-white shadow-md transition hover:bg-emerald-900 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-xl bg-sahaya-green px-4 py-2 text-xs font-bold text-white shadow-md transition hover:bg-emerald-900 active:scale-95 disabled:opacity-50"
                   >
                     {sending ? (
-                      <Loader2 size={13} className="animate-spin" />
+                      <>
+                        <Loader2 size={13} className="animate-spin" />
+                        <span>Sending...</span>
+                      </>
                     ) : (
-                      <Send size={13} />
+                      <>
+                        <Send size={13} />
+                        <span>Send Message</span>
+                      </>
                     )}
-                    <span>{sending ? "Sending..." : "Send Email"}</span>
                   </button>
                 </div>
               </div>
-            </>
+            </form>
           )}
         </div>
       )}

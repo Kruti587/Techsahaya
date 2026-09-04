@@ -8,7 +8,7 @@ import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
-import { hasActivePlayback, playExclusiveAudio, stopAllPlayback } from "../utils/speechUtils";
+import { hasActivePlayback, playExclusiveAudio, speakExclusive, stopAllPlayback, languageToBCP47 } from "../utils/speechUtils";
 import type { Scheme } from "../types";
 
 const getDashboardSummaryAutoplayKey = (userId?: string) =>
@@ -20,6 +20,7 @@ export function DashboardPage() {
   const [gaps, setGaps] = useState<any[]>([]);
   const [eligibleSchemes, setEligibleSchemes] = useState<Scheme[]>([]);
   const [eligibleError, setEligibleError] = useState("");
+  const [welcomeVoicePlaying, setWelcomeVoicePlaying] = useState(false);
   const [summaryAudio, setSummaryAudio] = useState<{ summary: string; base64: string | null; mime: string } | null>(null);
   const [summaryPlaying, setSummaryPlaying] = useState(false);
   const [summaryAutoplayBlocked, setSummaryAutoplayBlocked] = useState(false);
@@ -116,6 +117,58 @@ export function DashboardPage() {
     stopAllPlayback();
     setSummaryPlaying(false);
   };
+
+  const getWelcomeText = () => {
+    const name = user?.full_name || (language === "hi" ? "नागरिक" : language === "kn" ? "ನಾಗರಿಕ" : "Citizen");
+    if (language === "hi") {
+      return `टेक सहाय में आपका स्वागत है, ${name}! आपका सुरक्षित नागरिक कल्याण पोर्टल। यहाँ आप सरकारी योजनाएँ खोज सकते हैं, अपनी पात्रता समझ सकते हैं, और डिजीलॉकर से सुरक्षित दस्तावेज़ सत्यापित कर सकते हैं।`;
+    }
+    if (language === "kn") {
+      return `ಟೆಕ್ ಸಹಾಯಕ್ಕೆ ಸುಸ್ವಾಗತ, ${name}! ನಿಮ್ಮ ಸುರಕ್ಷಿತ ನಾಗರಿಕ ಕಲ್ಯಾಣ ವೇದಿಕೆ. ಸರ್ಕಾರಿ ಯೋಜನೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ, ನಿಮ್ಮ ಅರ್ಹತೆಯನ್ನು ತಿಳಿದುಕೊಳ್ಳಿ, ಮತ್ತು ಡಿಜಿಲಾಕರ್ ಮೂಲಕ ಪರಿಶೀಲಿಸಿ.`;
+    }
+    if (language === "te") {
+      return `టెక్ సహాయకు స్వాగతం, ${name}! ప్రభుత్వ సంక్షేమ పథకాలను కనుగొనండి, మీ అర్హతను సులభంగా తెలుసుకోండి.`;
+    }
+    if (language === "ta") {
+      return `டெக் சகாயாவிற்கு நல்வரவு, ${name}! அரசு நலத்திட்டங்களை கண்டறிந்து உங்கள் தகுதியை அறிந்து கொள்ளுங்கள்.`;
+    }
+    return `Welcome to Tech Sahaya, ${name}! Your secure citizen welfare portal. Discover government schemes, check your eligibility in simple language, and verify your certificates safely with DigiLocker.`;
+  };
+
+  const playWelcomeVoice = () => {
+    stopAllPlayback();
+    setSummaryPlaying(false);
+    if ("speechSynthesis" in window) {
+      const text = getWelcomeText();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = languageToBCP47(language || "en");
+      utterance.rate = 0.95;
+      speakExclusive(
+        utterance,
+        () => setWelcomeVoicePlaying(true),
+        () => setWelcomeVoicePlaying(false),
+        () => setWelcomeVoicePlaying(false)
+      );
+    }
+  };
+
+  const stopWelcomeVoice = () => {
+    stopAllPlayback();
+    setWelcomeVoicePlaying(false);
+  };
+
+  // Trigger welcome voice greeting when entering dashboard
+  useEffect(() => {
+    const sessionKey = `sahaya_welcome_played_${user?.id || "guest"}`;
+    if (!sessionStorage.getItem(sessionKey)) {
+      sessionStorage.setItem(sessionKey, "true");
+      // Small timeout to allow page layout to settle
+      const t = setTimeout(() => {
+        playWelcomeVoice();
+      }, 700);
+      return () => clearTimeout(t);
+    }
+  }, [user?.id, language]);
 
   const readiness = Math.min(100, (profile.available_documents?.length || 0) * 15 + (profile.age ? 20 : 0) + (profile.occupation ? 20 : 0) + (profile.state ? 20 : 0));
 
@@ -247,14 +300,35 @@ export function DashboardPage() {
               {t(language, "goodMorning")}, {user?.full_name || (language === "hi" ? "नागरिक" : language === "kn" ? "ನಾಗರಿಕ" : "Citizen")}
             </h1>
             <p className="mt-2 max-w-2xl text-slate-600">{t(language, "dashboardSubtitle")}</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Link to="/find-schemes" className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-5 font-semibold text-white">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Link to="/find-schemes" className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sahaya-green px-5 font-semibold text-white shadow-sm hover:opacity-95 transition">
                 {t(language, "findBenefits")} <ArrowRight size={18} />
               </Link>
-              <Link to="/chat" className="inline-flex min-h-12 items-center gap-2 rounded-xl border px-5 font-semibold text-sahaya-green">
+              <Link to="/chat" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-stone-300 px-5 font-semibold text-sahaya-green hover:bg-stone-50 transition">
                 <Mic size={18} /> {t(language, "voiceTextCta")}
               </Link>
+              <button
+                type="button"
+                onClick={welcomeVoicePlaying ? stopWelcomeVoice : playWelcomeVoice}
+                className={`inline-flex min-h-12 items-center gap-2 rounded-xl px-5 font-semibold shadow-sm transition ${
+                  welcomeVoicePlaying
+                    ? "bg-rose-600 text-white hover:bg-rose-700"
+                    : "bg-sahaya-saffron text-white hover:bg-amber-600"
+                }`}
+              >
+                {welcomeVoicePlaying ? <Square size={18} /> : <Volume2 size={18} />}
+                <span>{welcomeVoicePlaying ? (language === "hi" ? "आवाज़ रोकें" : language === "kn" ? "ಧ್ವನಿ ನಿಲ್ಲಿಸಿ" : "Stop Voice") : (language === "hi" ? "स्वागत संदेश सुनें" : language === "kn" ? "ಸ್ವಾಗತ ಸಂದೇಶ ಆಲಿಸಿ" : "Play Welcome Voice")}</span>
+              </button>
             </div>
+            {welcomeVoicePlaying && (
+              <div className="mt-3 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50/80 p-3 text-xs text-amber-950 animate-fade-in">
+                <span className="flex h-3 w-3 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                </span>
+                <span className="font-medium">{getWelcomeText()}</span>
+              </div>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
