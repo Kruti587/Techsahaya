@@ -17,13 +17,14 @@ export default function SignInForm() {
 
   const [step, setStep] = React.useState<1 | 2>(1); // Step 1: Credentials, Step 2: 2-Step OTP Verification
   const [email, setEmail] = React.useState("");
+  const [emailError, setEmailError] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const [otp, setOtp] = React.useState(["", "", "", "", "", ""]);
   const [remember, setRemember] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
-  const [resendTimer, setResendTimer] = React.useState(30);
+  const [resendTimer, setResendTimer] = React.useState(60);
   const [emailDispatched, setEmailDispatched] = React.useState(false);
   const [dispatchMessage, setDispatchMessage] = React.useState("");
 
@@ -36,18 +37,39 @@ export default function SignInForm() {
   }, [step, resendTimer]);
 
   const sendOtpRequest = async (targetEmail: string) => {
+    setEmailError("");
+    setError("");
     try {
       const resp = await api.post("/api/auth/send-otp", { email: targetEmail });
       setEmailDispatched(Boolean(resp.data?.email_dispatched));
-      setDispatchMessage(resp.data?.message || "Verification code dispatched.");
-      if (resp.data?.otp_code) {
-        const digits = String(resp.data.otp_code).split("").slice(0, 6);
-        setOtp(digits);
-      }
+      setDispatchMessage(resp.data?.message || "A 6-digit verification code has been dispatched to your email address.");
+      // Zero-leak security: Reset entered OTP digits, never fill from response
+      setOtp(["", "", "", "", "", ""]);
+      const cooldown = resp.data?.cooldown_seconds ? Number(resp.data.cooldown_seconds) : 60;
+      setResendTimer(cooldown);
       return true;
     } catch (err: any) {
-      const msg = err.response?.data?.detail || "Failed to send verification code. Please check your email and try again.";
-      setError(msg);
+      const status = err.response?.status;
+      const detail = err.response?.data?.detail;
+      const msg = typeof detail === "string" ? detail : (err.message || "Failed to send verification code.");
+
+      if (status === 429) {
+        // Cooldown active
+        const match = msg.match(/(\d+)\s*seconds/i);
+        if (match && match[1]) {
+          setResendTimer(parseInt(match[1], 10));
+        }
+        setError(msg);
+      } else if (
+        status === 400 &&
+        (msg.includes("email") || msg.includes("domain") || msg.includes("mailbox") || msg.includes("disposable") || msg.includes("MX"))
+      ) {
+        // Phase 1 Email Validation Failure (Syntax / Disposable / DNS MX / Domain Not Found)
+        setEmailError(msg);
+        setError(msg);
+      } else {
+        setError(msg);
+      }
       return false;
     }
   };
@@ -55,6 +77,7 @@ export default function SignInForm() {
   const handleStep1Submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setEmailError("");
 
     if (!email || !password) {
       setError("Please provide both email and password.");
@@ -67,7 +90,6 @@ export default function SignInForm() {
 
     if (sent) {
       setStep(2);
-      setResendTimer(30);
     }
   };
 
@@ -75,11 +97,8 @@ export default function SignInForm() {
     if (resendTimer > 0) return;
     setError("");
     setLoading(true);
-    const sent = await sendOtpRequest(email);
+    await sendOtpRequest(email);
     setLoading(false);
-    if (sent) {
-      setResendTimer(30);
-    }
   };
 
   const handleOtpChange = (index: number, val: string) => {
@@ -94,6 +113,17 @@ export default function SignInForm() {
     if (val && index < 5) {
       const nextInput = document.getElementById(`otp-input-${index + 1}`);
       nextInput?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").trim();
+    if (/^\d{6}$/.test(pastedData)) {
+      const digits = pastedData.split("");
+      setOtp(digits);
+      const lastInput = document.getElementById("otp-input-5");
+      lastInput?.focus();
     }
   };
 
@@ -208,11 +238,19 @@ export default function SignInForm() {
                   required
                   placeholder="name@example.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (emailError) setEmailError("");
+                  }}
+                  className={`pl-10 ${emailError ? "border-red-400 focus-visible:ring-red-400" : ""}`}
                 />
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none z-20" />
               </div>
+              {emailError && (
+                <p className="text-[11px] font-medium text-red-600 mt-0.5 flex items-center gap-1">
+                  <span className="text-red-500 font-bold">•</span> {emailError}
+                </p>
+              )}
             </div>
 
             {/* Password */}
@@ -321,6 +359,7 @@ export default function SignInForm() {
                     value={digit}
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                    onPaste={handleOtpPaste}
                     className="h-12 w-11 rounded-xl border border-stone-300 text-center font-mono text-lg font-bold text-slate-900 shadow-sm transition focus:border-sahaya-green focus:outline-none focus:ring-2 focus:ring-sahaya-green/20"
                   />
                 ))}

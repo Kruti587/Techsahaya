@@ -233,12 +233,15 @@ class SchemeDocumentRecord(Base):
 class OTPRecord(Base):
     """
     Stores one active OTP challenge per email address.
-    - hashed_otp: SHA-256 hex string (plain OTP is never persisted)
-    - expires_at: 5-minute expiry threshold
-    - attempts: failed verification attempts count (max 3)
-    - send_count: requests sent within current hourly window (max 5/hr)
-    - window_start: start timestamp of current hourly rate-limit window
-    - verified: whether the OTP has been verified
+    - email: unique index per user, supporting concurrent multi-user OTP requests.
+    - hashed_otp: SHA-256 hex string (plain OTP is never persisted).
+    - expires_at: 10-minute expiry threshold.
+    - attempts: failed verification attempts count (max 5 before lockout).
+    - send_count: requests sent within current hourly window.
+    - window_start: start timestamp of current hourly rate-limit window.
+    - last_sent_at: timestamp of last OTP dispatch.
+    - cooldown_until: timestamp until which new OTP generation is blocked (60s cooldown).
+    - verified: whether the OTP has been verified.
     """
     __tablename__ = "otp_records"
 
@@ -249,5 +252,7 @@ class OTPRecord(Base):
     attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     send_count: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     window_start: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    last_sent_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    cooldown_until: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)

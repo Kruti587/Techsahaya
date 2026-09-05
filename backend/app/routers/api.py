@@ -84,15 +84,15 @@ def login(payload: LoginRequest, request: Request, db: Session = Depends(get_db)
 
 @router.post("/auth/send-otp", response_model=SendOtpResponse)
 def send_otp(payload: SendOtpRequest, request: Request, db: Session = Depends(get_db)):
-    dispatched, msg, raw_otp = otp_service.send_otp(db, payload.email)
+    dispatched, msg, cooldown_sec, expires_in = otp_service.send_otp(db, payload.email)
     audit_service.log(db, "otp_sent", f"OTP code requested for {payload.email}", None, "anonymous", "auth", request)
     return SendOtpResponse(
-        status="success",
-        message="A 6-digit verification code has been dispatched to your email address.",
+        status="sent",
+        message=msg,
         email=payload.email,
-        expires_in=300,
+        cooldown_seconds=cooldown_sec,
+        expires_in=expires_in,
         email_dispatched=dispatched,
-        otp_code=raw_otp if not dispatched else None,
     )
 
 

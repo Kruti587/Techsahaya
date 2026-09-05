@@ -12,12 +12,14 @@ from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.models.db_models import OTPRecord
+from app.services.email_validator import validate_email_address, EmailValidationError
 
 logger = logging.getLogger("techsahaya.otp")
 
-OTP_EXPIRY_MINUTES = 5
-MAX_ATTEMPTS = 3
-MAX_SENDS_PER_HOUR = 5
+OTP_EXPIRY_MINUTES = 10
+MAX_ATTEMPTS = 5
+COOLDOWN_SECONDS = 60
+MAX_SENDS_PER_HOUR = 10
 
 
 def hash_otp_code(code: str) -> str:
@@ -30,42 +32,64 @@ class OTPService:
         self.settings = get_settings()
 
     def generate_numeric_otp(self) -> str:
-        """Generates a cryptographically secure 6-digit numeric string."""
+        """Generates a cryptographically secure 6-digit numeric string using secrets."""
         return str(secrets.randbelow(900000) + 100000)
 
-    def send_otp(self, db: Session, email: str) -> Tuple[bool, str]:
+    def send_otp(self, db: Session, email_input: str) -> Tuple[bool, str, int, int]:
         """
-        Generates, hashes, stores, and emails a 6-digit OTP to the recipient.
-        Enforces hourly rate limiting (max 5/hr) and 5-minute expiry.
-        Returns: (email_dispatched: bool, message: str)
+        Phase 1 & Phase 2 & Phase 3:
+        1. Validates syntax, blocks disposable domains, and verifies DNS MX records.
+        2. Enforces per-email 60-second cooldown server-side.
+        3. Generates cryptographically secure 6-digit code with secrets.randbelow.
+        4. Hashes and stores code with 10-minute auto-expiry TTL and attempt counter.
+        5. Dispatches email via Gmail SMTP.
+        Returns: (email_dispatched: bool, message: str, cooldown_seconds: int, expires_in: int)
+        NEVER returns the OTP code!
         """
-        clean_email = email.strip().lower()
+        # Phase 1: Email Validation Gatekeeper
+        try:
+            clean_email = validate_email_address(email_input)
+        except EmailValidationError as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=e.message,
+            )
+
         now = datetime.utcnow()
 
-        # Check existing OTP record for rate limiting
+        # Phase 2: Per-user isolated storage & cooldown enforcement
         record = db.query(OTPRecord).filter(OTPRecord.email == clean_email).first()
 
         if record:
-            # Check hourly window
+            # Enforce 60-second cooldown
+            if record.cooldown_until and now < record.cooldown_until:
+                remaining_sec = max(1, int((record.cooldown_until - now).total_seconds()) + 1)
+                raise HTTPException(
+                    status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                    detail=f"Please wait {remaining_sec} seconds before requesting a new code.",
+                )
+
+            # Check hourly rate limit
             if now - record.window_start < timedelta(hours=1):
                 if record.send_count >= MAX_SENDS_PER_HOUR:
-                    minutes_left = int(60 - (now - record.window_start).total_seconds() // 60)
+                    minutes_left = max(1, int(60 - (now - record.window_start).total_seconds() // 60))
                     raise HTTPException(
                         status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-                        detail=f"Rate limit exceeded: Maximum 5 OTP requests per hour. Please wait {minutes_left} minutes.",
+                        detail=f"Rate limit exceeded: Maximum {MAX_SENDS_PER_HOUR} requests per hour. Please try again in {minutes_left} minutes.",
                     )
                 record.send_count += 1
             else:
-                # Reset hourly window
                 record.window_start = now
                 record.send_count = 1
 
-            # Generate new OTP & update record
+            # Generate new OTP & update record with 10-min TTL
             raw_otp = self.generate_numeric_otp()
             record.hashed_otp = hash_otp_code(raw_otp)
             record.expires_at = now + timedelta(minutes=OTP_EXPIRY_MINUTES)
             record.attempts = 0
             record.verified = False
+            record.last_sent_at = now
+            record.cooldown_until = now + timedelta(seconds=COOLDOWN_SECONDS)
             record.created_at = now
         else:
             raw_otp = self.generate_numeric_otp()
@@ -76,6 +100,8 @@ class OTPService:
                 attempts=0,
                 send_count=1,
                 window_start=now,
+                last_sent_at=now,
+                cooldown_until=now + timedelta(seconds=COOLDOWN_SECONDS),
                 verified=False,
                 created_at=now,
             )
@@ -83,42 +109,43 @@ class OTPService:
 
         db.commit()
 
-        # Dispatch email via Gmail SMTP
+        # Phase 3: Dispatch transactional email via Gmail SMTP
         email_sent, dispatch_msg = self._dispatch_email(clean_email, raw_otp)
-        return email_sent, dispatch_msg, raw_otp
+        return email_sent, dispatch_msg, COOLDOWN_SECONDS, OTP_EXPIRY_MINUTES * 60
 
-    def verify_otp(self, db: Session, email: str, raw_otp: str) -> Tuple[bool, str]:
+    def verify_otp(self, db: Session, email_input: str, raw_otp: str) -> Tuple[bool, str]:
         """
         Verifies the user's OTP using constant-time digest comparison.
         Checks:
-        - Record exists
-        - OTP not expired (5 min window)
-        - Attempts count < MAX_ATTEMPTS (3 attempts)
-        Returns: (success: bool, message: str)
+        - Record exists for specific user email
+        - OTP not expired (10 min TTL)
+        - Attempts count < MAX_ATTEMPTS (max 5 attempts before lockout)
+        - Constant-time hash verification
+        Returns: (success: bool, verification_token: str)
         """
-        clean_email = email.strip().lower()
+        clean_email = email_input.strip().lower()
         clean_otp = raw_otp.strip()
         now = datetime.utcnow()
 
         record = db.query(OTPRecord).filter(OTPRecord.email == clean_email).first()
         if not record:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="No pending verification found for this email. Please request a new code.",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No pending verification code found for this email address. Please request a new code.",
             )
 
-        # Check maximum failed attempts
+        # Check maximum failed attempts (max 5 attempts lockout)
         if record.attempts >= MAX_ATTEMPTS:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Maximum verification attempts exceeded. For your security, please request a new OTP code.",
+                detail="Maximum verification attempts (5) exceeded. For your security, this code is locked. Please request a new code.",
             )
 
-        # Check expiration
+        # Check 10-minute expiration
         if now > record.expires_at:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="The verification code has expired (valid for 5 minutes). Please request a new code.",
+                detail="The verification code has expired (valid for 10 minutes). Please request a new code.",
             )
 
         # Constant-time comparison of hashed OTP
@@ -128,19 +155,19 @@ class OTPService:
         if not is_valid:
             record.attempts += 1
             db.commit()
-            remaining = MAX_ATTEMPTS - record.attempts
+            remaining = max(0, MAX_ATTEMPTS - record.attempts)
             if remaining > 0:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Invalid verification code. {remaining} attempt{'s' if remaining > 1 else ''} remaining.",
+                    detail=f"Invalid verification code. {remaining} attempt{'s' if remaining != 1 else ''} remaining.",
                 )
             else:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Too many invalid attempts. This OTP is now locked. Please request a new one.",
+                    detail="Maximum verification attempts (5) exceeded. For your security, this code is now locked. Please request a new code.",
                 )
 
-        # Verification successful
+        # Verification successful: reset attempts and mark verified
         record.verified = True
         record.attempts = 0
         db.commit()

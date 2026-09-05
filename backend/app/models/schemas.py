@@ -257,12 +257,12 @@ class SendOtpRequest(BaseModel):
 
 
 class SendOtpResponse(BaseModel):
-    status: str
-    message: str
+    status: str = "sent"
+    message: str = "A 6-digit verification code has been dispatched to your email address."
     email: str
-    expires_in: int = 300
-    email_dispatched: bool = False
-    otp_code: Optional[str] = None
+    cooldown_seconds: int = 60
+    expires_in: int = 600
+    email_dispatched: bool = True
 
 
 class VerifyOtpRequest(BaseModel):
@@ -276,6 +276,7 @@ class VerifyOtpResponse(BaseModel):
     verified: bool
     email: str
     verification_token: Optional[str] = None
+    remaining_attempts: Optional[int] = None
 
 
 class NewsletterSubscribeRequest(BaseModel):
