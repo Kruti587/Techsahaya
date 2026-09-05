@@ -159,10 +159,6 @@ export function Footer() {
                 </span>
               </div>
             )}
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-300 pt-1">
-              <ShieldCheck size={16} className="shrink-0 text-emerald-400" />
-              <span>{t(language, "zeroSpamGuarantee")}</span>
-            </div>
           </div>
         </div>
 

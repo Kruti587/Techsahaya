@@ -61,15 +61,6 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
 
       {/* Top Accessibility & Multilingual Status Strip */}
       <div className="bg-[#022c22] text-emerald-100 text-[11px] py-1.5 px-3 sm:px-4 border-b border-emerald-950 flex flex-wrap justify-between items-center gap-2 z-40">
-        <div className="flex items-center space-x-2">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span className="font-bold tracking-wide text-emerald-200">{t(language, "govTechSandbox")}</span>
-          <span className="text-emerald-700 hidden sm:inline">|</span>
-          <span className="bg-emerald-900/80 text-emerald-300 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider hidden sm:flex items-center gap-1 border border-emerald-700/50">
-            <span className="text-amber-400">⚖</span> {t(language, "deterministic")}
-          </span>
-        </div>
-
         {/* Right: Language selector & Font/Contrast tools */}
         <div className="flex items-center gap-2 sm:gap-3 ml-auto">
           {/* Language selector */}

@@ -25,11 +25,6 @@ export function HomePage() {
       <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] xl:gap-14">
         {/* Left Column: Headlines, CTA & Stats */}
         <div className="space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-800/20 bg-emerald-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-sahaya-green">
-            <Sparkles size={14} className="text-sahaya-saffron" />
-            <span>{copy.badge}</span>
-          </div>
-
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem] font-serif leading-[1.15]">
             {copy.heroTitle}
           </h1>
