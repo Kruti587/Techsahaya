@@ -13,12 +13,16 @@ class DiscordNotificationService:
         self.token = settings.discord_bot_token.strip()
         self.channel_id = settings.discord_admin_channel_id.strip()
 
-    def start(self):
+    def start(self, token: str | None = None, channel_id: str | None = None):
         """Called on application startup."""
+        cfg = get_settings()
+        self.token = (token if token is not None else cfg.discord_bot_token).strip()
+        self.channel_id = (channel_id if channel_id is not None else cfg.discord_admin_channel_id).strip()
         if not self.token or not self.channel_id:
             logger.info("Discord admin notifications are disabled (missing token or channel ID).")
+            self.client = None
             return
-            
+
         # We configure httpx with a timeout so discord latency doesn't hang our processes
         self.client = httpx.AsyncClient(
             base_url="https://discord.com/api/v10",

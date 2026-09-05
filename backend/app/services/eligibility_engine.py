@@ -154,10 +154,16 @@ class EligibilityEngine:
             "studentcard": "studentid",
             "schoolid": "studentid",
             "collegeid": "studentid",
+            "educationcertificate": "studentid",
+            "markscard": "studentid",
+            "marksheet": "studentid",
             "landrecord": "landrecord",
             "landrecords": "landrecord",
             "incomecertificate": "incomecertificate",
             "rationcard": "rationcard",
+            "ration": "rationcard",
+            "bplrationcard": "rationcard",
+            "ahara": "rationcard",
         }
         normalized = "".join(char for char in value.lower() if char.isalnum())
         return aliases.get(normalized, normalized)

@@ -57,7 +57,7 @@ def _transcode_to_wav(audio_bytes: bytes) -> bytes:
     """
     ffmpeg_available = ensure_ffmpeg_on_path()
     if not ffmpeg_available:
-        logger.warning("ffmpeg not found on PATH — passing original audio bytes to Sarvam STT unchanged (Sarvam auto-detects codec).")
+        logger.warning("ffmpeg not found on PATH - passing original audio bytes to Sarvam STT unchanged (Sarvam auto-detects codec).")
         return audio_bytes
 
     audio = None
@@ -71,12 +71,12 @@ def _transcode_to_wav(audio_bytes: bytes) -> bytes:
         try:
             audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="webm")
         except (FileNotFoundError, OSError) as exc:
-            raise SarvamAPIError("ffmpeg is not installed or not on PATH — required for audio transcoding", status_code=500)
+            raise SarvamAPIError("ffmpeg is not installed or not on PATH - required for audio transcoding", status_code=500)
         except Exception as exc:
             try:
                 audio = AudioSegment.from_file(io.BytesIO(audio_bytes))
             except (FileNotFoundError, OSError):
-                raise SarvamAPIError("ffmpeg is not installed or not on PATH — required for audio transcoding", status_code=500)
+                raise SarvamAPIError("ffmpeg is not installed or not on PATH - required for audio transcoding", status_code=500)
             except Exception as inner_exc:
                 raise SarvamAPIError(f"Could not decode input audio: {inner_exc}", status_code=400)
 
@@ -86,7 +86,7 @@ def _transcode_to_wav(audio_bytes: bytes) -> bytes:
         audio.export(out, format="wav")
         return out.getvalue()
     except (FileNotFoundError, OSError):
-        raise SarvamAPIError("ffmpeg is not installed or not on PATH — required for audio transcoding", status_code=500)
+        raise SarvamAPIError("ffmpeg is not installed or not on PATH - required for audio transcoding", status_code=500)
     except Exception as exc:
         raise SarvamAPIError(f"Could not export transcoded WAV audio: {exc}", status_code=400)
 
@@ -96,7 +96,7 @@ def _prepare_stt_upload(audio_bytes: bytes) -> tuple[bytes, str, str]:
 
     Browser MediaRecorder produces WebM/Opus audio. Sarvam STT accepts WebM/Opus
     natively (auto-detecting the codec), so we pass it through unchanged with the
-    correct MIME type — this removes the hard dependency on ffmpeg for voice input.
+    correct MIME type - this removes the hard dependency on ffmpeg for voice input.
     WAV is passed through directly. Any other format only requires ffmpeg transcoding.
     """
     if audio_bytes.startswith(b"RIFF") and b"WAVE" in audio_bytes[:16]:
@@ -105,7 +105,7 @@ def _prepare_stt_upload(audio_bytes: bytes) -> tuple[bytes, str, str]:
         return audio_bytes, "audio/webm", "audio.webm"
     if not ensure_ffmpeg_on_path():
         raise SarvamAPIError(
-            "Unsupported audio format and ffmpeg is not installed or not on PATH — required for audio transcoding",
+            "Unsupported audio format and ffmpeg is not installed or not on PATH - required for audio transcoding",
             status_code=500,
         )
     wav_bytes = _transcode_to_wav(audio_bytes)
@@ -115,7 +115,7 @@ def _prepare_stt_upload(audio_bytes: bytes) -> tuple[bytes, str, str]:
 def clean_text_for_speech(raw_text: str) -> str:
     """Convert a formatted (Markdown) answer into naturally spoken text for TTS.
 
-    The formatted display answer is never modified — this produces a separate,
+    The formatted display answer is never modified: this produces a separate,
     cleaned speech representation that reads naturally (no literal formatting
     symbols such as '**', '*', '#', backticks, bullets or raw URLs). The language
     and content of the underlying text are preserved (no translation performed).

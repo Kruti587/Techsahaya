@@ -231,14 +231,39 @@ export function DocumentsPage() {
                 <p className="mt-1 text-xs text-amber-800 leading-relaxed">{t(language, "digilockerNoticeDesc")}</p>
               </div>
             </div>
-            <label className="mt-4 flex cursor-pointer items-start gap-3" htmlFor="digilocker-confirm">
-              <input
-                id="digilocker-confirm"
-                type="checkbox"
-                className="mt-0.5 h-5 w-5 flex-shrink-0 accent-amber-600 cursor-pointer"
-                checked={digilockerCertified}
-                onChange={(e) => setDigilockerCertified(e.target.checked)}
-              />
+            <label className="mt-4 flex cursor-pointer items-start gap-3" htmlFor="digilocker-confirm" style={{ WebkitTapHighlightColor: "transparent" }}>
+              {/* iOS-style animated checkbox */}
+              <span className="ios-checkbox-amber flex-shrink-0 mt-0.5">
+                <input
+                  id="digilocker-confirm"
+                  type="checkbox"
+                  className="sr-only"
+                  checked={digilockerCertified}
+                  onChange={(e) => setDigilockerCertified(e.target.checked)}
+                />
+                <span className="checkbox-wrapper-ios" aria-hidden="true">
+                  <span className={`checkbox-bg-ios${digilockerCertified ? " checked" : ""}`} />
+                  <svg
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="checkbox-icon-ios"
+                    style={{ transform: digilockerCertified ? "scale(1)" : "scale(0)", transition: "transform 0.2s ease" }}
+                  >
+                    <path
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      strokeWidth={3}
+                      stroke="white"
+                      d="M4 12L10 18L20 6"
+                      style={{
+                        strokeDasharray: 40,
+                        strokeDashoffset: digilockerCertified ? 0 : 40,
+                        transition: "stroke-dashoffset 0.3s ease 0.1s",
+                      }}
+                    />
+                  </svg>
+                </span>
+              </span>
               <span className="text-sm font-semibold text-amber-900 leading-snug">
                 {t(language, "digilockerCheckboxLabel")}
               </span>

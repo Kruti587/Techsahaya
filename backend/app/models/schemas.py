@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, EmailStr, Field, HttpUrl
 
@@ -250,4 +250,41 @@ class CitizenSessionResponse(BaseModel):
 
 class SaveSchemeRequest(BaseModel):
     scheme_id: str
+
+
+class SendOtpRequest(BaseModel):
+    email: EmailStr
+
+
+class SendOtpResponse(BaseModel):
+    status: str
+    message: str
+    email: str
+    expires_in: int = 300
+    email_dispatched: bool = False
+    otp_code: Optional[str] = None
+
+
+class VerifyOtpRequest(BaseModel):
+    email: EmailStr
+    otp: str
+
+
+class VerifyOtpResponse(BaseModel):
+    status: str
+    message: str
+    verified: bool
+    email: str
+    verification_token: Optional[str] = None
+
+
+class NewsletterSubscribeRequest(BaseModel):
+    email: EmailStr
+
+
+class SchemeApplyRequest(BaseModel):
+    scheme_id: str
+    scheme_name: Optional[str] = None
+    applicant_name: Optional[str] = None
+    email: Optional[EmailStr] = None
 

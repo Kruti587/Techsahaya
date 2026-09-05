@@ -1,7 +1,9 @@
 import { Route, Routes } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { AppShell } from "./components/AppShell";
 import { ProtectedRoute, RoleProtectedRoute } from "./components/ProtectedRoute";
 import { PublicLayout } from "./components/PublicLayout";
+import { TechSahayaLoader } from "./components/TechSahayaLoader";
 import { AboutPage } from "./pages/AboutPage";
 import { CookiePolicyPage } from "./pages/CookiePolicyPage";
 import { AccessibilityPage } from "./pages/AccessibilityPage";
@@ -35,12 +37,38 @@ import { SignupPage } from "./pages/SignupPage";
 import { WelfareGapsPage } from "./pages/WelfareGapsPage";
 import { WhatIfPage } from "./pages/WhatIfPage";
 import { ConsentPage } from "./pages/ConsentPage";
-import { ScrollProgressBar } from "./components/ScrollProgressBar";
+import { DpdpPage } from "./pages/DpdpPage";
 
 export default function App() {
+  const [appLoading, setAppLoading] = useState(true);
+
+  useEffect(() => {
+    // Show the branded loader for 1.8s on cold start
+    const timer = setTimeout(() => setAppLoading(false), 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (appLoading) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#fcfbf9] app-loader-screen">
+        <div className="flex flex-col items-center gap-6 animate-fade-in">
+          {/* Branded wordmark */}
+          <div className="text-center">
+            <div className="text-3xl font-extrabold tracking-tight text-slate-900 font-serif">Tech Sahaya</div>
+            <div className="text-xs text-slate-500 font-medium tracking-widest uppercase mt-1">Digital Citizen Welfare</div>
+          </div>
+          <TechSahayaLoader size={90} text="Loading" />
+        </div>
+        <div
+          className="absolute inset-0 pointer-events-none app-loader-fade"
+          style={{ animation: "appLoaderFadeOut 0.5s ease-in 1.3s forwards", opacity: 0 }}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
-      <ScrollProgressBar />
       <Routes>
       <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
       <Route path="/how-it-works" element={<PublicLayout><HowItWorksPage /></PublicLayout>} />
@@ -51,6 +79,7 @@ export default function App() {
       <Route path="/cookies" element={<PublicLayout><CookiePolicyPage /></PublicLayout>} />
       <Route path="/cookie-policy" element={<PublicLayout><CookiePolicyPage /></PublicLayout>} />
       <Route path="/accessibility" element={<PublicLayout><AccessibilityPage /></PublicLayout>} />
+      <Route path="/dpdp" element={<PublicLayout><DpdpPage /></PublicLayout>} />
       <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
@@ -58,6 +87,8 @@ export default function App() {
       <Route path="/access-restricted" element={<PublicLayout><AccessRestrictedPage /></PublicLayout>} />
 
       <Route path="/consent" element={<ProtectedRoute><AppShell><ConsentPage /></AppShell></ProtectedRoute>} />
+      <Route path="/consent-framework" element={<ProtectedRoute><AppShell><ConsentPage /></AppShell></ProtectedRoute>} />
+      <Route path="/roadmap" element={<ProtectedRoute><AppShell><JourneyPage /></AppShell></ProtectedRoute>} />
       <Route path="/profile-setup" element={<ProtectedRoute><AppShell><ProfileSetupPage /></AppShell></ProtectedRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><AppShell><DashboardPage /></AppShell></ProtectedRoute>} />
       <Route path="/chat" element={<ProtectedRoute><AppShell><AskPage /></AppShell></ProtectedRoute>} />
@@ -85,3 +116,4 @@ export default function App() {
     </>
   );
 }
+

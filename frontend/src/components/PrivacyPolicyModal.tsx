@@ -73,7 +73,7 @@ export function PrivacyPolicyModal({
           <div className="pt-4">
             <h3 className="font-bold text-slate-900 text-base font-serif">Your rights</h3>
             <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
-              You can see a full summary of what we hold, export it, withdraw consent, or delete everything — from the Privacy Centre, without contacting support. Withdrawal stops all processing immediately; deletion removes the profile and its activity log.
+              You can see a full summary of what we hold, export it, withdraw consent, or delete everything from the Privacy Centre, without contacting support. Withdrawal stops all processing immediately; deletion removes the profile and its activity log.
             </p>
           </div>
 
@@ -91,7 +91,7 @@ export function PrivacyPolicyModal({
             <ul className="mt-2 space-y-1.5 text-xs text-slate-600 list-disc list-inside leading-relaxed">
               <li>No advertising, retargeting or social-media pixels of any kind.</li>
               <li>No third-party analytics that can see your profile fields.</li>
-              <li>No cookies that carry document content — documents never leave the request they arrive in.</li>
+              <li>No cookies that carry document content: documents never leave the request they arrive in.</li>
               <li>No cross-site tracking. There is no ad network to sell to.</li>
             </ul>
           </div>

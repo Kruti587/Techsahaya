@@ -26,7 +26,11 @@ const AppContext = createContext<AppContextValue | null>(null);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [schemes, setSchemes] = useState<Scheme[]>([]);
   const [profile, setProfile] = useState<EligibilityProfile>({ available_documents: [] });
-  const [language, setLanguageState] = useState(sessionStorage.getItem("tech-sahaya-language") || "en");
+  const [language, setLanguageState] = useState(
+    sessionStorage.getItem("tech-sahaya-language") ||
+    localStorage.getItem("tech-sahaya-language") ||
+    "en"
+  );
   const [offline, setOffline] = useState(!navigator.onLine);
   const [personas, setPersonas] = useState<Record<string, { label: string; profile: EligibilityProfile }>>({});
   const [token, setToken] = useState<string | null>(sessionStorage.getItem("tech-sahaya-token") || localStorage.getItem("tech-sahaya-token"));
@@ -48,6 +52,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     sessionStorage.setItem("tech-sahaya-language", language);
+    localStorage.setItem("tech-sahaya-language", language);
   }, [language]);
 
   useEffect(() => {
@@ -123,6 +128,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       persistToken(response.data.token, payload.remember_session);
       setUser(response.data.user);
       setLanguage(response.data.user.preferred_language);
+
+      try {
+        const pRes = await api.get("/api/profile");
+        setProfile({
+          age: pRes.data.age,
+          gender: pRes.data.gender,
+          state: pRes.data.state,
+          occupation: pRes.data.occupation,
+          income: pRes.data.income,
+          landholding: pRes.data.landholding,
+          disability: pRes.data.disability,
+          family_members: pRes.data.family_members,
+          available_documents: pRes.data.available_documents || [],
+          onboarding_completed: pRes.data.onboarding_completed,
+        });
+      } catch {
+        undefined;
+      }
+
       return null;
     } catch (error: any) {
       return error?.response?.data?.detail || "Login failed";

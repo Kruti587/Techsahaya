@@ -121,15 +121,15 @@ def _preprocess_image_for_ocr(image: Image.Image) -> Image.Image:
 OCR_QUALITY_THRESHOLD = 55.0
 
 REUPLOAD_PROMPTS = {
-    "en": "We couldn't read this document clearly enough to verify your details. Please try re-uploading a clearer photo — flat, well-lit, and without creases or heavy shadows.",
+    "en": "We couldn't read this document clearly enough to verify your details. Please try re-uploading a clearer photo - flat, well-lit, and without creases or heavy shadows.",
     "hi": "हम आपके विवरणों को सत्यापित करने के लिए इस दस्तावेज़ को स्पष्ट रूप से नहीं पढ़ सके। कृपया एक स्पष्ट तस्वीर फिर से अपलोड करने का प्रयास करें - सीधी, अच्छी रोशनी वाली, और बिना सिलवटों या गहरी छाया के।",
-    "kn": "ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಈ ದಾಖಲೆಯನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಫೋಟೋವನ್ನು ಮರು-ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ — ನೇರವಾದ, ಉತ್ತಮ ಬೆಳಕಿರುವ ಮತ್ತು ಸುಕ್ಕುಗಳು ಅಥವಾ ನೆರಳುಗಳಿಲ್ಲದ ಫೋಟೋ.",
-    "te": "మీ వివరాలను ధృవీకరించడానికి ఈ పత్రాన్ని స్పష్టంగా చదవలేకపోయాము. దయచేసి స్పష్టమైన ఫోటోను మళ్లీ అప్‌లోడ్ చేయడానికి ప్రయత్నించండి — సమాంతరంగా, మంచి వెలుతురులో, మరియు ముడతలు లేదా నీడలు లేకుండా.",
-    "ta": "உங்கள் விவரங்களைச் சரிபார்க்க இந்த ஆவணத்தை தெளிவாகப் படிக்க முடியவில்லை. தயவுசெய்து தெளிவான புகைப்படத்தை மீண்டும் பதிவேற்ற முயற்சிக்கவும் — தட்டையான, நல்ல வெளிச்சமுள்ள, மடிப்புகள் அல்லது நிழல்கள் இல்லாத புகைப்படம்.",
-    "ml": "നിങ്ങളുടെ വിശദാംശങ്ങൾ പരിശോധിക്കാൻ ഈ രേഖ വ്യക്തമായി വായിക്കാൻ കഴിഞ്ഞില്ല. ദയവായി വ്യക്തമായ ഒരു ഫോട്ടോ വീണ്ടും അപ്‌ലോഡ് ചെയ്യാൻ ശ്രമിക്കുക — നിവർന്നതും നല്ല വെളിച്ചമുള്ളതും ചുളിവുകളോ നിഴലുകളോ ഇല്ലാത്തതുമായ ഫോട്ടോ.",
-    "bn": "আপনার বিবরণ যাচাই করার জন্য আমরা এই নথিটি স্পষ্টভাবে পড়তে পারিনি। অনুগ্রহ করে একটি পরিষ্কার ছবি পুনরায় আপলোড করার চেষ্টা করুন — সমতল, ভাল আলোযুক্ত এবং ভাঁজ বা ভারী ছায়া ছাড়া।",
-    "mr": "तुमच्या तपशीलांची पडताळणी करण्यासाठी आम्हाला हा दस्तऐवज स्पष्टपणे वाचता आला नाही. कृपया अधिक स्पष्ट फोटो पुन्हा अपलोड करण्याचा प्रयत्न करा — सपाट, चांगल्या प्रकाशात आणि सुरकुत्या किंवा सावल्या नसलेला.",
-    "gu": "તમારી વિગતો ચકાસવા માટે અમે આ દસ્તાવેજ સ્પષ્ટપણે વાંચી શક્યા નથી. કૃપા કરીને સ્પષ્ટ ફોટો ફરીથી અપલોડ કરવાનો પ્રયાસ કરો — સપાટ, સારી લાઇટિંગવાળો અને કરચલીઓ અથવા પડછાયા વગરનો.",
+    "kn": "ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಈ ದಾಖಲೆಯನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಫೋಟೋವನ್ನು ಮರು-ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ - ನೇರವಾದ, ಉತ್ತಮ ಬೆಳಕಿರುವ ಮತ್ತು ಸುಕ್ಕುಗಳು ಅಥವಾ ನೆರಳುಗಳಿಲ್ಲದ ಫೋಟೋ.",
+    "te": "మీ వివరాలను ధృవీకరించడానికి ఈ పత్రాన్ని స్పష్టంగా చదవలేకపోయాము. దయచేసి స్పಷ್ಟమైన ఫోటోను మళ్లీ అప్‌లోడ్ చేయడానికి ప్రయత్నించండి - సమాంతరంగా, మంచి వెలుతురులో, మరియు ముడతలు లేదా నీడలు లేకుండా.",
+    "ta": "உங்கள் விவரங்களைச் சரிபார்க்க இந்த ஆவணத்தை தெளிவாகப் படிக்க முடியவில்லை. தயவுசெய்து தெளிவான புகைப்படத்தை மீண்டும் பதிவேற்ற முயற்சிக்கவும் - தட்டையான, நல்ல வெளிச்சமுள்ள, மடிப்புகள் அல்லது நிழல்கள் இல்லாத புகைப்படம்.",
+    "ml": "നിങ്ങളുടെ വിശദാംശങ്ങൾ പരിശോധിക്കാൻ ഈ രേഖ വ്യക്തമായി വായിക്കാൻ കഴിഞ്ഞില്ല. ദയവായി വ്യക്തമായ ഒരു ഫോട്ടോ വീണ്ടും അപ്‌ലോഡ് ചെയ്യാൻ ശ്രമിക്കുക - നിവർന്നതും നല്ല വെളിച്ചമുള്ളതും ചുളിവുകളോ നിഴലുകളോ ഇല്ലാത്തതുമായ ഫോട്ടോ.",
+    "bn": "আপনার বিবরণ যাচাই করার জন্য আমরা এই নথিটি স্পষ্টভাবে পড়তে পারিনি। অনুগ্রহ করে একটি পরিষ্কার ছবি পুনরায় আপলোড করার চেষ্টা করুন - সমতল, ভাল আলোযুক্ত এবং ভাঁজ বা ভারী ছায়া ছাড়া।",
+    "mr": "तुमच्या तपशीलांची पडताळणी करण्यासाठी आम्हाला हा दस्तऐवज स्पष्टपणे वाचता आला नाही. कृपया अधिक स्पष्ट फोटो पुन्हा अपलोड करण्याचा प्रयत्न करा - सपाट, चांगल्या प्रकाशात आणि सुरकुत्या किंवा सावल्या नसलेला.",
+    "gu": "તમારી વિગતો ચકાસવા માટે અમે આ દસ્તાવેજ સ્પષ્ટપણે વાંચી શક્યા નથી. કૃપા કરીને સ્પષ્ટ ફોટો ફરીથી અપલોડ કરવાનો પ્રયાસ કરો - સપાટ, સારી લાઇટિંગવાળો અને કરચલીઓ અથવા પડછಾಯા વગરનો.",
 }
 
 
@@ -196,6 +196,8 @@ class DocumentService:
         "ration_card",
         "disability_certificate",
         "caste_certificate",
+        "education_certificate",
+        "marks_card",
         "generic_sample_document",
     }
 
@@ -221,12 +223,13 @@ class DocumentService:
             if content_type not in self.allowed_types:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsupported file type")
             masked_name = re.sub(r"\d", "X", file.filename or "document")
-    
-            doc_type = declared_type if (declared_type and declared_type in self.canonical_types) else self._classify(file.filename or "document")
-    
-            # In-memory ephemeral OCR (never saved to disk, zero external APIs)
-            extracted_fields = self._extract_ephemeral_fields(content, content_type, doc_type, language=language)
-    
+
+            # In-memory ephemeral OCR / text extraction (never saved to disk, zero external APIs)
+            extracted_fields = self._extract_ephemeral_fields(content, content_type, declared_type or "generic_sample_document", language=language)
+            extracted_text = extracted_fields.get("_extracted_text", "")
+
+            doc_type = declared_type if (declared_type and declared_type in self.canonical_types) else self._classify(file.filename or "document", extracted_text)
+
             masked_fields = {
                 "document_type": doc_type,
                 "mime_type": content_type,
@@ -247,7 +250,7 @@ class DocumentService:
             db.add(document)
             db.commit()
             db.refresh(document)
-    
+
             # Store derived structured data in Redis with short ephemeral TTL (e.g. 5 minutes)
             ephemeral_payload = {
                 "document_id": document.id,
@@ -288,7 +291,26 @@ class DocumentService:
         text = ""
         used_lang = "fallback"
         ocr_confidence_score: float | None = None
-        if content_type in {"image/png", "image/jpeg"}:
+
+        # 1. Digital PDF extraction via pypdf
+        if content_type == "application/pdf":
+            try:
+                import pypdf
+                pdf_reader = pypdf.PdfReader(io.BytesIO(content))
+                extracted_pages = []
+                for p in pdf_reader.pages:
+                    pt = p.extract_text() or ""
+                    if pt.strip():
+                        extracted_pages.append(pt)
+                if extracted_pages:
+                    text = "\n".join(extracted_pages)
+                    used_lang = "pdf_text"
+                    ocr_confidence_score = 98.0
+            except Exception as pdf_err:
+                logger.debug("PDF text extraction error: %s", pdf_err)
+
+        # 2. Local Tesseract OCR for images
+        if not text and content_type in {"image/png", "image/jpeg"}:
             try:
                 raw_image = Image.open(io.BytesIO(content))
                 image = _preprocess_image_for_ocr(raw_image)
@@ -330,20 +352,25 @@ class DocumentService:
             # In-memory byte stream heuristic / text extraction fallback
             printable = re.findall(rb"[\x20-\x7E]{3,}", content)
             text = " ".join([chunk.decode("latin1", errors="ignore") for chunk in printable])
+            if content_type == "application/pdf" and len(text.strip()) >= 30:
+                ocr_confidence_score = 90.0
 
         # Normalize Indic numerals (e.g., ೧, ೨, ३, ৪ to 1, 2, 3, 4)
         normalized_text = _normalize_indic_digits(text)
         fields = self._parse_structured_fields(normalized_text, language=language)
+        fields["_extracted_text"] = text
 
         # Multi-signal OCR Quality Gate:
-        # Mark as 'poor' if:
-        # 1. OCR confidence score is None (no readable text tokens found)
-        # 2. OCR confidence score < OCR_QUALITY_THRESHOLD (mean token confidence < 55.0)
-        # 3. Any extracted field is low or medium confidence (a single degraded field is enough to cause harm)
         field_confs = fields.get("field_confidences", {})
-        has_low_or_medium_field = any(conf in {"low", "medium"} for conf in field_confs.values())
+        has_low_field = any(conf == "low" for conf in field_confs.values())
 
-        if ocr_confidence_score is None or ocr_confidence_score < OCR_QUALITY_THRESHOLD or has_low_or_medium_field:
+        if ocr_confidence_score is None:
+            if len(text.strip()) >= 30:
+                ocr_confidence_score = 90.0
+                ocr_quality = "good"
+            else:
+                ocr_quality = "poor"
+        elif ocr_confidence_score < OCR_QUALITY_THRESHOLD or has_low_field:
             ocr_quality = "poor"
         else:
             ocr_quality = "good"
@@ -516,10 +543,11 @@ class DocumentService:
 
         if income_candidates:
             income_candidates.sort(key=lambda x: x[1], reverse=True)
-            best_inc, _, best_inc_conf = income_candidates[0]
-            fields["income"] = best_inc
-            fields["_income_confidence"] = best_inc_conf
-            field_confidences["income"] = best_inc_conf
+            best_inc, best_score, best_inc_conf = income_candidates[0]
+            if best_inc_conf in {"high", "medium"} and best_score >= 35.0:
+                fields["income"] = best_inc
+                fields["_income_confidence"] = best_inc_conf
+                field_confidences["income"] = best_inc_conf
 
         # 4. Extract Landholding with Plausibility Scoring
         land_candidates: list[tuple[float, float, str]] = []  # (value, score, confidence)
@@ -547,26 +575,61 @@ class DocumentService:
 
         if land_candidates:
             land_candidates.sort(key=lambda x: x[1], reverse=True)
-            best_land, _, best_land_conf = land_candidates[0]
-            fields["landholding"] = best_land
-            fields["_landholding_confidence"] = best_land_conf
-            field_confidences["landholding"] = best_land_conf
+            best_land, best_score, best_land_conf = land_candidates[0]
+            if best_land_conf in {"high", "medium"} and best_score >= 35.0:
+                fields["landholding"] = best_land
+                fields["_landholding_confidence"] = best_land_conf
+                field_confidences["landholding"] = best_land_conf
 
         fields["field_confidences"] = field_confidences
         return fields
 
-    def _classify(self, file_name: str) -> str:
-        name = file_name.lower()
-        if "income" in name or "aay" in name or "aadhaya" in name:
-            return "income_certificate"
-        if "land" in name or "rtc" in name or "patta" in name or "chitta" in name or "pahani" in name or "7/12" in name:
-            return "land_record"
-        if "ration" in name or "rashan" in name:
+    def _classify(self, file_name: str, text: str = "") -> str:
+        combined = f"{file_name} {text}".lower()
+
+        # 1. Education / Marks Card / College / DigiLocker
+        if any(kw in combined for kw in [
+            "mark", "marks", "marksheet", "mark sheet", "marks card", "statement of marks",
+            "grade card", "semester", "university", "college", "degree", "diploma",
+            "transcript", "cgpa", "sgpa", "passing certificate", "provisional certificate",
+            "vtu", "cbse", "icse", "sslc", "puc", "higher secondary", "digilocker",
+            "education", "student", "roll no", "reg no", "hall ticket", "academic"
+        ]):
+            return "education_certificate"
+
+        # 2. Ration Card / PDS / Food Security / NFSA / Ahara
+        if any(kw in combined for kw in [
+            "ration", "rashan", "ahara", "bpl", "apl", "aay", "antyodaya", "annapurna",
+            "nfsa", "pds", "fair price", "food civil", "kutumba", "ration card", "family card"
+        ]):
             return "ration_card"
-        if "disability" in name or "disabled" in name or "pwd" in name or "divyang" in name or "udid" in name:
+
+        # 3. Land Record / RTC / Pahani / Patta
+        if any(kw in combined for kw in [
+            "land", "rtc", "patta", "chitta", "pahani", "7/12", "bhoomi", "khasra", "khata",
+            "adangal", "survey number", "jamabandi"
+        ]):
+            return "land_record"
+
+        # 4. Income Certificate / Tahsildar
+        if any(kw in combined for kw in [
+            "income", "aay", "aadhaya", "annual income", "tahsildar", "revenue department"
+        ]):
+            return "income_certificate"
+
+        # 5. Disability Certificate / UDID
+        if any(kw in combined for kw in [
+            "disability", "disabled", "pwd", "divyang", "udid", "swavlamban", "handicap"
+        ]):
             return "disability_certificate"
-        if "caste" in name or "jati" in name or "jaati" in name or "samudhayam" in name:
+
+        # 6. Caste Certificate
+        if any(kw in combined for kw in [
+            "caste", "jati", "jaati", "samudhayam", "scheduled caste", "scheduled tribe",
+            "other backward", "obc"
+        ]):
             return "caste_certificate"
+
         return "generic_sample_document"
 
     def _content_type_from_name(self, file_name: str) -> str:

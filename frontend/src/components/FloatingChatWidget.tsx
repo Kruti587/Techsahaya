@@ -22,6 +22,7 @@ import { t } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
 import { cleanTextForSpeech, languageToBCP47, playExclusiveAudio, speakExclusive, stopAllPlayback } from "../utils/speechUtils";
 import { SahayaAvatar, type AvatarState } from "./SahayaAvatar";
+import { TechSahayaLoader } from "./TechSahayaLoader";
 
 interface Message {
   id: string;
@@ -151,10 +152,27 @@ export function FloatingChatWidget() {
     {
       id: "welcome",
       sender: "assistant",
-      text: "Namaste! I am Sahaya, your citizen welfare assistant. Ask me anything about government schemes, eligibility criteria, or document preparation in any of the 9 supported Indian languages.",
+      text: user
+        ? `Namaste ${user.full_name || "Citizen"}! I am Sahaya, your citizen welfare assistant. Ask me anything about government schemes, eligibility criteria, or document preparation in any of the 9 supported Indian languages.`
+        : "Namaste! I am Sahaya. You are in Guest Mode with limited features.\n\n🔒 To check personalized government schemes, verify eligibility criteria, or upload documents, please sign in to your account.",
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
   ]);
+
+  // Update welcome message if user logs in / logs out
+  useEffect(() => {
+    setMessages([
+      {
+        id: `welcome-${user ? "user" : "guest"}`,
+        sender: "assistant",
+        text: user
+          ? `Namaste ${user.full_name || "Citizen"}! I am Sahaya, your citizen welfare assistant. Ask me anything about government schemes, eligibility criteria, or document preparation in any of the 9 supported Indian languages.`
+          : "Namaste! I am Sahaya. You are in Guest Mode with limited features.\n\n🔒 To check personalized government schemes, verify eligibility criteria, or upload documents, please sign in to your account.",
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      },
+    ]);
+  }, [user]);
+
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
   const [recording, setRecording] = useState(false);
@@ -170,6 +188,38 @@ export function FloatingChatWidget() {
     };
   }, []);
 
+  // Auto-open chatbot if cursor is stuck on screen / user is idle for more than 15 seconds
+  useEffect(() => {
+    let idleTimer: ReturnType<typeof setTimeout>;
+
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        setIsOpen((open) => {
+          if (!open) {
+            return true;
+          }
+          return open;
+        });
+      }, 60000); // 1 minute idle timeout
+    };
+
+    window.addEventListener("mousemove", resetIdleTimer);
+    window.addEventListener("keydown", resetIdleTimer);
+    window.addEventListener("scroll", resetIdleTimer);
+    window.addEventListener("touchstart", resetIdleTimer);
+
+    resetIdleTimer();
+
+    return () => {
+      clearTimeout(idleTimer);
+      window.removeEventListener("mousemove", resetIdleTimer);
+      window.removeEventListener("keydown", resetIdleTimer);
+      window.removeEventListener("scroll", resetIdleTimer);
+      window.removeEventListener("touchstart", resetIdleTimer);
+    };
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -179,6 +229,39 @@ export function FloatingChatWidget() {
   const handleSend = async (textToSend?: string) => {
     const query = (textToSend || inputText).trim();
     if (!query || loading) return;
+
+    // Strict guest limitation: if not logged in and asking to check schemes or eligibility
+    if (!user) {
+      const isSchemeCheck = /scheme|eligible|eligibility|apply|benefit|kisan|ayushman|pmay|mgnrega|document|ration|income|what-if/i.test(query);
+      const userMessageCount = messages.filter((m) => m.sender === "user").length;
+
+      const userMsg: Message = {
+        id: `user-${Date.now()}`,
+        sender: "user",
+        text: query,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      };
+      setMessages((prev) => [...prev, userMsg]);
+      setInputText("");
+
+      if (isSchemeCheck || userMessageCount >= 2) {
+        const guestLockedMsg: Message = {
+          id: `guest-lock-${Date.now()}`,
+          sender: "assistant",
+          text: "🔒 **Citizen Authentication Required**\n\nChecking government schemes, verifying household eligibility rules, and document analysis are exclusive to authenticated citizens.\n\nPlease sign in or create your free account to unlock full scheme access.",
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          suggestedAction: {
+            type: "auth",
+            tour_id: "",
+            title: "Sign in to Tech Sahaya →",
+            description: "Access verified schemes & eligibility",
+            route: "/login",
+          },
+        };
+        setMessages((prev) => [...prev, guestLockedMsg]);
+        return;
+      }
+    }
 
     const userMessage: Message = {
       id: `user-${Date.now()}`,
@@ -233,6 +316,11 @@ export function FloatingChatWidget() {
   };
 
   const startVoiceRecording = async () => {
+    if (!user) {
+      alert("Voice interaction and scheme query transcription require logging in. Please sign in or create an account.");
+      return;
+    }
+
     if (!navigator.mediaDevices?.getUserMedia) {
       alert(t(language, "voiceUnavailable"));
       return;
@@ -373,7 +461,7 @@ export function FloatingChatWidget() {
             className="group relative flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-xl hover:bg-emerald-700 hover:scale-105 active:scale-95 transition-all duration-200"
             aria-label="Open Ask Sahaya Chatbot"
           >
-            <SahayaAvatar state={avatarState} size={28} />
+            <SahayaAvatar state={avatarState} size={38} />
             <span className="absolute -top-1 -right-1 flex h-4 w-4">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white" />
@@ -392,8 +480,8 @@ export function FloatingChatWidget() {
           {/* Header */}
           <div className="flex items-center justify-between bg-emerald-700 px-4 py-3 text-white">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white">
-                <SahayaAvatar state={avatarState} size={24} />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-white overflow-visible">
+                <SahayaAvatar state={avatarState} size={30} />
               </div>
               <div>
                 <div className="text-sm font-bold leading-tight">{t(language, "askSahaya")}</div>
@@ -498,9 +586,8 @@ export function FloatingChatWidget() {
             ))}
 
             {loading && (
-              <div className="flex items-center gap-2 text-xs text-slate-500 bg-white p-3 rounded-2xl border w-fit">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                {t(language, "retrievingEvidence")}
+              <div className="rounded-2xl border border-stone-200 bg-white p-3 shadow-md w-fit animate-fade-in">
+                <TechSahayaLoader size={44} text={t(language, "retrievingEvidence")} />
               </div>
             )}
 
@@ -509,27 +596,54 @@ export function FloatingChatWidget() {
 
           {/* Quick Prompts Suggestions */}
           <div className="px-3 py-1.5 bg-stone-100/80 border-t flex gap-1.5 overflow-x-auto text-[11px] no-scrollbar">
-            <button
-              type="button"
-              onClick={() => handleSend(t(language, "farmerSchemesQuery"))}
-              className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
-            >
-              {t(language, "farmerSchemesChip")}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSend(t(language, "uploadDocsQuery"))}
-              className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
-            >
-              {t(language, "uploadDocsChip")}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSend(t(language, "missedBenefitsQuery"))}
-              className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
-            >
-              {t(language, "missedBenefitsChip")}
-            </button>
+            {user ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => handleSend(t(language, "farmerSchemesQuery"))}
+                  className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
+                >
+                  {t(language, "farmerSchemesChip")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSend(t(language, "uploadDocsQuery"))}
+                  className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
+                >
+                  {t(language, "uploadDocsChip")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSend(t(language, "missedBenefitsQuery"))}
+                  className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
+                >
+                  {t(language, "missedBenefitsChip")}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => handleSend("How does Tech Sahaya protect citizen privacy?")}
+                  className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
+                >
+                  🛡️ Privacy Protection
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSend("How does explainable eligibility rule matching work?")}
+                  className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border transition"
+                >
+                  💡 How It Works
+                </button>
+                <a
+                  href="/login"
+                  className="shrink-0 rounded-lg bg-sahaya-green px-2.5 py-1 text-white font-bold hover:bg-emerald-900 border border-sahaya-green transition"
+                >
+                  🔒 Sign in for Schemes &rarr;
+                </a>
+              </>
+            )}
           </div>
 
           {/* Input & Voice Controls */}

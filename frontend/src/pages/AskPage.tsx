@@ -80,7 +80,7 @@ export function AskPage() {
   const { language, setLanguage, offline, profile } = useAppContext();
   const { startTour } = useTour();
 
-  const [message, setMessage] = useState(suggestedQuestions[language]?.[0] || "What schemes are available for farmers?");
+  const [message, setMessage] = useState("");
   const [transcript, setTranscript] = useState("");
   const [response, setResponse] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
@@ -92,10 +92,14 @@ export function AskPage() {
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const speechRecognitionRef = useRef<any>(null);
 
   useEffect(() => {
     return () => {
       stopAllPlayback();
+      if (speechRecognitionRef.current) {
+        try { speechRecognitionRef.current.abort(); } catch {}
+      }
     };
   }, []);
 
@@ -133,6 +137,58 @@ export function AskPage() {
 
 
   const startVoiceRecording = async () => {
+    // 1. Try Browser Native Web Speech API for real-time speech-to-text
+    const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognitionClass) {
+      try {
+        const recognition = new SpeechRecognitionClass();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = languageToBCP47(language || "en");
+
+        recognition.onstart = () => {
+          setRecording(true);
+          setVoiceStatus(t(language, "recording"));
+          setError("");
+        };
+
+        recognition.onresult = (event: any) => {
+          let interimTranscript = "";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const piece = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              setMessage(piece);
+              setTranscript(piece);
+            } else {
+              interimTranscript += piece;
+              setMessage(interimTranscript);
+            }
+          }
+        };
+
+        recognition.onerror = (e: any) => {
+          console.warn("Speech recognition error:", e.error);
+          setRecording(false);
+          setVoiceStatus("");
+          if (e.error !== "no-speech") {
+            setError(t(language, "voicePermissionError"));
+          }
+        };
+
+        recognition.onend = () => {
+          setRecording(false);
+          setVoiceStatus("");
+        };
+
+        speechRecognitionRef.current = recognition;
+        recognition.start();
+        return;
+      } catch (err) {
+        console.warn("Web Speech API failed, falling back to MediaRecorder", err);
+      }
+    }
+
+    // 2. Fallback to MediaRecorder upload
     if (!navigator.mediaDevices?.getUserMedia) {
       setError(t(language, "voiceUnavailable"));
       return;
@@ -169,6 +225,13 @@ export function AskPage() {
   };
 
   const stopVoiceRecording = () => {
+    if (speechRecognitionRef.current) {
+      try {
+        speechRecognitionRef.current.stop();
+      } catch {}
+      setRecording(false);
+      setVoiceStatus("");
+    }
     if (mediaRecorderRef.current && recording) {
       mediaRecorderRef.current.stop();
       setRecording(false);

@@ -60,7 +60,7 @@ export function PrivacyPage() {
           <div className="pt-5">
             <h2 className="font-bold text-slate-900 text-lg font-serif">Your rights</h2>
             <p className="mt-2 text-xs md:text-sm text-slate-600 leading-relaxed">
-              You can see a full summary of what we hold, export it, withdraw consent, or delete everything — from the Privacy Centre, without contacting support. Withdrawal stops all processing immediately; deletion removes the profile and its activity log.
+              You can see a full summary of what we hold, export it, withdraw consent, or delete everything from the Privacy Centre, without contacting support. Withdrawal stops all processing immediately; deletion removes the profile and its activity log.
             </p>
           </div>
 
@@ -78,7 +78,7 @@ export function PrivacyPage() {
             <ul className="mt-2 space-y-2 text-xs md:text-sm text-slate-600 list-disc list-inside leading-relaxed">
               <li>No advertising, retargeting or social-media pixels of any kind.</li>
               <li>No third-party analytics that can see your profile fields.</li>
-              <li>No cookies that carry document content — documents never leave the request they arrive in.</li>
+              <li>No cookies that carry document content: documents never leave the request they arrive in.</li>
               <li>No cross-site tracking. There is no ad network to sell to.</li>
             </ul>
           </div>
@@ -102,7 +102,7 @@ export function PrivacyPage() {
       {user && (
         <div className="rounded-3xl border border-stone-200 bg-white p-6 md:p-8 shadow-card space-y-6">
           <div>
-            <h2 className="text-2xl font-bold font-serif text-slate-900">Privacy Centre — Citizen Controls</h2>
+            <h2 className="text-2xl font-bold font-serif text-slate-900">Privacy Centre - Citizen Controls</h2>
             <p className="mt-1 text-xs text-slate-600">
               Exercise your DPDP Act rights directly. You hold complete ownership and control over your personal welfare profile and data.
             </p>

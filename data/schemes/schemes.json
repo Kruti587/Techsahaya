@@ -2224,5 +2224,162 @@
       "e-shram"
     ],
     "data_note": "Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal."
+  },
+  {
+    "id": "pm-pranam",
+    "name": "PM-PRANAM",
+    "description": "Programme for Restoration, Awareness, Nourishment and Amelioration of Mother Earth promoting alternative and bio-fertilizer adoption among agricultural households.",
+    "category": "Agriculture & Environment",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Financial incentives for adopting natural and bio-fertilizers",
+      "Soil fertility restoration grants and agricultural input subsidies",
+      "Reduced cost of cultivation through balanced nutrient management"
+    ],
+    "eligibility": [
+      "Farmer or agricultural household actively cultivating agricultural land",
+      "Willingness to adopt organic or alternative bio-nutrients",
+      "Registered landholding or sharecropper agreement"
+    ],
+    "required_documents": [
+      "land record",
+      "soil health card",
+      "bank account proof"
+    ],
+    "application_steps": [
+      "Register via state agriculture department or local Krishi Vigyan Kendra",
+      "Submit soil testing report and landholding details",
+      "Receive certified bio-fertilizers and direct financial incentive"
+    ],
+    "department": "Department of Fertilizers, Ministry of Chemicals & Fertilizers",
+    "official_link": "https://www.fert.nic.in/",
+    "source_name": "Ministry of Chemicals and Fertilizers",
+    "source_reference": "Union Budget & Department of Fertilizers official notification.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-kisan",
+      "soil-health-card-scheme"
+    ],
+    "data_note": "Benefits and incentive disbursal are routed through state agriculture development agencies."
+  },
+  {
+    "id": "pm-matsya-sampada",
+    "name": "PM Matsya Sampada Yojana (PMMSY)",
+    "description": "Flagship scheme for focused and sustainable development of the fisheries sector and welfare of traditional fishers and fish farmers.",
+    "category": "Fisheries & Animal Husbandry",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Up to 60% capital subsidy for women/SC/ST fishers and 40% for general category",
+      "Support for motorized boats, deep-sea fishing gear, biofloc and recirculatory aquaculture systems",
+      "Livelihood and nutritional support for fishers during fishing ban periods"
+    ],
+    "eligibility": [
+      "Fishers, fish farmers, fish workers, or members of fisheries cooperatives/SHGs",
+      "Possession of water bodies (owned/leased) or registered fishing vessel",
+      "Active engagement in freshwater, brackish water, or marine fishing"
+    ],
+    "required_documents": [
+      "identity proof",
+      "fisherman registration certificate",
+      "bank account proof",
+      "land or waterbody lease record"
+    ],
+    "application_steps": [
+      "Submit Detailed Project Report (DPR) to the District Fisheries Officer",
+      "Verification by District Level Committee (DLC)",
+      "State approval and subsidy credit via Direct Benefit Transfer"
+    ],
+    "department": "Department of Fisheries, Ministry of Fisheries, Animal Husbandry and Dairying",
+    "official_link": "https://pmmsy.dof.gov.in/",
+    "source_name": "PMMSY National Fisheries Portal",
+    "source_reference": "Verified against PMMSY operational guidelines and MIS portal.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "kisan-credit-card",
+      "agriculture-infrastructure-fund"
+    ],
+    "data_note": "Target beneficiaries include fishers, coastal communities, and rural women self-help groups."
+  },
+  {
+    "id": "nbhm-honey-mission",
+    "name": "National Beekeeping & Honey Mission (NBHM)",
+    "description": "Central sector mission to promote scientific beekeeping, increase crop pollination, and provide supplementary livelihood income to rural families.",
+    "category": "Agriculture & Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Subsidies up to 80% for bee colonies, modern bee boxes, and honey extraction equipment",
+      "Custom hiring centers and testing lab support for beekeepers",
+      "Direct market access via Madhu Kranti portal with trace back authentication"
+    ],
+    "eligibility": [
+      "Individual farmers, landless rural workers, SHGs, and Farmer Producer Organizations (FPOs)",
+      "Completion of basic scientific beekeeping orientation or training",
+      "Designated apiary site or agricultural land for box placement"
+    ],
+    "required_documents": [
+      "identity proof",
+      "bank account proof",
+      "residence proof",
+      "training completion certificate"
+    ],
+    "application_steps": [
+      "Register on the Madhu Kranti portal or visit National Bee Board nodal officer",
+      "Select approved bee manufacturer and equipment package",
+      "Inspection and direct subsidy transfer to beneficiary account"
+    ],
+    "department": "National Bee Board, Ministry of Agriculture & Farmers Welfare",
+    "official_link": "https://nbb.gov.in/",
+    "source_name": "National Bee Board Official Portal",
+    "source_reference": "Verified from National Beekeeping and Honey Mission operational guidelines.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pm-vishwakarma",
+      "paramparagat-krishi-vikas-yojana"
+    ],
+    "data_note": "Aims to achieve the Sweet Revolution across smallholder farming belts."
+  },
+  {
+    "id": "svamitva",
+    "name": "SVAMITVA Scheme",
+    "description": "Survey of Villages and Mapping with Improvised Technology in Village Areas to provide rural citizens with official digitized Property Cards (Sampatti Card).",
+    "category": "Rural Property & Governance",
+    "state_scope": [
+      "All"
+    ],
+    "benefits": [
+      "Issuance of legal, geo-referenced Property Card (Sampatti Patrika)",
+      "Financial monetization of rural residential property to secure institutional bank loans",
+      "Minimization of rural property boundary disputes with Survey of India drone accuracy"
+    ],
+    "eligibility": [
+      "Owners of residential properties in rural Abadi (inhabited) areas of surveyed villages",
+      "Citizens residing in notification-notified gram panchayats"
+    ],
+    "required_documents": [
+      "identity proof",
+      "panchayat property tax receipt or family record",
+      "aadhaar"
+    ],
+    "application_steps": [
+      "Drone flying conducted by Survey of India in coordination with Gram Panchayat",
+      "Ground verification of spatial property boundaries and objection redressal",
+      "Distribution of digital Property Card via Digilocker and physical registry"
+    ],
+    "department": "Ministry of Panchayati Raj",
+    "official_link": "https://svamitva.nic.in/",
+    "source_name": "SVAMITVA National Portal",
+    "source_reference": "Ministry of Panchayati Raj official framework and drone survey guidelines.",
+    "last_verified": "2026-08-31",
+    "alternative_scheme_ids": [
+      "pmay-g",
+      "swachh-bharat-mission-gramin"
+    ],
+    "data_note": "Eliminates ambiguity in village residential rights and empowers rural financial inclusion."
   }
 ]

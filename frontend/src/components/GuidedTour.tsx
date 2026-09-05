@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Bot, X, ChevronRight, Check } from "lucide-react";
+import { X, ChevronRight, Check } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { SahayaAvatar } from "./SahayaAvatar";
 
 export type TourStep = {
   target: string;
@@ -130,9 +131,9 @@ export function GuidedTour({ steps, onComplete }: GuidedTourProps) {
           <motion.div 
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="rounded-full bg-blue-600 p-3 shadow-[0_0_20px_rgba(37,99,235,0.4)] border-4 border-white text-white flex items-center justify-center"
+            className="rounded-full bg-amber-50 p-2 shadow-[0_0_25px_rgba(245,158,11,0.6)] border-3 border-amber-300 flex items-center justify-center"
           >
-            <Bot size={32} />
+            <SahayaAvatar size={52} state="speaking" />
           </motion.div>
         </div>
 

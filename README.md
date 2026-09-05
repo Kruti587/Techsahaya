@@ -337,12 +337,12 @@ Tech Sahaya includes:
 
 ### System Dependencies
 
-- **ffmpeg** — required for voice transcription and audio transcoding (`WebM/Opus` → `16kHz mono WAV`). Install:
+- **ffmpeg** - required for voice transcription and audio transcoding (`WebM/Opus` → `16kHz mono WAV`). Install:
   - **Windows**: `winget install Gyan.FFmpeg` (or download from [gyan.dev/ffmpeg](https://www.gyan.dev/ffmpeg/builds/))
   - **macOS**: `brew install ffmpeg`
   - **Linux (Ubuntu/Debian)**: `sudo apt-get install -y ffmpeg`
 
-> **Verification**: After installing `ffmpeg`, close and reopen your terminal, then verify with `ffmpeg -version` and `ffprobe -version` — both must print output before running the backend.
+> **Verification**: After installing `ffmpeg`, close and reopen your terminal, then verify with `ffmpeg -version` and `ffprobe -version` - both must print output before running the backend.
 
 ### Environment Pre-Flight Check
 
@@ -433,7 +433,7 @@ Services:
 > ⚠️ **Key Requirements**:
 > - **`SARVAM_API_KEY`**: **Required** for voice speech-to-text (STT) and text-to-speech (TTS) features. Obtain an API key from the [Sarvam AI Dashboard](https://dashboard.sarvam.ai/). If unconfigured, voice requests will return a `503 Service Unavailable` error.
 > - **`GEMINI_API_KEY`** / **`GOOGLE_API_KEY`**: **Required** for AI grounded scheme answering. Obtain from [Google AI Studio](https://aistudio.google.com/).
-> - **Process Restart**: After editing `backend/.env`, restart the backend process fully — cached settings (`@lru_cache`) are not hot-reloaded.
+> - **Process Restart**: After editing `backend/.env`, restart the backend process fully - cached settings (`@lru_cache`) are not hot-reloaded.
 
 ```env
 # AI & Reasoning
@@ -692,7 +692,7 @@ Use local auth mode:
 AUTH_ADAPTER=local
 ```
 
-> **Important**: After editing `backend/.env`, restart the backend process fully — cached settings (`@lru_cache`) are not hot-reloaded.
+> **Important**: After editing `backend/.env`, restart the backend process fully - cached settings (`@lru_cache`) are not hot-reloaded.
 
 ### Audio Transcoding & FFmpeg System Dependency
 

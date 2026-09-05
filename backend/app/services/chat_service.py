@@ -744,7 +744,7 @@ class ChatService:
                         "source_name": s.source_name,
                     })
                 else:
-                    logger.info("Scheme '%s' missing '%s' translation entry — falling back to LLM translation.", s.id, lang_key)
+                    logger.info("Scheme '%s' missing '%s' translation entry - falling back to LLM translation.", s.id, lang_key)
                     schemes_payload.append({
                         "name": s.name,
                         "category": s.category,

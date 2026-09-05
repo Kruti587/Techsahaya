@@ -13,7 +13,7 @@ export function SchemeCard({ scheme: rawScheme }: { scheme: Scheme }) {
     : scheme.state_scope.join(", ");
 
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-card transition hover:-translate-y-0.5 hover:shadow-lg">
+    <article className="scheme-glow-card flex h-full flex-col rounded-2xl p-5 transition-all duration-500">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <h3 className="text-lg font-semibold text-sahaya-ink">{scheme.name}</h3>
         <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">{scheme.category}</span>

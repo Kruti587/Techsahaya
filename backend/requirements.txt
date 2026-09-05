@@ -14,3 +14,4 @@ redis>=5.0.0
 pytesseract>=0.3.10
 pillow>=10.0.0
 audioop-lts; python_version >= "3.13"
+pypdf>=5.0.0

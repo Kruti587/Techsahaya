@@ -65,8 +65,18 @@ class Settings(BaseSettings):
     discord_bot_token: str = ""
     discord_admin_channel_id: str = ""
 
+    # SMTP / Email Configuration (Gmail)
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    smtp_user: str = "techsahaya.support@gmail.com"
+    smtp_password: str = ""
+    smtp_from: str = "Tech Sahaya Support <techsahaya.support@gmail.com>"
+    smtp_use_tls: bool = True
+    gmail_user: str = ""
+    gmail_app_password: str = ""
+
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "backend/.env", "../.env"),
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",

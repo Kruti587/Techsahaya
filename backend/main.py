@@ -39,9 +39,9 @@ def startup_event():
         logger.error("CRITICAL: Scheme dataset validation failed. Scheme-related features may not work correctly.")
     
     if not settings.sarvam_api_key:
-        logger.warning("SARVAM_API_KEY is not set — voice STT/TTS features will fail at runtime.")
+        logger.warning("SARVAM_API_KEY is not set - voice STT/TTS features will fail at runtime.")
     if not ensure_ffmpeg_on_path():
-        logger.warning("ffmpeg/ffprobe is not found on PATH — audio transcoding (WebM -> WAV) requires ffmpeg.")
+        logger.warning("ffmpeg/ffprobe is not found on PATH - audio transcoding (WebM -> WAV) requires ffmpeg.")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -110,3 +110,52 @@ def favicon():
 
 
 app.include_router(api_router)
+
+# Direct aliases for /auth endpoints (in addition to /api/auth)
+@app.post("/auth/send-otp")
+def root_send_otp(payload: dict, request: Request):
+    from app.core.db import get_db
+    from app.models.schemas import SendOtpRequest
+    from app.routers.api import send_otp
+    db = next(get_db())
+    try:
+        return send_otp(SendOtpRequest(**payload), request, db)
+    finally:
+        db.close()
+
+
+@app.post("/auth/verify-otp")
+def root_verify_otp(payload: dict, request: Request):
+    from app.core.db import get_db
+    from app.models.schemas import VerifyOtpRequest
+    from app.routers.api import verify_otp
+    db = next(get_db())
+    try:
+        return verify_otp(VerifyOtpRequest(**payload), request, db)
+    finally:
+        db.close()
+
+
+@app.post("/newsletter/subscribe")
+def root_subscribe_newsletter(payload: dict, request: Request):
+    from app.core.db import get_db
+    from app.models.schemas import NewsletterSubscribeRequest
+    from app.routers.api import subscribe_newsletter
+    db = next(get_db())
+    try:
+        return subscribe_newsletter(NewsletterSubscribeRequest(**payload), request, db)
+    finally:
+        db.close()
+
+
+@app.post("/schemes/apply")
+def root_apply_scheme(payload: dict, request: Request):
+    from app.core.db import get_db
+    from app.models.schemas import SchemeApplyRequest
+    from app.routers.api import apply_scheme
+    db = next(get_db())
+    try:
+        return apply_scheme(SchemeApplyRequest(**payload), request, db)
+    finally:
+        db.close()
+

@@ -1,12 +1,14 @@
-import { ArrowRight, CheckCircle2, Languages, Mic, Play, ShieldCheck, Square, Volume2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Compass, Languages, Mic, Play, ShieldCheck, Square, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { OnboardingChecklist, type OnboardingStep } from "../components/OnboardingChecklist";
+import { OneStepAwayRadar } from "../components/OneStepAwayRadar";
 import { SchemeCard } from "../components/SchemeCard";
 import { SectionCard } from "../components/SectionCard";
 import { useAppContext } from "../context/AppContext";
+import { useTour } from "../context/TourContext";
 import { api } from "../services/api";
-import { t } from "../utils/i18n";
+import { t, getTimeGreetingKey } from "../utils/i18n";
 import { SUPPORTED_LANGUAGES } from "../utils/languages";
 import { hasActivePlayback, playExclusiveAudio, speakExclusive, stopAllPlayback, languageToBCP47 } from "../utils/speechUtils";
 import type { Scheme } from "../types";
@@ -16,6 +18,7 @@ const getDashboardSummaryAutoplayKey = (userId?: string) =>
 
 export function DashboardPage() {
   const { profile, user, notifications, language } = useAppContext();
+  const { startTour } = useTour();
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [gaps, setGaps] = useState<any[]>([]);
   const [eligibleSchemes, setEligibleSchemes] = useState<Scheme[]>([]);
@@ -118,26 +121,53 @@ export function DashboardPage() {
     setSummaryPlaying(false);
   };
 
+  const greetingKey = getTimeGreetingKey();
+
   const getWelcomeText = () => {
+    const greeting = t(language, greetingKey);
     const name = user?.full_name || (language === "hi" ? "नागरिक" : language === "kn" ? "ನಾಗರಿಕ" : "Citizen");
     if (language === "hi") {
-      return `टेक सहाय में आपका स्वागत है, ${name}! आपका सुरक्षित नागरिक कल्याण पोर्टल। यहाँ आप सरकारी योजनाएँ खोज सकते हैं, अपनी पात्रता समझ सकते हैं, और डिजीलॉकर से सुरक्षित दस्तावेज़ सत्यापित कर सकते हैं।`;
+      return `${greeting}, ${name}! टेक सहाय में आपका स्वागत है। आपका सुरक्षित नागरिक कल्याण पोर्टल। यहाँ आप सरकारी योजनाएँ खोज सकते हैं, अपनी पात्रता समझ सकते हैं, और डिजीलॉकर से सुरक्षित दस्तावेज़ सत्यापित कर सकते हैं।`;
     }
     if (language === "kn") {
-      return `ಟೆಕ್ ಸಹಾಯಕ್ಕೆ ಸುಸ್ವಾಗತ, ${name}! ನಿಮ್ಮ ಸುರಕ್ಷಿತ ನಾಗರಿಕ ಕಲ್ಯಾಣ ವೇದಿಕೆ. ಸರ್ಕಾರಿ ಯೋಜನೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ, ನಿಮ್ಮ ಅರ್ಹತೆಯನ್ನು ತಿಳಿದುಕೊಳ್ಳಿ, ಮತ್ತು ಡಿಜಿಲಾಕರ್ ಮೂಲಕ ಪರಿಶೀಲಿಸಿ.`;
+      return `${greeting}, ${name}! ಟೆಕ್ ಸಹಾಯಕ್ಕೆ ಸುಸ್ವಾಗತ. ನಿಮ್ಮ ಸುರಕ್ಷಿತ ನಾಗರಿಕ ಕಲ್ಯಾಣ ವೇದಿಕೆ. ಸರ್ಕಾರಿ ಯೋಜನೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ, ನಿಮ್ಮ ಅರ್ಹತೆಯನ್ನು ತಿಳಿದುಕೊಳ್ಳಿ.`;
     }
     if (language === "te") {
-      return `టెక్ సహాయకు స్వాగతం, ${name}! ప్రభుత్వ సంక్షేమ పథకాలను కనుగొనండి, మీ అర్హతను సులభంగా తెలుసుకోండి.`;
+      return `${greeting}, ${name}! టెక్ సహాయకు స్వాగతం. ప్రభుత్వ సంక్షేమ పథకాలను కనుగొనండి, మీ అర్హతను సులభంగా తెలుసుకోండి.`;
     }
     if (language === "ta") {
-      return `டெக் சகாயாவிற்கு நல்வரவு, ${name}! அரசு நலத்திட்டங்களை கண்டறிந்து உங்கள் தகுதியை அறிந்து கொள்ளுங்கள்.`;
+      return `${greeting}, ${name}! டெக் சகாயாவிற்கு நல்வரவு. அரசு நலத்திட்டங்களை கண்டறிந்து உங்கள் தகுதியை அறிந்து கொள்ளுங்கள்.`;
     }
-    return `Welcome to Tech Sahaya, ${name}! Your secure citizen welfare portal. Discover government schemes, check your eligibility in simple language, and verify your certificates safely with DigiLocker.`;
+    if (language === "mr") {
+      return `${greeting}, ${name}! टेक सहायामध्ये आपले स्वागत आहे. सरकारी योजना शोधा आणि तुमची पात्रता तपासा.`;
+    }
+    if (language === "gu") {
+      return `${greeting}, ${name}! ટેક સહાયમાં સ્વાગત છે. સરકારી કલ્યાણકારી યોજનાઓ શોધો અને તમારી પાત્રતા તપાસો.`;
+    }
+    return `${greeting}, ${name}! Welcome to Tech Sahaya. Discover government schemes, check your eligibility in simple language, and claim your welfare benefits.`;
   };
 
-  const playWelcomeVoice = () => {
+  const playWelcomeVoice = async () => {
     stopAllPlayback();
     setSummaryPlaying(false);
+
+    // Try server-side Sarvam AI welcome audio first
+    try {
+      const res = await api.post("/api/onboarding/welcome-audio", null, { params: { language } });
+      if (res.data?.audio_base64) {
+        const player = new Audio(`data:${res.data.audio_mime || "audio/wav"};base64,${res.data.audio_base64}`);
+        await playExclusiveAudio(
+          player,
+          () => setWelcomeVoicePlaying(true),
+          () => setWelcomeVoicePlaying(false),
+          () => setWelcomeVoicePlaying(false)
+        );
+        return;
+      }
+    } catch {
+      // Fallback to client-side speech synthesis
+    }
+
     if ("speechSynthesis" in window) {
       const text = getWelcomeText();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -157,14 +187,22 @@ export function DashboardPage() {
     setWelcomeVoicePlaying(false);
   };
 
-  // Trigger welcome voice greeting when entering dashboard
+  // Automatically play welcome voice greeting upon landing on dashboard
   useEffect(() => {
+    const justLoggedIn = sessionStorage.getItem("sahaya_just_logged_in");
+    if (justLoggedIn) {
+      sessionStorage.removeItem("sahaya_just_logged_in");
+      const t = setTimeout(() => {
+        void playWelcomeVoice();
+      }, 500);
+      return () => clearTimeout(t);
+    }
+
     const sessionKey = `sahaya_welcome_played_${user?.id || "guest"}`;
     if (!sessionStorage.getItem(sessionKey)) {
       sessionStorage.setItem(sessionKey, "true");
-      // Small timeout to allow page layout to settle
       const t = setTimeout(() => {
-        playWelcomeVoice();
+        void playWelcomeVoice();
       }, 700);
       return () => clearTimeout(t);
     }
@@ -297,7 +335,7 @@ export function DashboardPage() {
           <div>
             <p className="text-sm font-semibold uppercase tracking-wide text-sahaya-saffron">{t(language, "dashboardTitle")}</p>
             <h1 className="mt-1 text-2xl font-bold text-sahaya-ink md:text-3xl">
-              {t(language, "goodMorning")}, {user?.full_name || (language === "hi" ? "नागरिक" : language === "kn" ? "ನಾಗರಿಕ" : "Citizen")}
+              {t(language, greetingKey)}, {user?.full_name || (language === "hi" ? "नागरिक" : language === "kn" ? "ನಾಗರಿಕ" : "Citizen")}
             </h1>
             <p className="mt-2 max-w-2xl text-slate-600">{t(language, "dashboardSubtitle")}</p>
             <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -307,18 +345,12 @@ export function DashboardPage() {
               <Link to="/chat" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-stone-300 px-5 font-semibold text-sahaya-green hover:bg-stone-50 transition">
                 <Mic size={18} /> {t(language, "voiceTextCta")}
               </Link>
-              <button
-                type="button"
-                onClick={welcomeVoicePlaying ? stopWelcomeVoice : playWelcomeVoice}
-                className={`inline-flex min-h-12 items-center gap-2 rounded-xl px-5 font-semibold shadow-sm transition ${
-                  welcomeVoicePlaying
-                    ? "bg-rose-600 text-white hover:bg-rose-700"
-                    : "bg-sahaya-saffron text-white hover:bg-amber-600"
-                }`}
-              >
-                {welcomeVoicePlaying ? <Square size={18} /> : <Volume2 size={18} />}
-                <span>{welcomeVoicePlaying ? (language === "hi" ? "आवाज़ रोकें" : language === "kn" ? "ಧ್ವನಿ ನಿಲ್ಲಿಸಿ" : "Stop Voice") : (language === "hi" ? "स्वागत संदेश सुनें" : language === "kn" ? "ಸ್ವಾಗತ ಸಂದೇಶ ಆಲಿಸಿ" : "Play Welcome Voice")}</span>
-              </button>
+              {welcomeVoicePlaying && (
+                <div className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-amber-100/90 border border-amber-300 px-4 text-xs font-semibold text-amber-900 shadow-sm animate-pulse">
+                  <Volume2 size={16} className="text-amber-700 animate-bounce" />
+                  <span>{language === "hi" ? "स्वागत संदेश जारी है..." : language === "kn" ? "ಸ್ವಾಗತ ಧ್ವನಿ ಸಕ್ರಿಯವಾಗಿದೆ..." : "Welcome voice active..."}</span>
+                </div>
+              )}
             </div>
             {welcomeVoicePlaying && (
               <div className="mt-3 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50/80 p-3 text-xs text-amber-950 animate-fade-in">
@@ -366,7 +398,18 @@ export function DashboardPage() {
         </div>
       </section>
 
-      <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+      {/* Onboarding Checklist Section */}
+      <OnboardingChecklist
+        steps={onboardingSteps}
+        title={t(language, "gettingStarted")}
+        subtitle={language === "hi" ? "कल्याण लाभ प्राप्त करने के लिए महत्वपूर्ण चरण" : language === "kn" ? "ಕಲ್ಯಾಣ ಪ್ರಯೋಜನಗಳನ್ನು ಪಡೆಯಲು ಪ್ರಮುಖ ಹಂತಗಳು" : "Key steps to maximize your welfare entitlement"}
+        defaultExpanded={true}
+      />
+
+      {/* ─── One Step Away & Eligibility Radar (Exact Screenshot Architecture) ─── */}
+      <OneStepAwayRadar />
+
+      <div className="grid gap-4">
         <SectionCard title={t(language, "welfareReadiness")}>
           <div className="flex items-end gap-3">
             <div className="text-5xl font-bold text-sahaya-green">{readiness}%</div>
@@ -377,7 +420,7 @@ export function DashboardPage() {
           <div className="mt-4 h-3 overflow-hidden rounded-full bg-stone-100">
             <div className="h-full rounded-full bg-sahaya-green" style={{ width: `${readiness}%` }} />
           </div>
-          <div className="mt-4 grid gap-2 text-sm">
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 text-sm">
             {readinessFactors.map((factor) => (
               <div key={factor.label} className="flex items-center justify-between gap-3 rounded-xl border p-3">
                 <span className="flex items-center gap-2">
@@ -390,12 +433,6 @@ export function DashboardPage() {
             ))}
           </div>
         </SectionCard>
-
-        <OnboardingChecklist
-          steps={onboardingSteps}
-          title={t(language, "gettingStarted")}
-          subtitle={language === "hi" ? "कल्याण लाभ प्राप्त करने के लिए महत्वपूर्ण चरण" : language === "kn" ? "ಕಲ್ಯಾಣ ಪ್ರಯೋಜನಗಳನ್ನು ಪಡೆಯಲು ಪ್ರಮುಖ ಹಂತಗಳು" : "Key steps to maximize your welfare entitlement"}
-        />
       </div>
 
       <div className="grid gap-4 xl:grid-cols-3">

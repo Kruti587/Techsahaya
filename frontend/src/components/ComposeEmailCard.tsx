@@ -48,7 +48,7 @@ const defaultRecipient: User = {
   id: "tech-sahaya-support",
   name: "Tech Sahaya Citizen Helpdesk",
   avatar: "/favicon.svg",
-  email: "support@techsahaya.gov.in",
+  email: "techsahaya.support@gmail.com",
 };
 
 export function ComposeEmailCard({
@@ -68,7 +68,7 @@ export function ComposeEmailCard({
       email: user?.email || "",
     },
     to: [defaultRecipient],
-    subject: "Citizen Support Inquiry — Tech Sahaya",
+    subject: "Citizen Support Inquiry - Tech Sahaya",
     body: "",
     attachments: [],
   });
@@ -237,10 +237,10 @@ export function ComposeEmailCard({
         <div
           role="dialog"
           aria-label="Compose Email"
-          className={`fixed bottom-6 right-6 z-[9990] flex flex-col overflow-hidden rounded-2xl border border-emerald-900/20 bg-white text-sahaya-ink shadow-2xl backdrop-blur-xl transition-all duration-300 ${
+          className={`fixed z-[9990] flex flex-col overflow-hidden rounded-2xl border border-emerald-900/20 bg-white text-sahaya-ink shadow-2xl backdrop-blur-xl transition-all duration-300 ${
             minimized
-              ? "w-80 shadow-lg"
-              : "w-[calc(100vw-32px)] max-w-[520px] max-h-[calc(100vh-48px)]"
+              ? "bottom-6 right-24 w-80 shadow-lg"
+              : "bottom-6 right-6 sm:right-24 w-[calc(100vw-32px)] max-w-[520px] max-h-[calc(100vh-48px)]"
           }`}
         >
           {/* Header */}
@@ -248,7 +248,7 @@ export function ComposeEmailCard({
             <div className="flex items-center gap-2.5">
               <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
               <span className="text-sm font-bold tracking-tight">
-                Compose Message — Tech Sahaya Support
+                Compose Message - Tech Sahaya Support
               </span>
             </div>
             <div className="flex items-center gap-1.5">

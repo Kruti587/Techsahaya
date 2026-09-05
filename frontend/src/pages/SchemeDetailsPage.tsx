@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { SectionCard } from "../components/SectionCard";
+import { AutoFilledApplicationModal } from "../components/AutoFilledApplicationModal";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
 import { t } from "../utils/i18n";
@@ -10,6 +11,7 @@ export function SchemeDetailsPage() {
   const { schemeId } = useParams();
   const { language } = useAppContext();
   const [data, setData] = useState<any | null>(null);
+  const [showPdfModal, setShowPdfModal] = useState(false);
 
   useEffect(() => {
     api.get(`/api/schemes/${schemeId}`).then((res) => setData(res.data)).catch(() => setData(null));
@@ -39,6 +41,13 @@ export function SchemeDetailsPage() {
           <Link to="/eligibility" className="inline-flex min-h-12 items-center rounded-xl bg-sahaya-green px-4 font-semibold text-white">
             {t(language, "checkMyEligibility")}
           </Link>
+          <button
+            type="button"
+            onClick={() => setShowPdfModal(true)}
+            className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm hover:bg-blue-700 transition"
+          >
+            Generate Auto-Filled PDF
+          </button>
           <button onClick={() => api.post("/api/schemes/save", { scheme_id: scheme.id })} className="inline-flex min-h-12 items-center rounded-xl border px-4 font-semibold">
             {t(language, "saveScheme")}
           </button>
@@ -115,6 +124,12 @@ export function SchemeDetailsPage() {
           )}
         </SectionCard>
       </div>
+
+      <AutoFilledApplicationModal
+        scheme={scheme}
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+      />
     </div>
   );
 }

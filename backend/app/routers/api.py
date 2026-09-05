@@ -24,15 +24,22 @@ from app.models.schemas import (
     FamilyAnalysisRequest,
     ForgotPasswordRequest,
     LoginRequest,
+    NewsletterSubscribeRequest,
     ProfileUpdate,
     SaveSchemeRequest,
+    SchemeApplyRequest,
+    SendOtpRequest,
+    SendOtpResponse,
     SignUpRequest,
+    VerifyOtpRequest,
+    VerifyOtpResponse,
     VoiceChatRequest,
     VoiceChatResponse,
     WhatIfRequest,
 )
 from app.services.audit_service import audit_service
 from app.services.auth_service import auth_service
+from app.services.otp_service import otp_service
 from app.services.chat_service import chat_service
 from app.services.data_loader import load_languages, load_personas, load_rules, load_schemes, load_tours
 from app.services.document_service import document_service, REUPLOAD_PROMPTS
@@ -75,10 +82,95 @@ def login(payload: LoginRequest, request: Request, db: Session = Depends(get_db)
     return auth_service.login(db, payload, request)
 
 
+@router.post("/auth/send-otp", response_model=SendOtpResponse)
+def send_otp(payload: SendOtpRequest, request: Request, db: Session = Depends(get_db)):
+    dispatched, msg, raw_otp = otp_service.send_otp(db, payload.email)
+    audit_service.log(db, "otp_sent", f"OTP code requested for {payload.email}", None, "anonymous", "auth", request)
+    return SendOtpResponse(
+        status="success",
+        message="A 6-digit verification code has been dispatched to your email address.",
+        email=payload.email,
+        expires_in=300,
+        email_dispatched=dispatched,
+        otp_code=None,
+    )
+
+
+@router.post("/auth/verify-otp", response_model=VerifyOtpResponse)
+def verify_otp(payload: VerifyOtpRequest, request: Request, db: Session = Depends(get_db)):
+    success, token = otp_service.verify_otp(db, payload.email, payload.otp)
+    audit_service.log(db, "otp_verified", f"OTP verified successfully for {payload.email}", None, "anonymous", "auth", request)
+    return VerifyOtpResponse(
+        status="success",
+        message="Verification code verified successfully.",
+        verified=True,
+        email=payload.email,
+        verification_token=token,
+    )
+
+
+@router.post("/newsletter/subscribe")
+def subscribe_newsletter(payload: NewsletterSubscribeRequest, request: Request, db: Session = Depends(get_db)):
+    clean_email = payload.email.strip().lower()
+    if not clean_email or "@" not in clean_email:
+        raise HTTPException(status_code=400, detail="Please enter a valid email address.")
+
+    dispatched, msg = otp_service.send_newsletter_subscription_email(clean_email)
+    audit_service.log(db, "newsletter_subscribed", f"Newsletter subscription confirmed for {clean_email}", None, "citizen", "notifications", request)
+    return {
+        "status": "success",
+        "message": "Subscription confirmed! An official confirmation email has been dispatched to your inbox.",
+        "email": clean_email,
+        "email_dispatched": dispatched,
+    }
+
+
+@router.post("/schemes/apply")
+def apply_scheme(payload: SchemeApplyRequest, request: Request, db: Session = Depends(get_db)):
+    schemes = load_schemes()
+    scheme = next((s for s in schemes if s.id == payload.scheme_id), None)
+    scheme_name = payload.scheme_name or (scheme.name if scheme else payload.scheme_id)
+    official_link = str(scheme.official_link) if scheme and scheme.official_link else "https://techsahaya.in/"
+
+    applicant = payload.applicant_name or "Citizen"
+    target_email = (payload.email or "kranbadsh@gmail.com").strip().lower()
+
+    import hashlib
+    ref_hash = hashlib.sha256(f"{payload.scheme_id}-{applicant}-{target_email}".encode()).hexdigest()[:6].upper()
+    app_id = f"TS-APP-2026-{ref_hash}"
+
+    dispatched, msg = otp_service.send_scheme_application_email(
+        recipient_email=target_email,
+        scheme_name=scheme_name,
+        applicant_name=applicant,
+        application_id=app_id,
+        official_link=official_link,
+    )
+
+    audit_service.log(
+        db,
+        "scheme_applied",
+        f"Application {app_id} submitted for {scheme_name} by {applicant} ({target_email})",
+        None,
+        "citizen",
+        "schemes",
+        request,
+    )
+
+    return {
+        "status": "success",
+        "application_id": app_id,
+        "scheme_id": payload.scheme_id,
+        "scheme_name": scheme_name,
+        "email_dispatched": dispatched,
+        "message": f"Application {app_id} registered! Confirmation email dispatched to {target_email}.",
+    }
+
+
 @router.post("/onboarding/welcome-audio")
 async def onboarding_welcome_audio(
     language: str = "en",
-    user: User = Depends(get_current_user),
+    user: Optional[User] = Depends(get_optional_user),
 ):
     welcome_messages = {
         "hi": "टेक सहाय में आपका स्वागत है। कृपया अपनी प्रोफ़ाइल पूरी करें ताकि हम आपके लिए उपयुक्त सरकारी योजनाएं खोज सकें।",
@@ -261,13 +353,38 @@ async def upload_document(
     selected_language = language or user.preferred_language or "en"
     document = document_service.process_upload(db, user, file, content, declared_type=document_type, language=selected_language)
     profile = profile_service.get_or_create(db, user)
-    existing_documents = profile.available_documents or []
-    if document.document_type not in existing_documents:
-        profile.available_documents = [*existing_documents, document.document_type]
-        db.add(profile)
-        db.commit()
-    audit_service.log(db, "document_uploaded", f"{document.document_type} uploaded", user.id, get_user_role(db, user.id), f"document:{document.id}", request)
+    existing_documents = set(profile.available_documents or [])
+
+    docs_to_add = {document.document_type}
+    if document.document_type in {"education_certificate", "marks_card"}:
+        docs_to_add.update(["education_certificate", "marks_card", "marks card", "student id", "student_id", "college id"])
+        if not profile.occupation or profile.occupation.lower() in {"general", "unemployed", "other"}:
+            profile.occupation = "student"
+    elif document.document_type == "ration_card":
+        docs_to_add.update(["ration_card", "ration card", "bpl card", "family id", "ration", "ahara"])
+    elif document.document_type == "land_record":
+        docs_to_add.update(["land_record", "land record", "rtc", "patta"])
+    elif document.document_type == "income_certificate":
+        docs_to_add.update(["income_certificate", "income certificate"])
+    elif document.document_type == "disability_certificate":
+        docs_to_add.update(["disability_certificate", "disability certificate", "udid"])
+    elif document.document_type == "caste_certificate":
+        docs_to_add.update(["caste_certificate", "caste certificate"])
+
+    existing_documents.update(docs_to_add)
+    profile.available_documents = list(existing_documents)
+
     ephemeral_extracted = getattr(document, "ephemeral_extracted", {})
+    if "income" in ephemeral_extracted and profile.income is None:
+        profile.income = ephemeral_extracted["income"]
+    if "age" in ephemeral_extracted and profile.age is None:
+        profile.age = ephemeral_extracted["age"]
+    if "landholding" in ephemeral_extracted and profile.landholding is None:
+        profile.landholding = ephemeral_extracted["landholding"]
+
+    db.add(profile)
+    db.commit()
+    audit_service.log(db, "document_uploaded", f"{document.document_type} uploaded", user.id, get_user_role(db, user.id), f"document:{document.id}", request)
     ocr_quality = ephemeral_extracted.get("ocr_quality", "good")
     ocr_confidence = ephemeral_extracted.get("ocr_confidence_score")
 
@@ -451,20 +568,67 @@ def welfare_gaps(user: User = Depends(get_current_user), db: Session = Depends(g
 
 
 @router.post("/family/analyze")
-def family_analyze(payload: FamilyAnalysisRequest, user: User = Depends(get_current_user)):
+def family_analyze(payload: FamilyAnalysisRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     rules = load_rules()
     schemes = load_schemes()
+    user_prof = _profile_from_current(db, user)
     members = []
+    
+    # Inferred gender/age mappings based on family relationship
+    rel_gender_map = {
+        "daughter": "female",
+        "mother": "female",
+        "wife": "female",
+        "sister": "female",
+        "spouse": "female",
+        "son": "male",
+        "father": "male",
+        "husband": "male",
+        "brother": "male",
+    }
+    
     for member in payload.members:
         from app.models.schemas import EligibilityProfile
 
-        profile = EligibilityProfile(**member.model_dump())
+        mem_data = member.model_dump()
+        rel_lower = (mem_data.get("relationship") or "").lower().strip()
+        
+        # Inherit household-level credentials verified by the primary applicant
+        if not mem_data.get("state") and user_prof.state:
+            mem_data["state"] = user_prof.state
+        if mem_data.get("income") is None and user_prof.income is not None:
+            mem_data["income"] = user_prof.income
+        if not mem_data.get("available_documents"):
+            mem_data["available_documents"] = list(user_prof.available_documents or [])
+            
+        # Inferred gender if missing
+        if not mem_data.get("gender") and rel_lower in rel_gender_map:
+            mem_data["gender"] = rel_gender_map[rel_lower]
+            
+        # Inferred default ages for common relationships if missing
+        if not mem_data.get("age"):
+            if rel_lower in ["daughter", "son"]:
+                mem_data["age"] = 12
+            elif rel_lower in ["mother", "father"]:
+                mem_data["age"] = 62
+            elif rel_lower in ["spouse", "wife", "husband"]:
+                mem_data["age"] = max(18, (user_prof.age or 35) - 2)
+            else:
+                mem_data["age"] = user_prof.age or 30
+
+        profile = EligibilityProfile(**mem_data)
         eligible_for = []
         for scheme in schemes:
             result = eligibility_engine.evaluate(scheme.id, profile, rules.get(scheme.id, {}), scheme.alternative_scheme_ids)
             if result.status == "eligible":
                 eligible_for.append({"scheme_id": scheme.id, "scheme_name": scheme.name, "score": result.score})
-        members.append({"member": member.name, "relationship": member.relationship, "eligible_schemes": eligible_for})
+        members.append({
+            "member": member.name,
+            "relationship": member.relationship,
+            "age": mem_data.get("age"),
+            "gender": mem_data.get("gender"),
+            "eligible_schemes": eligible_for,
+        })
     return {
         "members": members,
         "family_benefit_map": members,

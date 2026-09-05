@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, FileQuestion, SearchCheck, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { OneStepAwayRadar } from "../components/OneStepAwayRadar";
 import { SectionCard } from "../components/SectionCard";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../services/api";
@@ -17,7 +18,7 @@ export function WelfareGapsPage() {
   }, [profile]);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <section className="rounded-3xl bg-white p-6 shadow-card" data-tour="welfare-gaps-header">
         <p className="text-sm font-semibold uppercase tracking-wide text-sahaya-saffron">{t(language, "missingBenefits")}</p>
         <h1 className="mt-1 text-3xl font-bold text-sahaya-ink">{t(language, "missingBenefits")}</h1>
@@ -31,6 +32,9 @@ export function WelfareGapsPage() {
           </Link>
         </div>
       </section>
+
+      {/* ─── Exact One Step Away & Benefit Radar Architecture ─────── */}
+      <OneStepAwayRadar />
 
       <SectionCard title={t(language, "missingBenefits")}>
         <div className="space-y-4" data-tour="welfare-gaps-list">
