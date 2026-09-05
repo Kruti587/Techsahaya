@@ -96,17 +96,35 @@ export default function SignInForm() {
   const handleResendOtp = async () => {
     if (resendTimer > 0) return;
     setError("");
+    setOtp(["", "", "", "", "", ""]);
     setLoading(true);
-    await sendOtpRequest(email);
+    const sent = await sendOtpRequest(email);
     setLoading(false);
+    if (sent) {
+      setDispatchMessage("A new verification code has been sent to your email.");
+    }
+    // Refocus first OTP input after resend
+    setTimeout(() => {
+      document.getElementById("otp-input-0")?.focus();
+    }, 100);
   };
 
   const handleOtpChange = (index: number, val: string) => {
+    // Handle multi-digit input (e.g. from autofill or some paste events)
     if (val.length > 1) {
+      const digits = val.replace(/\D/g, "").slice(0, 6);
+      if (digits.length >= 2) {
+        const newOtp = ["", "", "", "", "", ""];
+        digits.split("").forEach((d, i) => { if (i < 6) newOtp[i] = d; });
+        setOtp(newOtp);
+        const focusIdx = Math.min(digits.length, 5);
+        document.getElementById(`otp-input-${focusIdx}`)?.focus();
+        return;
+      }
       val = val.slice(-1);
     }
     const newOtp = [...otp];
-    newOtp[index] = val;
+    newOtp[index] = val.replace(/\D/g, "");
     setOtp(newOtp);
 
     // Auto-focus next input
@@ -118,12 +136,21 @@ export default function SignInForm() {
 
   const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData("text").trim();
-    if (/^\d{6}$/.test(pastedData)) {
-      const digits = pastedData.split("");
+    const pastedData = e.clipboardData.getData("text").replace(/\s/g, "").replace(/\D/g, "");
+    if (pastedData.length >= 6) {
+      const digits = pastedData.slice(0, 6).split("");
       setOtp(digits);
-      const lastInput = document.getElementById("otp-input-5");
-      lastInput?.focus();
+      document.getElementById("otp-input-5")?.focus();
+    } else if (pastedData.length > 0) {
+      // Partial paste — fill from current position
+      const currentIdx = parseInt((e.target as HTMLInputElement).id.replace("otp-input-", "") || "0");
+      const newOtp = [...otp];
+      pastedData.split("").forEach((d, i) => {
+        if (currentIdx + i < 6) newOtp[currentIdx + i] = d;
+      });
+      setOtp(newOtp);
+      const nextIdx = Math.min(currentIdx + pastedData.length, 5);
+      document.getElementById(`otp-input-${nextIdx}`)?.focus();
     }
   };
 
@@ -131,6 +158,13 @@ export default function SignInForm() {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-input-${index - 1}`);
       prevInput?.focus();
+    }
+    // Allow arrow navigation
+    if (e.key === "ArrowRight" && index < 5) {
+      document.getElementById(`otp-input-${index + 1}`)?.focus();
+    }
+    if (e.key === "ArrowLeft" && index > 0) {
+      document.getElementById(`otp-input-${index - 1}`)?.focus();
     }
   };
 
@@ -355,7 +389,9 @@ export default function SignInForm() {
                     id={`otp-input-${idx}`}
                     type="text"
                     inputMode="numeric"
-                    maxLength={1}
+                    autoComplete={idx === 0 ? "one-time-code" : "off"}
+                    maxLength={idx === 0 ? 6 : 1}
+                    autoFocus={idx === 0}
                     value={digit}
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}

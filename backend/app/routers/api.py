@@ -98,7 +98,13 @@ def send_otp(payload: SendOtpRequest, request: Request, db: Session = Depends(ge
 
 @router.post("/auth/verify-otp", response_model=VerifyOtpResponse)
 def verify_otp(payload: VerifyOtpRequest, request: Request, db: Session = Depends(get_db)):
-    success, token = otp_service.verify_otp(db, payload.email, payload.otp)
+    try:
+        success, token = otp_service.verify_otp(db, payload.email, payload.otp)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Unexpected error in verify_otp for %s: %s", payload.email, str(exc))
+        raise HTTPException(status_code=500, detail="Verification service error. Please try again.")
     audit_service.log(db, "otp_verified", f"OTP verified successfully for {payload.email}", None, "anonymous", "auth", request)
     return VerifyOtpResponse(
         status="success",
