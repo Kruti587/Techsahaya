@@ -53,7 +53,7 @@ export function WelfareGapsPage() {
                 <div>
                   <div className="flex items-center gap-2 text-lg font-semibold"><SearchCheck className="text-sahaya-green" size={20} /> {gap.scheme}</div>
                   <div className="mt-1 text-sm text-slate-600">
-                    {language === "hi" ? "अनुमानित प्रासंगिकता:" : language === "kn" ? "ಅಂದಾಜು ಸೂಕ್ತತೆ:" : "Estimated relevance:"} {gap.estimated_relevance}%
+                    {t(language, "schemes.estimatedRelevance")}: {gap.estimated_relevance}%
                   </div>
                 </div>
                 <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-sahaya-green">{gap.reason_category}</span>

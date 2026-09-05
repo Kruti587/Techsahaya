@@ -4,10 +4,54 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", "Noto Sans Kannada", "Noto Sans Telugu", "Noto Sans Tamil", "Noto Sans Malayalam", "Noto Sans Bengali", "Noto Sans Gujarati", Helvetica, Arial, sans-serif;
   color: #17342c;
   background: #f7f6f2;
   font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Indic Script font smoothing & safe ascender/descender line-heights */
+:root[data-lang="hi"],
+:root[data-lang="kn"],
+:root[data-lang="te"],
+:root[data-lang="ta"],
+:root[data-lang="ml"],
+:root[data-lang="bn"],
+:root[data-lang="mr"],
+:root[data-lang="gu"],
+[lang="hi"], [lang="kn"], [lang="te"], [lang="ta"], [lang="ml"], [lang="bn"], [lang="mr"], [lang="gu"] {
+  line-height: 1.62;
+  word-break: break-word;
+}
+
+:root[data-lang="kn"] body {
+  font-family: "Noto Sans Kannada", "Tunga", "Mallige", -apple-system, sans-serif;
+}
+
+:root[data-lang="hi"] body,
+:root[data-lang="mr"] body {
+  font-family: "Noto Sans Devanagari", "Mangal", "Aparajita", -apple-system, sans-serif;
+}
+
+:root[data-lang="te"] body {
+  font-family: "Noto Sans Telugu", "Gautami", "Vani", -apple-system, sans-serif;
+}
+
+:root[data-lang="ta"] body {
+  font-family: "Noto Sans Tamil", "Latha", "Vijaya", -apple-system, sans-serif;
+}
+
+:root[data-lang="ml"] body {
+  font-family: "Noto Sans Malayalam", "Kartika", -apple-system, sans-serif;
+}
+
+:root[data-lang="bn"] body {
+  font-family: "Noto Sans Bengali", "Vrinda", "Shonar Bangla", -apple-system, sans-serif;
+}
+
+:root[data-lang="gu"] body {
+  font-family: "Noto Sans Gujarati", "Shruti", -apple-system, sans-serif;
 }
 
 #root {

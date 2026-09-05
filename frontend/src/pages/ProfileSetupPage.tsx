@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle2, Shield, Sparkles, UserCheck } from "lucide-react";
+import { Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ProfileForm } from "../components/ProfileForm";
 import { WelcomeVoiceBanner } from "../components/WelcomeVoiceBanner";
@@ -19,18 +19,18 @@ export function ProfileSetupPage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-sahaya-saffron">
-              Step 1 of 2: Mandatory Citizen Profile Setup
+              {t(language, "auth.onboardingStep1")}
             </span>
             <h1 className="text-2xl font-bold font-serif text-slate-900 mt-1">
-              Welcome to Tech Sahaya, {user?.full_name || "Citizen"}!
+              {t(language, "auth.welcomeCitizen")}, {user?.full_name || "Citizen"}!
             </h1>
             <p className="text-xs text-slate-500 mt-1">
-              Complete your profile to unlock verified scheme matching, welfare radar, and guided applications.
+              {t(language, "auth.onboardingSubtitle")}
             </p>
           </div>
 
           <div className="flex items-center gap-2 rounded-2xl bg-emerald-50 px-4 py-2 border border-emerald-200 text-emerald-800 text-xs font-semibold">
-            <Shield size={16} /> DPDP-Compliant & Secure
+            <Shield size={16} /> {t(language, "auth.dpdpCompliantBadge")}
           </div>
         </div>
 
@@ -40,19 +40,19 @@ export function ProfileSetupPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white text-[11px]">
               1
             </div>
-            <span>Language & Voice</span>
+            <span>{t(language, "auth.stepLanguage")}</span>
           </div>
           <div className="flex items-center gap-2 text-slate-700 font-semibold">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white text-[11px]">
               2
             </div>
-            <span>Citizen Demographics</span>
+            <span>{t(language, "auth.stepDemographics")}</span>
           </div>
           <div className="flex items-center gap-2 text-slate-400">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-stone-100 text-stone-500 text-[11px]">
               3
             </div>
-            <span>Welfare Access</span>
+            <span>{t(language, "auth.stepWelfare")}</span>
           </div>
         </div>
       </div>
@@ -65,10 +65,10 @@ export function ProfileSetupPage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700" htmlFor="onboarding-language">
-              Choose Preferred Language / पसंदीदा भाषा
+              {t(language, "auth.choosePrefLanguage")}
             </label>
             <p className="text-xs text-slate-500 mt-0.5">
-              All schemes, eligibility guidelines, and voice assistance will adapt to this language.
+              {t(language, "auth.choosePrefLanguageDesc")}
             </p>
           </div>
           <select
@@ -90,16 +90,16 @@ export function ProfileSetupPage() {
       <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-card">
         <div className="mb-6 border-b border-stone-100 pb-4">
           <h2 className="text-lg font-bold font-serif text-slate-900">
-            Household & Eligibility Details
+            {t(language, "auth.householdDetailsTitle")}
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Your self-declared profile details are used strictly to calculate scheme eligibility rules. No Aadhaar or biometric persistence.
+            {t(language, "auth.householdDetailsDesc")}
           </p>
         </div>
 
         <ProfileForm
           initialValue={profile}
-          submitLabel="Complete Setup & Enter Dashboard →"
+          submitLabel={`${t(language, "common.continue") || "Continue"} →`}
           onSubmit={async (nextProfile) => {
             const response = await api.put("/api/profile", {
               ...nextProfile,

@@ -53,6 +53,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     sessionStorage.setItem("tech-sahaya-language", language);
     localStorage.setItem("tech-sahaya-language", language);
+    document.documentElement.lang = language;
+    document.documentElement.setAttribute("data-lang", language);
   }, [language]);
 
   useEffect(() => {

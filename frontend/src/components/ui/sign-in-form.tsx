@@ -294,10 +294,10 @@ export default function SignInForm() {
                 <CheckCircle2 className="w-5 h-5 text-emerald-700" />
               </div>
               <p className="text-xs font-bold text-emerald-950 uppercase tracking-wide">
-                Official Security Code Sent
+                {t(language, "auth.officialCodeSent")}
               </p>
               <p className="text-xs text-slate-700 leading-relaxed">
-                We sent a 6-digit verification code to <strong className="font-semibold text-slate-900">{email}</strong>. Please check your email inbox and enter the code below.
+                {t(language, "auth.officialCodeSentDesc")}
               </p>
             </div>
 
@@ -326,7 +326,7 @@ export default function SignInForm() {
             <div className="flex items-center justify-between text-xs text-slate-500 px-1">
               <span>{t(language, "didntReceiveCode")}</span>
               {resendTimer > 0 ? (
-                <span className="font-medium text-slate-400">Resend in {resendTimer}s</span>
+                <span className="font-medium text-slate-400">{t(language, "auth.resendIn")} {resendTimer}s</span>
               ) : (
                 <button
                   type="button"

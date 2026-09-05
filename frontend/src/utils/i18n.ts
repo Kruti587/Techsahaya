@@ -1,3 +1,7 @@
+import { LOCALES, getNamespacedLocale } from "../locales";
+
+export { getNamespacedLocale };
+
 const dictionary = {
   en: {
     digilockerNoticeTitle: "DigiLocker / Official Watermark Verification Mandatory",
@@ -2534,11 +2538,30 @@ const dictionary = {
   }
 } as const;
 
-export type TranslationKey = keyof typeof dictionary.en;
+export type TranslationKey = (keyof typeof dictionary.en) | string;
 
 export function t(language: string, key: TranslationKey): string {
+  if (!key) return "";
+
+  // 1. Check dot notation e.g. "common.signIn" or "auth.signInTitle"
+  if (typeof key === "string" && key.includes(".")) {
+    const [ns, prop] = key.split(".");
+    const lang = LOCALES[language] ? language : "en";
+    const val = LOCALES[lang]?.[ns]?.[prop] ?? LOCALES.en?.[ns]?.[prop];
+    if (val !== undefined && typeof val === "string") return val;
+  }
+
+  // 2. Check flat dictionary
   const locale = dictionary[language as keyof typeof dictionary] || dictionary.en;
-  return (locale as any)[key] || dictionary.en[key] || "";
+  const flatVal = (locale as any)[key] || (dictionary.en as any)[key];
+  if (flatVal !== undefined && flatVal !== "") return flatVal;
+
+  // 3. Fallback: check if key exists in common namespace
+  const lang = LOCALES[language] ? language : "en";
+  const commonVal = LOCALES[lang]?.common?.[key] ?? LOCALES.en?.common?.[key];
+  if (commonVal !== undefined && typeof commonVal === "string") return commonVal;
+
+  return typeof key === "string" ? key : "";
 }
 
 export function getTimeGreetingKey(): "goodMorning" | "goodAfternoon" | "goodEvening" {

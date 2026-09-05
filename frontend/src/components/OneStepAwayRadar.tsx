@@ -2,6 +2,7 @@ import React from "react";
 import { AlertCircle, AlertTriangle, ArrowUpRight, Calendar, CheckCircle2, Compass, FileUp, Sparkles, TrendingUp } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { t } from "../utils/i18n";
 
 interface AlmostEligibleScheme {
   id: string;
@@ -78,7 +79,7 @@ const ALMOST_ELIGIBLE_SCHEMES: AlmostEligibleScheme[] = [
 ];
 
 export function OneStepAwayRadar() {
-  const { profile } = useAppContext();
+  const { profile, language } = useAppContext();
   const navigate = useNavigate();
 
   const handleFulfill = (_scheme: AlmostEligibleScheme) => {
@@ -96,15 +97,15 @@ export function OneStepAwayRadar() {
                 !
               </span>
               <h2 className="text-xl font-bold font-serif text-slate-900">
-                One Step Away (Almost Eligible)
+                {t(language, "schemes.oneStepAwayTitle")}
               </h2>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Schemes where you satisfy almost all criteria but are blocked by a single actionable requirement.
+              {t(language, "schemes.oneStepAwaySubtitle")}
             </p>
           </div>
           <span className="rounded-full bg-amber-100/80 px-3 py-1 text-xs font-semibold text-amber-800 shrink-0">
-            6 Pending
+            6 {t(language, "schemes.pendingCount")}
           </span>
         </div>
 
@@ -122,7 +123,7 @@ export function OneStepAwayRadar() {
                     {scheme.category}
                   </span>
                   <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[11px] font-medium text-stone-600">
-                    {scheme.statusBadge}
+                    {t(language, "schemes.notUploaded")}
                   </span>
                 </div>
 
@@ -136,7 +137,7 @@ export function OneStepAwayRadar() {
                     <AlertTriangle size={15} className="text-amber-600 mt-0.5 shrink-0" />
                     <div>
                       <span className="text-xs font-semibold text-amber-900">
-                        Blocking Condition:
+                        {t(language, "schemes.blockingCondition")}:
                       </span>
                       <p className="text-xs text-slate-700 mt-0.5 font-normal">
                         {scheme.blockingCondition}
@@ -153,13 +154,13 @@ export function OneStepAwayRadar() {
                   onClick={() => handleFulfill(scheme)}
                   className="inline-flex items-center gap-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white px-3.5 py-2 text-xs font-semibold shadow-sm transition-colors"
                 >
-                  <FileUp size={14} /> Fulfill Requirement
+                  <FileUp size={14} /> {t(language, "schemes.uploadAndQualify")}
                 </button>
                 <Link
                   to={scheme.schemeLink}
                   className="text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors"
                 >
-                  Scheme Rules
+                  {t(language, "schemes.viewDetails")}
                 </Link>
               </div>
             </div>
@@ -174,11 +175,11 @@ export function OneStepAwayRadar() {
             <div className="flex items-center gap-2">
               <Compass size={18} className="text-indigo-600" />
               <h2 className="text-xl font-bold font-serif text-slate-900">
-                Eligibility Radar (Future Benefits)
+                {t(language, "schemes.benefitRadarTitle")}
               </h2>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Mathematically calculated upcoming opportunities based on your age and predictable life milestones.
+              {t(language, "schemes.benefitRadarSubtitle")}
             </p>
           </div>
           <span className="rounded-full bg-indigo-50 border border-indigo-200 px-3 py-1 text-xs font-semibold text-indigo-700 shrink-0">

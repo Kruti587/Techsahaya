@@ -1,0 +1,47 @@
+{
+  "badge": "Digital Citizen Welfare Infrastructure",
+  "heroTitle": "You should never have to ask “am I eligible?”",
+  "heroSubtitle": "Tech Sahaya reads your household once and then tells you, unprompted, every government scheme you and your family already qualify for, in your language, with the official rule quoted beside it.",
+  "ctaPrimary": "See what I qualify for",
+  "ctaSecondary": "Browse verified schemes",
+  "statLanguages": "languages, with voice",
+  "statDocuments": "documents ever stored",
+  "statAudited": "audited reasoning stages",
+  "notificationPushed": "PUSHED TO CITIZEN, UNPROMPTED",
+  "notificationBody": "Kavya (age 7) became eligible for Sukanya Samriddhi when you added her to your household.",
+  "notificationRule": "Rule engine • high confidence",
+  "subHeroTitle": "Most welfare goes unclaimed because nobody knew to ask for it.",
+  "subHeroSubtitle": "So we inverted the question. You do not search a catalogue; the catalogue is evaluated against you and your family the moment your profile changes.",
+  "feature1Title": "9 Indian Languages",
+  "feature1Desc": "Full native interface in English, Hindi, Kannada, Telugu, Tamil, Malayalam, Bengali, Marathi, and Gujarati.",
+  "feature2Title": "Voice-First Queries",
+  "feature2Desc": "Speak naturally about schemes, eligibility, and documents powered by Sarvam AI voice integration.",
+  "feature3Title": "Explainable Eligibility",
+  "feature3Desc": "Deterministic rule evaluation explains exactly which condition passed, which failed, and how to qualify.",
+  "feature4Title": "Zero-Storage Privacy",
+  "feature4Desc": "DPDP Act compliant. No raw Aadhaar storage, masked document metadata, and revocable consent.",
+  "sampleTitle": "Explore Instant Sample Households",
+  "sampleSubtitle": "Simulate how scheme recommendations adapt to diverse citizen situations.",
+  "sampleAction": "Click to load this profile and explore verified recommendations.",
+  "faqBadge": "Frequently Asked Questions",
+  "faqTitle": "Everything you need to know about Tech Sahaya",
+  "faqSubtitle": "Clear answers on our DPDP-compliant privacy architecture, family benefit inheritance, and official scheme applications.",
+  "faqs": [
+    {
+      "q": "How does Tech Sahaya protect my personal privacy under the DPDP Act 2023?",
+      "a": "Tech Sahaya strictly complies with India's Digital Personal Data Protection (DPDP) Act. All documents uploaded for eligibility verification are processed ephemerally in RAM and immediately discarded. No Aadhaar or PAN numbers, biometric records, or raw files are ever stored on disk."
+    },
+    {
+      "q": "How does Family Benefits matching work if members do not have separate documents?",
+      "a": "In Indian households, documents like Ration Cards and Land Records belong to the household file. Tech Sahaya allows family members to inherit the household's verified state, income bracket, and ration credentials, evaluating individual eligibility based on age, gender, and relationship without requiring duplicate documents."
+    },
+    {
+      "q": "What is the Auto-Filled PDF Application feature?",
+      "a": "Once your profile details are verified, Tech Sahaya generates an official Government of India Scheme Application Form pre-filled with your verified credentials. You can download or print the PDF with one click and submit it directly to your nearest CSC center or official scheme portal."
+    },
+    {
+      "q": "Do I need high-speed internet to use Tech Sahaya?",
+      "a": "No. Tech Sahaya is built as a lightweight progressive web application that works seamlessly on 2G/3G connections. Voice interactions are compressed and offline caching allows you to review your verified schemes even without active network coverage."
+    }
+  ]
+}

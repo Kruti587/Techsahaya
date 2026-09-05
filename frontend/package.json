@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "test:i18n": "node scripts/validate-locales.cjs",
+    "build": "node scripts/validate-locales.cjs && tsc -b && vite build",
     "lint": "tsc --noEmit",
     "preview": "vite preview",
-    "test": "vite build"
+    "test": "npm run test:i18n && vite build"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
