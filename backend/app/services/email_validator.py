@@ -42,6 +42,25 @@ DISPOSABLE_DOMAINS = {
     "generator.email",
 }
 
+# Major verified email providers that always have active MX servers
+# Fast-paths validation without wasting seconds on DNS queries
+KNOWN_VALID_DOMAINS = {
+    "gmail.com",
+    "googlemail.com",
+    "yahoo.com",
+    "yahoo.co.in",
+    "outlook.com",
+    "hotmail.com",
+    "live.com",
+    "icloud.com",
+    "me.com",
+    "aol.com",
+    "protonmail.com",
+    "proton.me",
+    "zoho.com",
+    "rediffmail.com",
+}
+
 
 class EmailValidationError(Exception):
     def __init__(self, code: str, message: str):
@@ -92,7 +111,11 @@ def validate_email_address(email_input: str) -> str:
             f"The email domain '@{domain}' is a disposable or temporary email service. Please use a permanent email address."
         )
 
-    # 3. Real DNS MX Record Lookup
+    # 3. Fast-path known major mail providers (zero latency DNS bypass)
+    if domain in KNOWN_VALID_DOMAINS:
+        return normalized_email
+
+    # 4. Real DNS MX Record Lookup for other custom/institutional domains
     # Query MX records with a strict timeout to avoid blocking requests
     try:
         resolver = dns.resolver.Resolver()

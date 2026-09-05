@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Lock, KeyRound, ArrowRight, ShieldCheck, CheckCircle2, Eye, EyeOff, Inbox } from "lucide-react";
+import { Mail, Lock, KeyRound, ArrowRight, ShieldCheck, CheckCircle2, Eye, EyeOff, Inbox, Loader2, Info } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
 import { t } from "@/utils/i18n";
@@ -336,7 +336,14 @@ export default function SignInForm() {
               disabled={loading}
               className="w-full h-11 text-sm font-bold bg-sahaya-green hover:bg-emerald-900 text-white rounded-xl shadow-md mt-1"
             >
-              {loading ? t(language, "verifyingSending") : t(language, "continueToVerification")}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {t(language, "verifyingSending")}
+                </span>
+              ) : (
+                t(language, "continueToVerification")
+              )}
             </Button>
           </form>
         ) : (
@@ -375,6 +382,12 @@ export default function SignInForm() {
               <p className="text-xs text-slate-700 leading-relaxed">
                 {t(language, "auth.officialCodeSentDesc")}
               </p>
+              <div className="pt-1.5 text-[11px] text-emerald-900 bg-emerald-100/80 rounded-lg py-1.5 px-3 mt-1 text-left leading-relaxed flex items-start gap-1.5">
+                <Info className="w-3.5 h-3.5 text-emerald-700 shrink-0 mt-0.5" />
+                <span>
+                  <strong>Tip:</strong> If not visible in your Primary Inbox, please check your <strong>Spam</strong>, <strong>Junk</strong>, or <strong>Updates</strong> folder (from <span className="font-mono text-[10px] bg-white/80 px-1 py-0.5 rounded">techsahaya.support@gmail.com</span>).
+                </span>
+              </div>
             </div>
 
             {/* 6-Digit OTP input boxes */}
@@ -422,7 +435,14 @@ export default function SignInForm() {
               disabled={loading}
               className="w-full h-11 text-sm font-bold bg-sahaya-green hover:bg-emerald-900 text-white rounded-xl shadow-md mt-1"
             >
-              {loading ? t(language, "verifying") : t(language, "verifyAndSignIn")}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {t(language, "verifying")}
+                </span>
+              ) : (
+                t(language, "verifyAndSignIn")
+              )}
             </Button>
 
             <button

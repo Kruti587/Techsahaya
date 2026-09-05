@@ -7,6 +7,7 @@ import ssl
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formatdate, make_msgid
 from typing import Tuple
 
 from fastapi import HTTPException, status
@@ -200,6 +201,11 @@ class OTPService:
             msg["Subject"] = f"[{otp_code}] Your Tech Sahaya Verification Code"
             msg["From"] = settings.smtp_from or f"Tech Sahaya Support <{settings.smtp_user}>"
             msg["To"] = recipient_email
+            msg["Date"] = formatdate(localtime=True)
+            msg["Message-ID"] = make_msgid(domain="techsahaya.in")
+            msg["Reply-To"] = f"Tech Sahaya Support <{settings.smtp_user}>"
+            msg["Auto-Submitted"] = "auto-generated"
+            msg["X-Entity-Ref-ID"] = otp_code
 
             # Plain text alternative
             text_content = f"""
@@ -357,9 +363,23 @@ If you did not request this code, you can safely ignore this email or contact ou
         raw_msg = msg.as_bytes()
         log_recipients = ", ".join(to_addrs)
 
-        # Attempt 1: Port 587 STARTTLS
+        # Attempt 1: Port 465 SSL (Direct TLS - Fastest: ~1s)
         try:
-            server = smtplib.SMTP(settings.smtp_host, 587, timeout=10)
+            context = ssl.create_default_context()
+            server = smtplib.SMTP_SSL(settings.smtp_host, 465, context=context, timeout=8)
+            server.login(usr, pwd)
+            refused = server.sendmail(usr, to_addrs, raw_msg)  # explicit envelope recipients
+            server.quit()
+            if refused:
+                logger.warning("Port 465: some recipients refused: %s", refused)
+            logger.info("Dispatched via Port 465 SSL to %s", log_recipients)
+            return True, "Verification email successfully dispatched to your inbox."
+        except Exception as e465:
+            logger.warning("Port 465 SSL attempt failed (%s). Trying Port 587 STARTTLS...", str(e465))
+
+        # Attempt 2: Port 587 STARTTLS (Fallback)
+        try:
+            server = smtplib.SMTP(settings.smtp_host, 587, timeout=8)
             server.ehlo()
             server.starttls()
             server.ehlo()
@@ -371,22 +391,8 @@ If you did not request this code, you can safely ignore this email or contact ou
             logger.info("Dispatched via Port 587 STARTTLS to %s", log_recipients)
             return True, "Verification email successfully dispatched to your inbox."
         except Exception as e587:
-            logger.warning("Port 587 STARTTLS failed (%s). Falling back to Port 465 SSL...", str(e587))
-
-        # Attempt 2: Port 465 SSL
-        try:
-            context = ssl.create_default_context()
-            server = smtplib.SMTP_SSL(settings.smtp_host, 465, context=context, timeout=10)
-            server.login(usr, pwd)
-            refused = server.sendmail(usr, to_addrs, raw_msg)  # explicit envelope recipients
-            server.quit()
-            if refused:
-                logger.warning("Port 465: some recipients refused: %s", refused)
-            logger.info("Dispatched via Port 465 SSL to %s", log_recipients)
-            return True, "Verification email successfully dispatched to your inbox."
-        except Exception as e465:
-            logger.error("Both ports failed for %s: %s", log_recipients, str(e465))
-            return False, f"SMTP dispatch error: {str(e465)}"
+            logger.error("Both SMTP ports failed for %s: 465=(%s), 587=(%s)", log_recipients, str(e465), str(e587))
+            return False, f"SMTP dispatch error: {str(e587)}"
 
     def send_newsletter_subscription_email(self, recipient_email: str) -> Tuple[bool, str]:
         """
@@ -612,6 +618,10 @@ If you have any questions, reach out to us at techsahaya.support@gmail.com.
             msg["Subject"] = subject
             msg["From"] = settings.smtp_from or f"Tech Sahaya Support <{usr}>"
             msg["To"] = recipient_email  # header for display; envelope set explicitly in _send_smtp_payload
+            msg["Date"] = formatdate(localtime=True)
+            msg["Message-ID"] = make_msgid(domain="techsahaya.in")
+            msg["Reply-To"] = f"Tech Sahaya Support <{usr}>"
+            msg["Auto-Submitted"] = "auto-generated"
 
             msg.attach(MIMEText(text_content, "plain"))
             msg.attach(MIMEText(html_content, "html"))
