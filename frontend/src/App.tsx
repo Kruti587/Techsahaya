@@ -83,6 +83,9 @@ export default function App() {
       <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
+      <Route path="/sign-up" element={<PublicLayout><SignupPage /></PublicLayout>} />
+      <Route path="/create-account" element={<PublicLayout><SignupPage /></PublicLayout>} />
+      <Route path="/register" element={<PublicLayout><SignupPage /></PublicLayout>} />
       <Route path="/forgot-password" element={<PublicLayout><ForgotPasswordPage /></PublicLayout>} />
       <Route path="/access-restricted" element={<PublicLayout><AccessRestrictedPage /></PublicLayout>} />
 
@@ -112,6 +115,7 @@ export default function App() {
       <Route path="/admin/sources" element={<RoleProtectedRoute roles={["admin"]}><AppShell><AdminSourcesPage /></AppShell></RoleProtectedRoute>} />
       <Route path="/admin/users" element={<RoleProtectedRoute roles={["admin"]}><AppShell><AdminUsersPage /></AppShell></RoleProtectedRoute>} />
       <Route path="/admin/audit" element={<RoleProtectedRoute roles={["admin"]}><AppShell><AdminAuditPage /></AppShell></RoleProtectedRoute>} />
+      <Route path="*" element={<PublicLayout><HomePage /></PublicLayout>} />
     </Routes>
     </>
   );

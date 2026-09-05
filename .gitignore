@@ -1,28 +1,37 @@
-.venv/
-__pycache__/
-*.pyc
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
+# Dependencies
 node_modules/
+backend/venv/
+backend/env/
+venv/
+env/
+.venv/
+
+# Build outputs
 dist/
-coverage/
-.DS_Store
-*.log
+build/
+*.egg-info/
+
+# Environment and secrets
 .env
-*.env
-*.env.*
 backend/.env
-frontend/.env
+*.env.local
+
+# Python caches and artifacts
+__pycache__/
+*.py[cod]
+*.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases
 *.db
 *.sqlite
 *.sqlite3
-*.tsbuildinfo
-backend/.venv/
-backend/.venvScriptsactivate/
-backend/.pytest_cache/
-frontend/dist/
-frontend/.vite/
-frontend/node_modules/
-data/faiss_index/
-data/.cache/
+tech_sahaya_secure.db
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

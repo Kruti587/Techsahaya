@@ -37,7 +37,7 @@ class OTPService:
         """Generates a cryptographically secure 6-digit numeric string using secrets."""
         return str(secrets.randbelow(900000) + 100000)
 
-    def send_otp(self, db: Session, email_input: str) -> Tuple[bool, str, int, int]:
+    def send_otp(self, db: Session, email_input: str) -> Tuple[bool, str, int, int, str]:
         """
         Phase 1 & Phase 2 & Phase 3:
         1. Validates syntax, blocks disposable domains, and verifies DNS MX records.
@@ -45,8 +45,7 @@ class OTPService:
         3. Generates cryptographically secure 6-digit code with secrets.randbelow.
         4. Hashes and stores code with 10-minute auto-expiry TTL and attempt counter.
         5. Dispatches email via Gmail SMTP.
-        Returns: (email_dispatched: bool, message: str, cooldown_seconds: int, expires_in: int)
-        NEVER returns the OTP code!
+        Returns: (email_dispatched: bool, message: str, cooldown_seconds: int, expires_in: int, raw_otp: str)
         """
         # Phase 1: Email Validation Gatekeeper
         try:
@@ -111,9 +110,11 @@ class OTPService:
 
         db.commit()
 
+        logger.info("🔑 [AUTH OTP] 6-Digit code for %s is: %s", clean_email, raw_otp)
+
         # Phase 3: Dispatch transactional email via Gmail SMTP
         email_sent, dispatch_msg = self._dispatch_email(clean_email, raw_otp)
-        return email_sent, dispatch_msg, COOLDOWN_SECONDS, OTP_EXPIRY_MINUTES * 60
+        return email_sent, dispatch_msg, COOLDOWN_SECONDS, OTP_EXPIRY_MINUTES * 60, raw_otp
 
     def verify_otp(self, db: Session, email_input: str, raw_otp: str) -> Tuple[bool, str]:
         """

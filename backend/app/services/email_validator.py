@@ -42,6 +42,16 @@ DISPOSABLE_DOMAINS = {
     "generator.email",
 }
 
+# Platform, seed, and development allowed domains
+INTERNAL_ALLOWED_DOMAINS = {
+    "techsahaya.org",
+    "techsahaya.in",
+    "example.com",
+    "example.org",
+    "test.com",
+    "localhost",
+}
+
 
 class EmailValidationError(Exception):
     def __init__(self, code: str, message: str):
@@ -91,6 +101,10 @@ def validate_email_address(email_input: str) -> str:
             "DISPOSABLE_DOMAIN",
             f"The email domain '@{domain}' is a disposable or temporary email service. Please use a permanent email address."
         )
+
+    # Bypass external DNS MX queries for internal demo and seed domains
+    if domain in INTERNAL_ALLOWED_DOMAINS or domain.endswith(".internal") or domain == "localhost":
+        return normalized_email
 
     # 3. Real DNS MX Record Lookup
     # Query MX records with a strict timeout to avoid blocking requests

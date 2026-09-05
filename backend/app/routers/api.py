@@ -84,7 +84,7 @@ def login(payload: LoginRequest, request: Request, db: Session = Depends(get_db)
 
 @router.post("/auth/send-otp", response_model=SendOtpResponse)
 def send_otp(payload: SendOtpRequest, request: Request, db: Session = Depends(get_db)):
-    dispatched, msg, cooldown_sec, expires_in = otp_service.send_otp(db, payload.email)
+    dispatched, msg, cooldown_sec, expires_in, _ = otp_service.send_otp(db, payload.email)
     audit_service.log(db, "otp_sent", f"OTP code requested for {payload.email}", None, "anonymous", "auth", request)
     return SendOtpResponse(
         status="sent",
@@ -133,7 +133,7 @@ def apply_scheme(payload: SchemeApplyRequest, request: Request, db: Session = De
     official_link = str(scheme.official_link) if scheme and scheme.official_link else "https://techsahaya.in/"
 
     applicant = payload.applicant_name or "Citizen"
-    target_email = (payload.email or "kranbadsh@gmail.com").strip().lower()
+    target_email = (payload.email or "citizen@techsahaya.org").strip().lower()
 
     import hashlib
     ref_hash = hashlib.sha256(f"{payload.scheme_id}-{applicant}-{target_email}".encode()).hexdigest()[:6].upper()

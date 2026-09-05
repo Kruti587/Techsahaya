@@ -1,0 +1,3722 @@
+[
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-24",
+    "source": "PM-Kisan Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM-Kisan: Income support scheme for eligible farmer families. Verify official rules before application.\n\nCategory: Agriculture\nDepartment: Ministry of Agriculture & Farmers Welfare\nScope: All\nBenefits: Income support in periodic installments, Basic farmer support",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-24",
+    "source": "PM-Kisan Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM-Kisan - Eligibility Requirements:\n\n• Farmer profile required\n• Landholding information required\n• Official rules should be verified before application",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-24",
+    "source": "PM-Kisan Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM-Kisan - How to Apply:\n\nRequired Documents:\n• land record\n• bank account proof\n\nApplication Steps:\n1. Verify landholding data\n2. Visit official PM-Kisan portal or service center\n3. Submit application and track status",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "scheme_name": "PM-Kisan",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-24",
+    "source": "PM-Kisan Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM-Kisan - Additional Information:\n\nOfficial Link: https://pmkisan.gov.in/\nSource: PM-Kisan Official Portal\nLast Verified: 2026-08-24\nReference: Source-backed summary based on public scheme information. Verify latest notification.\nRelated Schemes: e-shram, krishi-bhagya-karnataka\nNote: Benefits and eligibility must be verified against current official releases.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "category": "Health",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Health Authority",
+    "last_verified": "2026-08-24",
+    "source": "Ayushman Bharat Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Ayushman Bharat PM-JAY: Health coverage support for eligible vulnerable families. Verify official rules before application.\n\nCategory: Health\nDepartment: National Health Authority\nScope: All\nBenefits: Hospitalization coverage support, Cashless treatment at empanelled hospitals",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "category": "Health",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Health Authority",
+    "last_verified": "2026-08-24",
+    "source": "Ayushman Bharat Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Ayushman Bharat PM-JAY - Eligibility Requirements:\n\n• Socio-economic eligibility should be verified through official records\n• State and family criteria may apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "category": "Health",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Health Authority",
+    "last_verified": "2026-08-24",
+    "source": "Ayushman Bharat Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Ayushman Bharat PM-JAY - How to Apply:\n\nRequired Documents:\n• ration card\n• family id\n\nApplication Steps:\n1. Check beneficiary status\n2. Verify family record\n3. Use empanelled hospital network",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ayushman-bharat-pmjay",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "category": "Health",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Health Authority",
+    "last_verified": "2026-08-24",
+    "source": "Ayushman Bharat Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Ayushman Bharat PM-JAY - Additional Information:\n\nOfficial Link: https://beneficiary.nha.gov.in/\nSource: Ayushman Bharat Official Portal\nLast Verified: 2026-08-24\nReference: Source-backed summary based on public scheme information. Verify current beneficiary rules.\nRelated Schemes: cmchis-tamilnadu, mjpjay-maharashtra, kasp-kerala\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "category": "Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development",
+    "last_verified": "2026-08-24",
+    "source": "PMAY-G Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PMAY-G: Rural housing support for eligible households. Verify official rules before application.\n\nCategory: Housing\nDepartment: Ministry of Rural Development\nScope: All\nBenefits: Rural housing assistance, Convergence with sanitation and livelihood support where applicable",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "category": "Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development",
+    "last_verified": "2026-08-24",
+    "source": "PMAY-G Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PMAY-G - Eligibility Requirements:\n\n• Rural household criteria required\n• Housing deprivation criteria should be officially verified",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "category": "Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development",
+    "last_verified": "2026-08-24",
+    "source": "PMAY-G Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PMAY-G - How to Apply:\n\nRequired Documents:\n• residence proof\n• income certificate\n\nApplication Steps:\n1. Confirm housing status\n2. Check panchayat or district workflow\n3. Track sanction and construction stages",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-g",
+    "scheme_name": "PMAY-G",
+    "category": "Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development",
+    "last_verified": "2026-08-24",
+    "source": "PMAY-G Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PMAY-G - Additional Information:\n\nOfficial Link: https://pmayg.nic.in/\nSource: PMAY-G Official Portal\nLast Verified: 2026-08-24\nReference: Source-backed summary based on public scheme information. Verify current deprivation criteria.\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Electronics & Information Technology / Education-linked departments",
+    "last_verified": "2026-08-24",
+    "source": "National Scholarship Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "National Scholarship Portal: Scholarship discovery and application entry point for eligible students. Verify official rules before application.\n\nCategory: Education\nDepartment: Ministry of Electronics & Information Technology / Education-linked departments\nScope: All\nBenefits: Scholarship access, Centralized application workflow",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Electronics & Information Technology / Education-linked departments",
+    "last_verified": "2026-08-24",
+    "source": "National Scholarship Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "National Scholarship Portal - Eligibility Requirements:\n\n• Student status required\n• Income and category criteria vary by scholarship",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Electronics & Information Technology / Education-linked departments",
+    "last_verified": "2026-08-24",
+    "source": "National Scholarship Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "National Scholarship Portal - How to Apply:\n\nRequired Documents:\n• student id\n• income certificate\n\nApplication Steps:\n1. Choose scholarship\n2. Fill student details\n3. Upload required documents and submit",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-scholarship-portal",
+    "scheme_name": "National Scholarship Portal",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Electronics & Information Technology / Education-linked departments",
+    "last_verified": "2026-08-24",
+    "source": "National Scholarship Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "National Scholarship Portal - Additional Information:\n\nOfficial Link: https://scholarships.gov.in/\nSource: National Scholarship Portal\nLast Verified: 2026-08-24\nReference: Source-backed summary based on portal overview. Verify scholarship-specific rules.\nRelated Schemes: sukanya-samriddhi, vidyasiri-karnataka, kanyashree-westbengal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "category": "Energy",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Petroleum and Natural Gas",
+    "last_verified": "2026-08-24",
+    "source": "PMUY Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM Ujjwala Yojana: Support for LPG access to eligible households. Verify official rules before application.\n\nCategory: Energy\nDepartment: Ministry of Petroleum and Natural Gas\nScope: All\nBenefits: LPG connection support, Household clean cooking access",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "category": "Energy",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Petroleum and Natural Gas",
+    "last_verified": "2026-08-24",
+    "source": "PMUY Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM Ujjwala Yojana - Eligibility Requirements:\n\n• Low-income or vulnerable household criteria may apply\n• Household record verification required",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "category": "Energy",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Petroleum and Natural Gas",
+    "last_verified": "2026-08-24",
+    "source": "PMUY Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM Ujjwala Yojana - How to Apply:\n\nRequired Documents:\n• ration card\n• residence proof\n\nApplication Steps:\n1. Check household eligibility\n2. Visit distributor or official portal\n3. Complete verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-ujjwala-yojana",
+    "scheme_name": "PM Ujjwala Yojana",
+    "category": "Energy",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Petroleum and Natural Gas",
+    "last_verified": "2026-08-24",
+    "source": "PMUY Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM Ujjwala Yojana - Additional Information:\n\nOfficial Link: https://www.pmuy.gov.in/\nSource: PMUY Official Portal\nLast Verified: 2026-08-24\nReference: Source-backed summary based on public scheme information. Verify current beneficiary categories.\nRelated Schemes: ayushman-bharat-pmjay\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-24",
+    "source": "e-Shram Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "e-Shram: National database and support linkage for unorganized workers. Verify official rules before application.\n\nCategory: Labour\nDepartment: Ministry of Labour and Employment\nScope: All\nBenefits: Worker registration, Linkage to social security pathways",
+    "state": "All"
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-24",
+    "source": "e-Shram Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "e-Shram - Eligibility Requirements:\n\n• Unorganized worker profile required\n• Occupation-based self-declaration may apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-24",
+    "source": "e-Shram Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "e-Shram - How to Apply:\n\nRequired Documents:\n• mobile number\n• occupation proof\n\nApplication Steps:\n1. Register worker details\n2. Confirm occupation\n3. Use generated record for downstream benefits",
+    "state": "All"
+  },
+  {
+    "scheme_id": "e-shram",
+    "scheme_name": "e-Shram",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-24",
+    "source": "e-Shram Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "e-Shram - Additional Information:\n\nOfficial Link: https://eshram.gov.in/\nSource: e-Shram Official Portal\nLast Verified: 2026-08-24\nReference: Source-backed summary based on public registration portal. Verify current onboarding requirements.\nRelated Schemes: pm-kisan\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Economic Affairs / Post Office network",
+    "last_verified": "2026-08-24",
+    "source": "India Post",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Sukanya Samriddhi / Girl Child Savings Support: Girl-child oriented savings and financial support pathway. Verify official rules before application.\n\nCategory: Women and Child\nDepartment: Department of Economic Affairs / Post Office network\nScope: All\nBenefits: Long-term savings support, Girl child financial planning",
+    "state": "All"
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Economic Affairs / Post Office network",
+    "last_verified": "2026-08-24",
+    "source": "India Post",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Sukanya Samriddhi / Girl Child Savings Support - Eligibility Requirements:\n\n• Girl child age conditions apply\n• Guardian-managed account workflow",
+    "state": "All"
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Economic Affairs / Post Office network",
+    "last_verified": "2026-08-24",
+    "source": "India Post",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Sukanya Samriddhi / Girl Child Savings Support - How to Apply:\n\nRequired Documents:\n• birth certificate\n• guardian id proof\n\nApplication Steps:\n1. Check age and guardian requirements\n2. Visit bank or post office\n3. Open and maintain account",
+    "state": "All"
+  },
+  {
+    "scheme_id": "sukanya-samriddhi",
+    "scheme_name": "Sukanya Samriddhi / Girl Child Savings Support",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Economic Affairs / Post Office network",
+    "last_verified": "2026-08-24",
+    "source": "India Post",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Sukanya Samriddhi / Girl Child Savings Support - Additional Information:\n\nOfficial Link: https://www.indiapost.gov.in/\nSource: India Post\nLast Verified: 2026-08-24\nReference: Source-backed summary based on public scheme overview. Verify current operating rules.\nRelated Schemes: national-scholarship-portal, vahli-dikri-gujarat, kanyashree-westbengal, kanya-sumangala-up\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "category": "Agriculture",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Government of Karnataka Agriculture Department",
+    "last_verified": "2026-08-24",
+    "source": "Karnataka Agriculture Department",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Krishi Bhagya Karnataka: Karnataka farmer-oriented support scheme. Verify official rules before application.\n\nCategory: Agriculture\nDepartment: Government of Karnataka Agriculture Department\nScope: Karnataka\nBenefits: State-level agriculture support, Potential farm resilience assistance",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "category": "Agriculture",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Government of Karnataka Agriculture Department",
+    "last_verified": "2026-08-24",
+    "source": "Karnataka Agriculture Department",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Krishi Bhagya Karnataka - Eligibility Requirements:\n\n• Karnataka farmer profile required\n• State-specific agriculture conditions apply",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "category": "Agriculture",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Government of Karnataka Agriculture Department",
+    "last_verified": "2026-08-24",
+    "source": "Karnataka Agriculture Department",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Krishi Bhagya Karnataka - How to Apply:\n\nRequired Documents:\n• state residence proof\n• land record\n\nApplication Steps:\n1. Check district agriculture office guidance\n2. Verify state-specific criteria\n3. Submit application through state channel",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "krishi-bhagya-karnataka",
+    "scheme_name": "Krishi Bhagya Karnataka",
+    "category": "Agriculture",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Government of Karnataka Agriculture Department",
+    "last_verified": "2026-08-24",
+    "source": "Karnataka Agriculture Department",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Krishi Bhagya Karnataka - Additional Information:\n\nOfficial Link: https://raitamitra.karnataka.gov.in/\nSource: Karnataka Agriculture Department\nLast Verified: 2026-08-24\nReference: Source-backed summary based on public state agriculture information. Verify current district-level eligibility.\nRelated Schemes: pm-kisan, mksy-gujarat, cmupt-tamilnadu\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "category": "Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Drinking Water and Sanitation",
+    "last_verified": "2026-08-25",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Swachh Bharat Mission - Gramin: Rural sanitation and household toilet support pathway. Verify current eligibility and local process before application.\n\nCategory: Sanitation\nDepartment: Department of Drinking Water and Sanitation\nScope: All\nBenefits: Sanitation support, Household toilet and village sanitation convergence where applicable",
+    "state": "All"
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "category": "Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Drinking Water and Sanitation",
+    "last_verified": "2026-08-25",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Swachh Bharat Mission - Gramin - Eligibility Requirements:\n\n• Rural household information required\n• Local authority verification required\n• Current official rules should be verified",
+    "state": "All"
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "category": "Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Drinking Water and Sanitation",
+    "last_verified": "2026-08-25",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Swachh Bharat Mission - Gramin - How to Apply:\n\nRequired Documents:\n• residence proof\n• ration card\n\nApplication Steps:\n1. Check gram panchayat guidance\n2. Verify household sanitation status\n3. Apply through official rural sanitation channel",
+    "state": "All"
+  },
+  {
+    "scheme_id": "swachh-bharat-mission-gramin",
+    "scheme_name": "Swachh Bharat Mission - Gramin",
+    "category": "Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Drinking Water and Sanitation",
+    "last_verified": "2026-08-25",
+    "source": "Swachh Bharat Mission - Gramin Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Swachh Bharat Mission - Gramin - Additional Information:\n\nOfficial Link: https://swachhbharatmission.ddws.gov.in/\nSource: Swachh Bharat Mission - Gramin Official Portal\nLast Verified: 2026-08-25\nReference: Source-backed summary based on public official portal information. Verify current local workflow.\nRelated Schemes: pmay-g\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Micro, Small and Medium Enterprises",
+    "last_verified": "2026-08-25",
+    "source": "PM Vishwakarma Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM Vishwakarma: Support pathway for traditional artisans and craftspeople. Verify trade-specific eligibility on the official portal.\n\nCategory: Livelihood\nDepartment: Ministry of Micro, Small and Medium Enterprises\nScope: All\nBenefits: Skill and livelihood support, Tool and credit-linked support where applicable",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Micro, Small and Medium Enterprises",
+    "last_verified": "2026-08-25",
+    "source": "PM Vishwakarma Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM Vishwakarma - Eligibility Requirements:\n\n• Traditional artisan or craft occupation information required\n• Official trade category verification required",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Micro, Small and Medium Enterprises",
+    "last_verified": "2026-08-25",
+    "source": "PM Vishwakarma Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM Vishwakarma - How to Apply:\n\nRequired Documents:\n• occupation proof\n• bank account proof\n\nApplication Steps:\n1. Review eligible trade category\n2. Register through official portal or service center\n3. Complete verification and training workflow",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vishwakarma",
+    "scheme_name": "PM Vishwakarma",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Micro, Small and Medium Enterprises",
+    "last_verified": "2026-08-25",
+    "source": "PM Vishwakarma Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM Vishwakarma - Additional Information:\n\nOfficial Link: https://pmvishwakarma.gov.in/\nSource: PM Vishwakarma Official Portal\nLast Verified: 2026-08-25\nReference: Source-backed summary based on public official portal information. Verify current trade list and benefits.\nRelated Schemes: e-shram\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-25",
+    "source": "Maandhan Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Pradhan Mantri Shram Yogi Maandhan: Pension-oriented support pathway for eligible unorganized workers. Verify contribution and eligibility rules before applying.\n\nCategory: Labour\nDepartment: Ministry of Labour and Employment\nScope: All\nBenefits: Pension support pathway, Social security linkage for eligible workers",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-25",
+    "source": "Maandhan Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Pradhan Mantri Shram Yogi Maandhan - Eligibility Requirements:\n\n• Unorganized worker profile required\n• Age and income rules must be verified on official source",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-25",
+    "source": "Maandhan Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Pradhan Mantri Shram Yogi Maandhan - How to Apply:\n\nRequired Documents:\n• occupation proof\n• bank account proof\n\nApplication Steps:\n1. Check worker eligibility\n2. Visit official portal or CSC\n3. Complete enrolment and contribution workflow",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-sym",
+    "scheme_name": "Pradhan Mantri Shram Yogi Maandhan",
+    "category": "Labour",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Labour and Employment",
+    "last_verified": "2026-08-25",
+    "source": "Maandhan Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Pradhan Mantri Shram Yogi Maandhan - Additional Information:\n\nOfficial Link: https://maandhan.in/\nSource: Maandhan Official Portal\nLast Verified: 2026-08-25\nReference: Source-backed summary based on public official portal information. Verify current contribution and eligibility rules.\nRelated Schemes: e-shram, jai-bangla-westbengal, sandhya-suraksha-karnataka\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-25",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Unique Disability ID: National disability identity and certification pathway for persons with disabilities. Verify process through the official portal.\n\nCategory: Disability\nDepartment: Department of Empowerment of Persons with Disabilities\nScope: All\nBenefits: Disability certificate pathway, Access support for disability-linked welfare services",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-25",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Unique Disability ID - Eligibility Requirements:\n\n• Disability status and medical authority verification required\n• State workflow may apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-25",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Unique Disability ID - How to Apply:\n\nRequired Documents:\n• disability certificate\n• residence proof\n\nApplication Steps:\n1. Register on official UDID portal\n2. Submit required details\n3. Complete medical authority verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid",
+    "scheme_name": "Unique Disability ID",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-25",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Unique Disability ID - Additional Information:\n\nOfficial Link: https://www.swavlambancard.gov.in/\nSource: UDID Official Portal\nLast Verified: 2026-08-25\nReference: Source-backed summary based on public official portal information. Verify current application workflow.\nRelated Schemes: ayushman-bharat-pmjay\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "mksy-gujarat",
+    "scheme_name": "Mukhyamantri Kisan Sahay Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Department of Agriculture, Farmers Welfare and Co-operation, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Gujarat Department of Agriculture Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Mukhyamantri Kisan Sahay Yojana: Gujarat state crop-loss compensation scheme for farmers, covering losses from natural calamities such as drought and unseasonal rainfall. Verify official rules and current relief slabs before application.\n\nCategory: Agriculture\nDepartment: Department of Agriculture, Farmers Welfare and Co-operation, Government of Gujarat\nScope: Gujarat\nBenefits: Direct financial compensation per hectare for certified crop loss, No premium required from farmers, Coverage for Kharif season crop damage",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "mksy-gujarat",
+    "scheme_name": "Mukhyamantri Kisan Sahay Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Department of Agriculture, Farmers Welfare and Co-operation, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Gujarat Department of Agriculture Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Mukhyamantri Kisan Sahay Yojana - Eligibility Requirements:\n\n• Permanent resident and farmer of Gujarat\n• Owner or legally entitled cultivator of the land\n• Revenue department loss survey and certification required\n• Landholding cap applies for maximum assistance",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "mksy-gujarat",
+    "scheme_name": "Mukhyamantri Kisan Sahay Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Department of Agriculture, Farmers Welfare and Co-operation, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Gujarat Department of Agriculture Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Mukhyamantri Kisan Sahay Yojana - How to Apply:\n\nRequired Documents:\n• residence proof of Gujarat\n• land record / 8-A extract\n• bank account proof\n• loss survey certificate\n\nApplication Steps:\n1. Report and get crop loss surveyed by revenue authorities\n2. Apply through the nearest e-Gram center or official agriculture portal\n3. Track compensation via Direct Benefit Transfer",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "mksy-gujarat",
+    "scheme_name": "Mukhyamantri Kisan Sahay Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Department of Agriculture, Farmers Welfare and Co-operation, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Gujarat Department of Agriculture Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Mukhyamantri Kisan Sahay Yojana - Additional Information:\n\nOfficial Link: https://agri.gujarat.gov.in/\nSource: Gujarat Department of Agriculture Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public state agriculture information. Verify current compensation slabs and season notification.\nRelated Schemes: pm-kisan, krishi-bhagya-karnataka\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "vahli-dikri-gujarat",
+    "scheme_name": "Vahli Dikri Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Women and Child Development Department, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Government of Gujarat WCD Department",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Vahli Dikri Yojana: Gujarat girl-child financial support scheme providing staged payouts to encourage education and delay early marriage. Verify current payout stages and income limits on the official portal.\n\nCategory: Women and Child\nDepartment: Women and Child Development Department, Government of Gujarat\nScope: Gujarat\nBenefits: Staged financial support paid at defined milestones for up to two daughters, Encourages continued education for girl children",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "vahli-dikri-gujarat",
+    "scheme_name": "Vahli Dikri Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Women and Child Development Department, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Government of Gujarat WCD Department",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Vahli Dikri Yojana - Eligibility Requirements:\n\n• Family must be a resident of Gujarat\n• Applies to first two daughters of a family\n• Household income criteria apply and should be verified officially",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "vahli-dikri-gujarat",
+    "scheme_name": "Vahli Dikri Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Women and Child Development Department, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Government of Gujarat WCD Department",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Vahli Dikri Yojana - How to Apply:\n\nRequired Documents:\n• birth certificate\n• residence proof\n• income certificate\n• bank account proof\n\nApplication Steps:\n1. Register the girl child soon after birth through the Anganwadi or women and child development office\n2. Submit required documents at each milestone\n3. Track payout status through the official department",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "vahli-dikri-gujarat",
+    "scheme_name": "Vahli Dikri Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Gujarat"
+    ],
+    "department": "Women and Child Development Department, Government of Gujarat",
+    "last_verified": "2026-08-31",
+    "source": "Government of Gujarat WCD Department",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Vahli Dikri Yojana - Additional Information:\n\nOfficial Link: https://wcd.gujarat.gov.in/\nSource: Government of Gujarat WCD Department\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public scheme information. Verify current payout amounts and income ceiling.\nRelated Schemes: sukanya-samriddhi, kanyashree-westbengal, kanya-sumangala-up\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Gujarat"
+  },
+  {
+    "scheme_id": "kasp-kerala",
+    "scheme_name": "Karunya Arogya Suraksha Padhathi (KASP)",
+    "category": "Health",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Health Agency, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kerala State Health Agency",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Karunya Arogya Suraksha Padhathi (KASP): Kerala's health coverage scheme for economically vulnerable families, integrated with Ayushman Bharat PM-JAY at the state level. Verify current family coverage and hospital network before application.\n\nCategory: Health\nDepartment: State Health Agency, Government of Kerala\nScope: Kerala\nBenefits: Cashless hospitalization support at empanelled hospitals, Family-based annual health coverage",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kasp-kerala",
+    "scheme_name": "Karunya Arogya Suraksha Padhathi (KASP)",
+    "category": "Health",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Health Agency, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kerala State Health Agency",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Karunya Arogya Suraksha Padhathi (KASP) - Eligibility Requirements:\n\n• Family must be identified under state socio-economic criteria\n• Kerala residency required\n• Coverage details vary; verify with the official portal",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kasp-kerala",
+    "scheme_name": "Karunya Arogya Suraksha Padhathi (KASP)",
+    "category": "Health",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Health Agency, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kerala State Health Agency",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Karunya Arogya Suraksha Padhathi (KASP) - How to Apply:\n\nRequired Documents:\n• ration card\n• family id\n• residence proof\n\nApplication Steps:\n1. Check family beneficiary status on the official portal\n2. Visit an empanelled hospital or Akshaya center for verification\n3. Use the KASP/Ayushman card for cashless treatment",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kasp-kerala",
+    "scheme_name": "Karunya Arogya Suraksha Padhathi (KASP)",
+    "category": "Health",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Health Agency, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kerala State Health Agency",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Karunya Arogya Suraksha Padhathi (KASP) - Additional Information:\n\nOfficial Link: https://sha.kerala.gov.in/\nSource: Kerala State Health Agency\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public scheme information. Verify current beneficiary list and coverage limits.\nRelated Schemes: ayushman-bharat-pmjay, mjpjay-maharashtra, cmchis-tamilnadu\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kudumbashree-kerala",
+    "scheme_name": "Kudumbashree",
+    "category": "Women and Child",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Poverty Eradication Mission, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kudumbashree Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Kudumbashree: Kerala's women-oriented poverty eradication and self-help group network offering livelihood, microfinance, and family welfare linkage support. Verify local unit process before joining.\n\nCategory: Women and Child\nDepartment: State Poverty Eradication Mission, Government of Kerala\nScope: Kerala\nBenefits: Self-help group and microfinance access for women, Livelihood and skill development linkage, Family welfare scheme convergence at the local level",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kudumbashree-kerala",
+    "scheme_name": "Kudumbashree",
+    "category": "Women and Child",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Poverty Eradication Mission, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kudumbashree Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Kudumbashree - Eligibility Requirements:\n\n• Woman resident of Kerala\n• Household and neighbourhood group membership criteria apply\n• Local unit verification required",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kudumbashree-kerala",
+    "scheme_name": "Kudumbashree",
+    "category": "Women and Child",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Poverty Eradication Mission, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kudumbashree Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Kudumbashree - How to Apply:\n\nRequired Documents:\n• residence proof\n• ration card\n\nApplication Steps:\n1. Contact the local Kudumbashree neighbourhood group or Community Development Society\n2. Complete household enrolment\n3. Access linked livelihood and welfare schemes",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kudumbashree-kerala",
+    "scheme_name": "Kudumbashree",
+    "category": "Women and Child",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "State Poverty Eradication Mission, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "Kudumbashree Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Kudumbashree - Additional Information:\n\nOfficial Link: https://www.kudumbashree.org/\nSource: Kudumbashree Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current local enrolment process.\nRelated Schemes: e-shram, national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kerala-farmer-registry",
+    "scheme_name": "Kerala Farmer Registry (AIMS Kerala)",
+    "category": "Agriculture",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "Department of Agriculture Development and Farmers' Welfare, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "AIMS Kerala Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Kerala Farmer Registry (AIMS Kerala): Kerala's digital farmer registration and land-linked data platform used to access state agriculture support and subsidies. Verify current registration requirements on the official portal.\n\nCategory: Agriculture\nDepartment: Department of Agriculture Development and Farmers' Welfare, Government of Kerala\nScope: Kerala\nBenefits: Digital farmer identity for accessing state and central agriculture schemes, Streamlined subsidy and support linkage",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kerala-farmer-registry",
+    "scheme_name": "Kerala Farmer Registry (AIMS Kerala)",
+    "category": "Agriculture",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "Department of Agriculture Development and Farmers' Welfare, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "AIMS Kerala Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Kerala Farmer Registry (AIMS Kerala) - Eligibility Requirements:\n\n• Farmer or cultivator based in Kerala\n• Landholding or cultivation record required for registration",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kerala-farmer-registry",
+    "scheme_name": "Kerala Farmer Registry (AIMS Kerala)",
+    "category": "Agriculture",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "Department of Agriculture Development and Farmers' Welfare, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "AIMS Kerala Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Kerala Farmer Registry (AIMS Kerala) - How to Apply:\n\nRequired Documents:\n• land record\n• residence proof\n• bank account proof\n\nApplication Steps:\n1. Register on the official AIMS Kerala farmer portal\n2. Link landholding and cultivation details\n3. Use the registry record to apply for linked agriculture schemes",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "kerala-farmer-registry",
+    "scheme_name": "Kerala Farmer Registry (AIMS Kerala)",
+    "category": "Agriculture",
+    "state_scope": [
+      "Kerala"
+    ],
+    "department": "Department of Agriculture Development and Farmers' Welfare, Government of Kerala",
+    "last_verified": "2026-08-31",
+    "source": "AIMS Kerala Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Kerala Farmer Registry (AIMS Kerala) - Additional Information:\n\nOfficial Link: https://aims.kerala.gov.in/\nSource: AIMS Kerala Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current registration workflow.\nRelated Schemes: pm-kisan, krishi-bhagya-karnataka\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Kerala"
+  },
+  {
+    "scheme_id": "sandhya-suraksha-karnataka",
+    "scheme_name": "Sandhya Suraksha Yojane",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Social Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Karnataka Social Welfare Department",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Sandhya Suraksha Yojane: Karnataka state pension scheme providing monthly financial assistance to eligible elderly, destitute, and unorganized-sector workers. Verify current pension amount and income limits on the official portal.\n\nCategory: Senior Citizen\nDepartment: Department of Social Welfare, Government of Karnataka\nScope: Karnataka\nBenefits: Monthly pension support for eligible senior citizens, Support for eligible destitute and unorganized workers",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "sandhya-suraksha-karnataka",
+    "scheme_name": "Sandhya Suraksha Yojane",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Social Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Karnataka Social Welfare Department",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Sandhya Suraksha Yojane - Eligibility Requirements:\n\n• Karnataka residency required\n• Age criteria for senior citizens apply\n• Income and occupation criteria for unorganized workers should be officially verified",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "sandhya-suraksha-karnataka",
+    "scheme_name": "Sandhya Suraksha Yojane",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Social Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Karnataka Social Welfare Department",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Sandhya Suraksha Yojane - How to Apply:\n\nRequired Documents:\n• age proof\n• residence proof\n• income certificate\n• bank account proof\n\nApplication Steps:\n1. Check eligibility at the local Nadakacheri or taluk office\n2. Submit application with required documents\n3. Track pension disbursement status",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "sandhya-suraksha-karnataka",
+    "scheme_name": "Sandhya Suraksha Yojane",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Social Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Karnataka Social Welfare Department",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Sandhya Suraksha Yojane - Additional Information:\n\nOfficial Link: https://sw.karnataka.gov.in/\nSource: Karnataka Social Welfare Department\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current pension slab and eligibility rules.\nRelated Schemes: pm-sym, jai-bangla-westbengal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "vidyasiri-karnataka",
+    "scheme_name": "Vidyasiri Scholarship Scheme",
+    "category": "Education",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Backward Classes Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Vidyasiri Karnataka Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Vidyasiri Scholarship Scheme: Karnataka scholarship and hostel-support scheme for eligible students from backward classes and economically weaker sections. Verify current eligibility category and benefit amount before application.\n\nCategory: Education\nDepartment: Department of Backward Classes Welfare, Government of Karnataka\nScope: Karnataka\nBenefits: Financial support for students not accommodated in government hostels, Scholarship linkage for eligible categories",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "vidyasiri-karnataka",
+    "scheme_name": "Vidyasiri Scholarship Scheme",
+    "category": "Education",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Backward Classes Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Vidyasiri Karnataka Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Vidyasiri Scholarship Scheme - Eligibility Requirements:\n\n• Karnataka student residing outside government hostel facilities\n• Category and income criteria apply and should be verified officially",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "vidyasiri-karnataka",
+    "scheme_name": "Vidyasiri Scholarship Scheme",
+    "category": "Education",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Backward Classes Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Vidyasiri Karnataka Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Vidyasiri Scholarship Scheme - How to Apply:\n\nRequired Documents:\n• student id\n• caste certificate where applicable\n• income certificate\n• bank account proof\n\nApplication Steps:\n1. Apply through the official Karnataka scholarship/Vidyasiri portal\n2. Upload required documents\n3. Track application and disbursement status",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "vidyasiri-karnataka",
+    "scheme_name": "Vidyasiri Scholarship Scheme",
+    "category": "Education",
+    "state_scope": [
+      "Karnataka"
+    ],
+    "department": "Department of Backward Classes Welfare, Government of Karnataka",
+    "last_verified": "2026-08-31",
+    "source": "Vidyasiri Karnataka Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Vidyasiri Scholarship Scheme - Additional Information:\n\nOfficial Link: https://vidyasiri.karnataka.gov.in/\nSource: Vidyasiri Karnataka Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current eligibility and benefit rules.\nRelated Schemes: national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Karnataka"
+  },
+  {
+    "scheme_id": "cmupt-tamilnadu",
+    "scheme_name": "Chief Minister's Uzhavar Pathukappu Thittam",
+    "category": "Agriculture",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Commissionerate of Revenue Administration and Disaster Management, Government of Tamil Nadu",
+    "last_verified": "2026-08-31",
+    "source": "CRA Tamil Nadu Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Chief Minister's Uzhavar Pathukappu Thittam: Tamil Nadu farmers' security and welfare scheme providing accident relief, health, educational, and marriage assistance to registered small and marginal farmer members and their dependents. Verify current assistance amounts on the official portal.\n\nCategory: Agriculture\nDepartment: Commissionerate of Revenue Administration and Disaster Management, Government of Tamil Nadu\nScope: Tamil Nadu\nBenefits: Accident and disability relief for farmer members, Educational assistance for dependents, Funeral and marriage assistance, Monthly support during certain incapacitating illnesses",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "cmupt-tamilnadu",
+    "scheme_name": "Chief Minister's Uzhavar Pathukappu Thittam",
+    "category": "Agriculture",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Commissionerate of Revenue Administration and Disaster Management, Government of Tamil Nadu",
+    "last_verified": "2026-08-31",
+    "source": "CRA Tamil Nadu Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Chief Minister's Uzhavar Pathukappu Thittam - Eligibility Requirements:\n\n• Small/marginal farmer owning land within the state-defined wetland/dryland limit\n• Cultivating tenants also eligible\n• Member age group 18 to 65 years\n• Free registration",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "cmupt-tamilnadu",
+    "scheme_name": "Chief Minister's Uzhavar Pathukappu Thittam",
+    "category": "Agriculture",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Commissionerate of Revenue Administration and Disaster Management, Government of Tamil Nadu",
+    "last_verified": "2026-08-31",
+    "source": "CRA Tamil Nadu Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Chief Minister's Uzhavar Pathukappu Thittam - How to Apply:\n\nRequired Documents:\n• land record\n• residence proof\n• age proof\n• bank account proof\n\nApplication Steps:\n1. Register as a member through the district Revenue Administration office\n2. Maintain registration and update dependent details\n3. Claim assistance through the official CMUPT back-office application when an eligible event occurs",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "cmupt-tamilnadu",
+    "scheme_name": "Chief Minister's Uzhavar Pathukappu Thittam",
+    "category": "Agriculture",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Commissionerate of Revenue Administration and Disaster Management, Government of Tamil Nadu",
+    "last_verified": "2026-08-31",
+    "source": "CRA Tamil Nadu Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Chief Minister's Uzhavar Pathukappu Thittam - Additional Information:\n\nOfficial Link: https://www.landreforms.tn.gov.in/UPT.html\nSource: CRA Tamil Nadu Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current assistance amounts and registration rules.\nRelated Schemes: pm-kisan, krishi-bhagya-karnataka, mksy-gujarat\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "cmchis-tamilnadu",
+    "scheme_name": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS)",
+    "category": "Health",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Tamil Nadu Health Systems Project / Department of Health and Family Welfare",
+    "last_verified": "2026-08-31",
+    "source": "CMCHIS Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS): Tamil Nadu family health insurance scheme providing cashless treatment for identified illnesses through a network of empanelled hospitals. Verify current family income eligibility and coverage limit before application.\n\nCategory: Health\nDepartment: Tamil Nadu Health Systems Project / Department of Health and Family Welfare\nScope: Tamil Nadu\nBenefits: Cashless hospitalization coverage for identified treatments, Family-based health coverage through empanelled hospitals",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "cmchis-tamilnadu",
+    "scheme_name": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS)",
+    "category": "Health",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Tamil Nadu Health Systems Project / Department of Health and Family Welfare",
+    "last_verified": "2026-08-31",
+    "source": "CMCHIS Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS) - Eligibility Requirements:\n\n• Tamil Nadu resident family\n• Family income eligibility criteria apply and should be verified officially",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "cmchis-tamilnadu",
+    "scheme_name": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS)",
+    "category": "Health",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Tamil Nadu Health Systems Project / Department of Health and Family Welfare",
+    "last_verified": "2026-08-31",
+    "source": "CMCHIS Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS) - How to Apply:\n\nRequired Documents:\n• family card / ration card\n• residence proof\n• income certificate\n\nApplication Steps:\n1. Check family eligibility on the official CMCHIS portal\n2. Visit an empanelled hospital for verification\n3. Use the CMCHIS card for cashless treatment",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "cmchis-tamilnadu",
+    "scheme_name": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS)",
+    "category": "Health",
+    "state_scope": [
+      "Tamil Nadu"
+    ],
+    "department": "Tamil Nadu Health Systems Project / Department of Health and Family Welfare",
+    "last_verified": "2026-08-31",
+    "source": "CMCHIS Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS) - Additional Information:\n\nOfficial Link: https://www.cmchistn.com/\nSource: CMCHIS Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current income ceiling and coverage limit.\nRelated Schemes: ayushman-bharat-pmjay, kasp-kerala, mjpjay-maharashtra\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Tamil Nadu"
+  },
+  {
+    "scheme_id": "mjpjay-maharashtra",
+    "scheme_name": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY)",
+    "category": "Health",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Public Health and Family Welfare Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "MJPJAY Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY): Maharashtra's flagship health insurance scheme providing cashless treatment for identified secondary and tertiary illnesses through empanelled hospitals, integrated with Ayushman Bharat PM-JAY. Verify current coverage limits and eligible ration card categories before application.\n\nCategory: Health\nDepartment: Public Health and Family Welfare Department, Government of Maharashtra\nScope: Maharashtra\nBenefits: Cashless hospitalization coverage for identified diseases and surgeries, Coverage extended to all families in the state since 2024, Integrated coverage with Ayushman Bharat PM-JAY where applicable",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "mjpjay-maharashtra",
+    "scheme_name": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY)",
+    "category": "Health",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Public Health and Family Welfare Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "MJPJAY Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY) - Eligibility Requirements:\n\n• Maharashtra resident family\n• Valid ration card or identification document required\n• Farmers in officially notified distressed districts also eligible",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "mjpjay-maharashtra",
+    "scheme_name": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY)",
+    "category": "Health",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Public Health and Family Welfare Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "MJPJAY Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY) - How to Apply:\n\nRequired Documents:\n• ration card (Yellow / Antyodaya / Annapurna / Orange)\n• residence proof\n• aadhaar or valid id\n\nApplication Steps:\n1. Visit a network hospital and consult the on-site Arogya Mitra\n2. Complete document verification at the hospital\n3. Avail cashless treatment through the empanelled hospital network",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "mjpjay-maharashtra",
+    "scheme_name": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY)",
+    "category": "Health",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Public Health and Family Welfare Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "MJPJAY Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY) - Additional Information:\n\nOfficial Link: https://www.jeevandayee.gov.in/\nSource: MJPJAY Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current coverage scope and eligible categories.\nRelated Schemes: ayushman-bharat-pmjay, cmchis-tamilnadu, kasp-kerala\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "majhi-kanya-bhagyashree-maharashtra",
+    "scheme_name": "Majhi Kanya Bhagyashree Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Women and Child Development Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "Government of Maharashtra WCD Department",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Majhi Kanya Bhagyashree Yojana: Maharashtra girl-child welfare scheme providing financial support to encourage girl child education and discourage gender-biased sex selection. Verify current benefit structure and income limits on the official portal.\n\nCategory: Women and Child\nDepartment: Women and Child Development Department, Government of Maharashtra\nScope: Maharashtra\nBenefits: Financial support linked to the birth and education milestones of girl children, Encourages families with one or two daughters",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "majhi-kanya-bhagyashree-maharashtra",
+    "scheme_name": "Majhi Kanya Bhagyashree Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Women and Child Development Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "Government of Maharashtra WCD Department",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Majhi Kanya Bhagyashree Yojana - Eligibility Requirements:\n\n• Maharashtra resident family\n• Applies to families with one or two daughters\n• Household income criteria apply and should be verified officially",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "majhi-kanya-bhagyashree-maharashtra",
+    "scheme_name": "Majhi Kanya Bhagyashree Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Women and Child Development Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "Government of Maharashtra WCD Department",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Majhi Kanya Bhagyashree Yojana - How to Apply:\n\nRequired Documents:\n• birth certificate\n• residence proof\n• income certificate\n• bank account proof\n\nApplication Steps:\n1. Register the girl child through the local Anganwadi or Women and Child Development office\n2. Submit required documents\n3. Track benefit disbursement at each milestone",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "majhi-kanya-bhagyashree-maharashtra",
+    "scheme_name": "Majhi Kanya Bhagyashree Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Maharashtra"
+    ],
+    "department": "Women and Child Development Department, Government of Maharashtra",
+    "last_verified": "2026-08-31",
+    "source": "Government of Maharashtra WCD Department",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Majhi Kanya Bhagyashree Yojana - Additional Information:\n\nOfficial Link: https://womenchild.maharashtra.gov.in/\nSource: Government of Maharashtra WCD Department\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public scheme information. Verify current benefit amount and eligibility rules.\nRelated Schemes: sukanya-samriddhi, vahli-dikri-gujarat, kanyashree-westbengal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Maharashtra"
+  },
+  {
+    "scheme_id": "jai-bangla-westbengal",
+    "scheme_name": "Jai Bangla Pension Scheme",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Government of West Bengal, Jai Bangla Pension Scheme Cell",
+    "last_verified": "2026-08-31",
+    "source": "West Bengal Jai Bangla Pension Scheme Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Jai Bangla Pension Scheme: West Bengal's umbrella social security pension programme consolidating multiple state pension schemes for senior citizens, widows, persons with disabilities, and eligible occupational groups. Verify the applicable sub-scheme and current pension amount on the official portal.\n\nCategory: Senior Citizen\nDepartment: Government of West Bengal, Jai Bangla Pension Scheme Cell\nScope: West Bengal\nBenefits: Monthly pension support across consolidated sub-schemes (old age, widow, disability, occupational pensions), Direct benefit transfer to beneficiary bank account",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "jai-bangla-westbengal",
+    "scheme_name": "Jai Bangla Pension Scheme",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Government of West Bengal, Jai Bangla Pension Scheme Cell",
+    "last_verified": "2026-08-31",
+    "source": "West Bengal Jai Bangla Pension Scheme Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Jai Bangla Pension Scheme - Eligibility Requirements:\n\n• Permanent resident of West Bengal\n• Age, category, or occupational criteria vary by sub-scheme\n• Must not be receiving another government pension for the same purpose",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "jai-bangla-westbengal",
+    "scheme_name": "Jai Bangla Pension Scheme",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Government of West Bengal, Jai Bangla Pension Scheme Cell",
+    "last_verified": "2026-08-31",
+    "source": "West Bengal Jai Bangla Pension Scheme Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Jai Bangla Pension Scheme - How to Apply:\n\nRequired Documents:\n• age proof\n• residence proof\n• caste certificate where applicable\n• bank account proof\n\nApplication Steps:\n1. Identify the relevant sub-scheme (old age, widow, disability, occupational pension)\n2. Submit Form P at the Block Development Office or a Duare Sarkar camp\n3. Track application and disbursement status",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "jai-bangla-westbengal",
+    "scheme_name": "Jai Bangla Pension Scheme",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Government of West Bengal, Jai Bangla Pension Scheme Cell",
+    "last_verified": "2026-08-31",
+    "source": "West Bengal Jai Bangla Pension Scheme Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Jai Bangla Pension Scheme - Additional Information:\n\nOfficial Link: https://socialsecurity.wb.gov.in/\nSource: West Bengal Jai Bangla Pension Scheme Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current sub-scheme rules and pension amount.\nRelated Schemes: pm-sym, sandhya-suraksha-karnataka\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "kanyashree-westbengal",
+    "scheme_name": "Kanyashree Prakalpa",
+    "category": "Education",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Department of Women and Child Development and Social Welfare, Government of West Bengal",
+    "last_verified": "2026-08-31",
+    "source": "Kanyashree Prakalpa Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Kanyashree Prakalpa: West Bengal's girl-child conditional cash transfer scheme supporting continued education and delaying early marriage, recognized with a UN Public Service Award. Verify current installment amounts and eligibility on the official portal.\n\nCategory: Education\nDepartment: Department of Women and Child Development and Social Welfare, Government of West Bengal\nScope: West Bengal\nBenefits: Annual scholarship support for unmarried girl students, One-time grant on reaching age 18 while remaining unmarried and continuing education or training",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "kanyashree-westbengal",
+    "scheme_name": "Kanyashree Prakalpa",
+    "category": "Education",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Department of Women and Child Development and Social Welfare, Government of West Bengal",
+    "last_verified": "2026-08-31",
+    "source": "Kanyashree Prakalpa Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Kanyashree Prakalpa - Eligibility Requirements:\n\n• Girl student resident in West Bengal\n• Age and enrolment criteria apply\n• Must remain unmarried to continue receiving benefits",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "kanyashree-westbengal",
+    "scheme_name": "Kanyashree Prakalpa",
+    "category": "Education",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Department of Women and Child Development and Social Welfare, Government of West Bengal",
+    "last_verified": "2026-08-31",
+    "source": "Kanyashree Prakalpa Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Kanyashree Prakalpa - How to Apply:\n\nRequired Documents:\n• student id\n• birth certificate\n• residence proof\n• bank account proof\n\nApplication Steps:\n1. Apply through the school or the official Kanyashree portal\n2. Submit required documents for verification\n3. Track annual scholarship and one-time grant status",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "kanyashree-westbengal",
+    "scheme_name": "Kanyashree Prakalpa",
+    "category": "Education",
+    "state_scope": [
+      "West Bengal"
+    ],
+    "department": "Department of Women and Child Development and Social Welfare, Government of West Bengal",
+    "last_verified": "2026-08-31",
+    "source": "Kanyashree Prakalpa Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Kanyashree Prakalpa - Additional Information:\n\nOfficial Link: https://www.wbkanyashree.gov.in/\nSource: Kanyashree Prakalpa Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current installment amounts and age criteria.\nRelated Schemes: sukanya-samriddhi, national-scholarship-portal, kanya-sumangala-up\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "West Bengal"
+  },
+  {
+    "scheme_id": "kanya-sumangala-up",
+    "scheme_name": "Mukhyamantri Kanya Sumangala Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Directorate of Women Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Mukhyamantri Kanya Sumangala Yojana Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Mukhyamantri Kanya Sumangala Yojana: Uttar Pradesh's conditional cash transfer scheme supporting girl children from birth through graduation, paid in staged installments. Verify current installment amounts and income limit on the official portal.\n\nCategory: Women and Child\nDepartment: Directorate of Women Welfare, Government of Uttar Pradesh\nScope: Uttar Pradesh\nBenefits: Staged financial assistance from birth through graduation/diploma admission, Direct benefit transfer at each of six defined stages",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "kanya-sumangala-up",
+    "scheme_name": "Mukhyamantri Kanya Sumangala Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Directorate of Women Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Mukhyamantri Kanya Sumangala Yojana Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Mukhyamantri Kanya Sumangala Yojana - Eligibility Requirements:\n\n• Family resident in Uttar Pradesh\n• Applies to a maximum of two daughters per family\n• Family annual income below the officially notified limit",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "kanya-sumangala-up",
+    "scheme_name": "Mukhyamantri Kanya Sumangala Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Directorate of Women Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Mukhyamantri Kanya Sumangala Yojana Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Mukhyamantri Kanya Sumangala Yojana - How to Apply:\n\nRequired Documents:\n• birth certificate\n• residence proof\n• income certificate\n• bank account proof\n• school/admission proof for later stages\n\nApplication Steps:\n1. Register as a citizen on the official portal\n2. Complete mobile OTP verification and fill parent/child details\n3. Apply for the specific stage/installment as the girl child becomes eligible",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "kanya-sumangala-up",
+    "scheme_name": "Mukhyamantri Kanya Sumangala Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Directorate of Women Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Mukhyamantri Kanya Sumangala Yojana Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Mukhyamantri Kanya Sumangala Yojana - Additional Information:\n\nOfficial Link: https://mksy.up.gov.in/\nSource: Mukhyamantri Kanya Sumangala Yojana Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current installment amounts and income ceiling.\nRelated Schemes: sukanya-samriddhi, kanyashree-westbengal, vahli-dikri-gujarat\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "up-old-age-pension",
+    "scheme_name": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Department of Social Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Uttar Pradesh Social Welfare Department (SSPY) Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension): Uttar Pradesh state pension scheme providing monthly financial support to eligible elderly residents from economically weaker households. Verify current pension amount and income limit on the official portal.\n\nCategory: Senior Citizen\nDepartment: Department of Social Welfare, Government of Uttar Pradesh\nScope: Uttar Pradesh\nBenefits: Monthly pension support for eligible senior citizens, Direct benefit transfer to bank account",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "up-old-age-pension",
+    "scheme_name": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Department of Social Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Uttar Pradesh Social Welfare Department (SSPY) Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension) - Eligibility Requirements:\n\n• Uttar Pradesh residency required\n• Minimum age criteria for senior citizens apply\n• Household income should be within the officially notified limit",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "up-old-age-pension",
+    "scheme_name": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Department of Social Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Uttar Pradesh Social Welfare Department (SSPY) Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension) - How to Apply:\n\nRequired Documents:\n• age proof\n• residence proof\n• income certificate\n• bank account proof\n\nApplication Steps:\n1. Apply through the official UP social welfare pension portal or common service center\n2. Submit required documents for verification\n3. Track pension disbursement status",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "up-old-age-pension",
+    "scheme_name": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "Uttar Pradesh"
+    ],
+    "department": "Department of Social Welfare, Government of Uttar Pradesh",
+    "last_verified": "2026-08-31",
+    "source": "Uttar Pradesh Social Welfare Department (SSPY) Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Uttar Pradesh Old Age Pension Scheme (Vridha Pension) - Additional Information:\n\nOfficial Link: https://sspy-up.gov.in/\nSource: Uttar Pradesh Social Welfare Department (SSPY) Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed summary based on public official portal information. Verify current pension amount and income ceiling.\nRelated Schemes: pm-sym, sandhya-suraksha-karnataka, jai-bangla-westbengal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "Uttar Pradesh"
+  },
+  {
+    "scheme_id": "pmfby",
+    "scheme_name": "Pradhan Mantri Fasal Bima Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "PMFBY Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Pradhan Mantri Fasal Bima Yojana: Crop insurance support for farmers against notified crop losses and risks. Verify season, crop, area, and state notification before application.\n\nCategory: Agriculture\nDepartment: Ministry of Agriculture & Farmers Welfare\nScope: All\nBenefits: Crop insurance coverage, Financial protection against notified crop losses, Digital claim and application support",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmfby",
+    "scheme_name": "Pradhan Mantri Fasal Bima Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "PMFBY Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Pradhan Mantri Fasal Bima Yojana - Eligibility Requirements:\n\n• Farmer cultivating a notified crop in a notified area\n• Crop and season must be covered under the state notification\n• Insurable interest and required land/cultivation records must be verified",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmfby",
+    "scheme_name": "Pradhan Mantri Fasal Bima Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "PMFBY Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Pradhan Mantri Fasal Bima Yojana - How to Apply:\n\nRequired Documents:\n• land record or cultivation proof\n• bank account proof\n• identity proof\n• sowing/crop details where required\n\nApplication Steps:\n1. Check notified crops and application deadline\n2. Apply through the PMFBY portal, bank, CSC, or authorized channel\n3. Keep policy details and report losses through the prescribed process",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmfby",
+    "scheme_name": "Pradhan Mantri Fasal Bima Yojana",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "PMFBY Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Pradhan Mantri Fasal Bima Yojana - Additional Information:\n\nOfficial Link: https://pmfby.gov.in/\nSource: PMFBY Official Portal\nLast Verified: 2026-08-31\nReference: Verified against the official PMFBY portal and current operational guidance. Verify state and season-specific rules.\nRelated Schemes: pm-kisan, pm-kusum, krishi-bhagya-karnataka\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-kusum",
+    "scheme_name": "PM-KUSUM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of New and Renewable Energy",
+    "last_verified": "2026-08-31",
+    "source": "PM-KUSUM National Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM-KUSUM: Agricultural solar-energy support scheme helping farmers install solar pumps and solarize agricultural power systems. Verify state implementation and beneficiary contribution.\n\nCategory: Agriculture\nDepartment: Ministry of New and Renewable Energy\nScope: All\nBenefits: Support for standalone solar agricultural pumps, Solarization of eligible grid-connected agricultural pumps, Opportunity for eligible farmers and groups to develop decentralized solar power plants",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-kusum",
+    "scheme_name": "PM-KUSUM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of New and Renewable Energy",
+    "last_verified": "2026-08-31",
+    "source": "PM-KUSUM National Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM-KUSUM - Eligibility Requirements:\n\n• Farmer, farmer group, water user association, cooperative, FPO, PACS, or other eligible beneficiary under the applicable component\n• Agricultural land or eligible pump/connection requirements apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-kusum",
+    "scheme_name": "PM-KUSUM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of New and Renewable Energy",
+    "last_verified": "2026-08-31",
+    "source": "PM-KUSUM National Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM-KUSUM - How to Apply:\n\nRequired Documents:\n• identity proof\n• land record\n• bank account proof\n• electricity connection or pump details where applicable\n\nApplication Steps:\n1. Check the applicable PM-KUSUM component and state notification\n2. Apply through the designated state implementing department or portal\n3. Complete technical and beneficiary verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-kusum",
+    "scheme_name": "PM-KUSUM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of New and Renewable Energy",
+    "last_verified": "2026-08-31",
+    "source": "PM-KUSUM National Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM-KUSUM - Additional Information:\n\nOfficial Link: https://pmkusum.mnre.gov.in/\nSource: PM-KUSUM National Portal\nLast Verified: 2026-08-31\nReference: Verified against the official PM-KUSUM national portal. State-level implementation conditions vary.\nRelated Schemes: pm-kisan, pmfby, krishi-bhagya-karnataka\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "enam",
+    "scheme_name": "e-NAM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Small Farmers Agribusiness Consortium",
+    "last_verified": "2026-08-31",
+    "source": "e-NAM Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "e-NAM: National electronic agricultural market platform connecting participating APMC markets and enabling transparent online agricultural commodity trading.\n\nCategory: Agriculture\nDepartment: Ministry of Agriculture & Farmers Welfare / Small Farmers Agribusiness Consortium\nScope: All\nBenefits: Online market access, Transparent price discovery, Online payment and market information",
+    "state": "All"
+  },
+  {
+    "scheme_id": "enam",
+    "scheme_name": "e-NAM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Small Farmers Agribusiness Consortium",
+    "last_verified": "2026-08-31",
+    "source": "e-NAM Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "e-NAM - Eligibility Requirements:\n\n• Farmer or seller dealing in commodities at a participating e-NAM market\n• APMC registration and KYC requirements apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "enam",
+    "scheme_name": "e-NAM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Small Farmers Agribusiness Consortium",
+    "last_verified": "2026-08-31",
+    "source": "e-NAM Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "e-NAM - How to Apply:\n\nRequired Documents:\n• identity proof\n• mobile number\n• bank account details\n• APMC or farmer registration details\n\nApplication Steps:\n1. Register on the e-NAM portal or through the participating mandi\n2. Complete KYC and APMC linkage\n3. Use the platform for market information and eligible transactions",
+    "state": "All"
+  },
+  {
+    "scheme_id": "enam",
+    "scheme_name": "e-NAM",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Small Farmers Agribusiness Consortium",
+    "last_verified": "2026-08-31",
+    "source": "e-NAM Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "e-NAM - Additional Information:\n\nOfficial Link: https://enam.gov.in/\nSource: e-NAM Official Portal\nLast Verified: 2026-08-31\nReference: Verified against the official e-NAM portal and farmer registration guidance.\nRelated Schemes: pm-kisan, pmfby\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "kisan-credit-card",
+    "scheme_name": "Kisan Credit Card (KCC)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Participating Banks",
+    "last_verified": "2026-08-31",
+    "source": "myScheme National Government Scheme Platform",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Kisan Credit Card (KCC): Institutional credit facility for eligible farmers to meet short-term agricultural and related working-capital needs. Verify current lending terms with the participating bank.\n\nCategory: Agriculture\nDepartment: Ministry of Agriculture & Farmers Welfare / Participating Banks\nScope: All\nBenefits: Access to agricultural credit, Working-capital support for eligible farm activities, Credit access through participating banks",
+    "state": "All"
+  },
+  {
+    "scheme_id": "kisan-credit-card",
+    "scheme_name": "Kisan Credit Card (KCC)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Participating Banks",
+    "last_verified": "2026-08-31",
+    "source": "myScheme National Government Scheme Platform",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Kisan Credit Card (KCC) - Eligibility Requirements:\n\n• Eligible farmers and agricultural cultivators\n• Tenant farmers, sharecroppers, and other eligible categories may qualify subject to bank rules",
+    "state": "All"
+  },
+  {
+    "scheme_id": "kisan-credit-card",
+    "scheme_name": "Kisan Credit Card (KCC)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Participating Banks",
+    "last_verified": "2026-08-31",
+    "source": "myScheme National Government Scheme Platform",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Kisan Credit Card (KCC) - How to Apply:\n\nRequired Documents:\n• identity proof\n• address proof\n• land or cultivation records\n• bank-required documents\n\nApplication Steps:\n1. Approach a participating bank or eligible financial institution\n2. Submit the KCC application and required farm records\n3. Complete bank appraisal and documentation",
+    "state": "All"
+  },
+  {
+    "scheme_id": "kisan-credit-card",
+    "scheme_name": "Kisan Credit Card (KCC)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare / Participating Banks",
+    "last_verified": "2026-08-31",
+    "source": "myScheme National Government Scheme Platform",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Kisan Credit Card (KCC) - Additional Information:\n\nOfficial Link: https://www.myscheme.gov.in/\nSource: myScheme National Government Scheme Platform\nLast Verified: 2026-08-31\nReference: Scheme identity and broad beneficiary pathway should be verified against current bank and government guidance before use.\nRelated Schemes: pm-kisan, pmfby, pm-kusum\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "soil-health-card",
+    "scheme_name": "Soil Health Card Scheme",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Soil Health Card Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Soil Health Card Scheme: Soil-testing and nutrient-management support that helps farmers understand soil health and recommended fertilizer use.\n\nCategory: Agriculture\nDepartment: Ministry of Agriculture & Farmers Welfare\nScope: All\nBenefits: Soil nutrient assessment, Fertilizer and nutrient recommendations, Improved soil management guidance",
+    "state": "All"
+  },
+  {
+    "scheme_id": "soil-health-card",
+    "scheme_name": "Soil Health Card Scheme",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Soil Health Card Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Soil Health Card Scheme - Eligibility Requirements:\n\n• Farmers seeking soil testing and recommendations\n• Testing availability depends on the local agriculture department and soil-testing facilities",
+    "state": "All"
+  },
+  {
+    "scheme_id": "soil-health-card",
+    "scheme_name": "Soil Health Card Scheme",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Soil Health Card Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Soil Health Card Scheme - How to Apply:\n\nRequired Documents:\n• farmer identity details\n• land or field details\n\nApplication Steps:\n1. Contact the local agriculture department or soil-testing facility\n2. Provide field details and arrange soil sample testing\n3. Collect and use the soil health recommendations",
+    "state": "All"
+  },
+  {
+    "scheme_id": "soil-health-card",
+    "scheme_name": "Soil Health Card Scheme",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Soil Health Card Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Soil Health Card Scheme - Additional Information:\n\nOfficial Link: https://soilhealth.dac.gov.in/\nSource: Soil Health Card Portal\nLast Verified: 2026-08-31\nReference: Source-backed scheme summary. Verify current local testing workflow.\nRelated Schemes: pm-kisan, paramparagat-krishi-vikas-yojana\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "paramparagat-krishi-vikas-yojana",
+    "scheme_name": "Paramparagat Krishi Vikas Yojana (PKVY)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Centre of Organic and Natural Farming",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Paramparagat Krishi Vikas Yojana (PKVY): Support for organic farming clusters and sustainable agricultural practices under the national organic farming framework.\n\nCategory: Agriculture\nDepartment: Ministry of Agriculture & Farmers Welfare\nScope: All\nBenefits: Organic farming support, Cluster-based training and input support where applicable, Sustainable farming practices",
+    "state": "All"
+  },
+  {
+    "scheme_id": "paramparagat-krishi-vikas-yojana",
+    "scheme_name": "Paramparagat Krishi Vikas Yojana (PKVY)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Centre of Organic and Natural Farming",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Paramparagat Krishi Vikas Yojana (PKVY) - Eligibility Requirements:\n\n• Farmers participating through eligible organic farming clusters or state implementation channels\n• State and cluster conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "paramparagat-krishi-vikas-yojana",
+    "scheme_name": "Paramparagat Krishi Vikas Yojana (PKVY)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Centre of Organic and Natural Farming",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Paramparagat Krishi Vikas Yojana (PKVY) - How to Apply:\n\nRequired Documents:\n• farmer identity proof\n• land record\n• bank account proof\n• cluster or farming records where required\n\nApplication Steps:\n1. Contact the state agriculture department or designated implementing agency\n2. Join or register through an eligible cluster\n3. Complete verification and follow the approved organic farming plan",
+    "state": "All"
+  },
+  {
+    "scheme_id": "paramparagat-krishi-vikas-yojana",
+    "scheme_name": "Paramparagat Krishi Vikas Yojana (PKVY)",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Centre of Organic and Natural Farming",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Paramparagat Krishi Vikas Yojana (PKVY) - Additional Information:\n\nOfficial Link: https://pgsindia-ncof.gov.in/\nSource: National Centre of Organic and Natural Farming\nLast Verified: 2026-08-31\nReference: Source-backed scheme summary. Verify current implementation and cluster eligibility.\nRelated Schemes: soil-health-card, pm-kisan\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "agriculture-infrastructure-fund",
+    "scheme_name": "Agriculture Infrastructure Fund",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Agriculture Infrastructure Fund Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Agriculture Infrastructure Fund: Financing support for eligible post-harvest and community agricultural infrastructure projects.\n\nCategory: Agriculture\nDepartment: Ministry of Agriculture & Farmers Welfare\nScope: All\nBenefits: Access to institutional financing for eligible agricultural infrastructure, Support for post-harvest and community farm assets, Interest and credit-linked support subject to scheme rules",
+    "state": "All"
+  },
+  {
+    "scheme_id": "agriculture-infrastructure-fund",
+    "scheme_name": "Agriculture Infrastructure Fund",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Agriculture Infrastructure Fund Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Agriculture Infrastructure Fund - Eligibility Requirements:\n\n• Eligible farmers, FPOs, cooperatives, agri-entrepreneurs, startups, and other notified beneficiaries\n• Project and lending criteria apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "agriculture-infrastructure-fund",
+    "scheme_name": "Agriculture Infrastructure Fund",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Agriculture Infrastructure Fund Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Agriculture Infrastructure Fund - How to Apply:\n\nRequired Documents:\n• project proposal\n• identity and registration documents\n• bank documents\n• land or asset documents where applicable\n\nApplication Steps:\n1. Prepare an eligible infrastructure project\n2. Apply through the designated financing channel or portal\n3. Complete lender and scheme-level appraisal",
+    "state": "All"
+  },
+  {
+    "scheme_id": "agriculture-infrastructure-fund",
+    "scheme_name": "Agriculture Infrastructure Fund",
+    "category": "Agriculture",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "Agriculture Infrastructure Fund Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Agriculture Infrastructure Fund - Additional Information:\n\nOfficial Link: https://agriinfra.dac.gov.in/\nSource: Agriculture Infrastructure Fund Portal\nLast Verified: 2026-08-31\nReference: Source-backed scheme summary. Verify current project eligibility and financing terms.\nRelated Schemes: enam, pm-kisan\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vidyalaxmi",
+    "scheme_name": "PM-Vidyalaxmi",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Education / Vidyalakshmi ecosystem",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM-Vidyalaxmi: Education-loan support for eligible students admitted on merit to notified quality higher educational institutions, with collateral-free and guarantor-free loan provisions under applicable rules.\n\nCategory: Education\nDepartment: Department of Higher Education, Ministry of Education\nScope: All\nBenefits: Access to education loans, Collateral-free and guarantor-free loan support for eligible students, Interest support for eligible income groups under scheme conditions",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vidyalaxmi",
+    "scheme_name": "PM-Vidyalaxmi",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Education / Vidyalakshmi ecosystem",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM-Vidyalaxmi - Eligibility Requirements:\n\n• Student securing merit-based admission in an eligible Quality Higher Educational Institution\n• Family income and other conditions apply for interest support",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vidyalaxmi",
+    "scheme_name": "PM-Vidyalaxmi",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Education / Vidyalakshmi ecosystem",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM-Vidyalaxmi - How to Apply:\n\nRequired Documents:\n• admission letter\n• student identity proof\n• academic records\n• income documents where applicable\n• bank or loan documents\n\nApplication Steps:\n1. Confirm institution and course eligibility\n2. Apply through the designated PM-Vidyalaxmi process\n3. Submit admission, identity, and financial documents to the lender",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-vidyalaxmi",
+    "scheme_name": "PM-Vidyalaxmi",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Education / Vidyalakshmi ecosystem",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM-Vidyalaxmi - Additional Information:\n\nOfficial Link: https://www.vidyalakshmi.co.in/\nSource: Ministry of Education / Vidyalakshmi ecosystem\nLast Verified: 2026-08-31\nReference: Verified against current Ministry of Education information on PM-Vidyalaxmi.\nRelated Schemes: national-scholarship-portal, central-sector-scholarship-college-university\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "central-sector-scholarship-college-university",
+    "scheme_name": "Central Sector Scheme of Scholarship for College and University Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Ministry of Education",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Central Sector Scheme of Scholarship for College and University Students: Merit-cum-means scholarship support for eligible students pursuing regular higher education.\n\nCategory: Education\nDepartment: Department of Higher Education, Ministry of Education\nScope: All\nBenefits: Financial scholarship support for higher education, Direct benefit transfer to eligible beneficiaries",
+    "state": "All"
+  },
+  {
+    "scheme_id": "central-sector-scholarship-college-university",
+    "scheme_name": "Central Sector Scheme of Scholarship for College and University Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Ministry of Education",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Central Sector Scheme of Scholarship for College and University Students - Eligibility Requirements:\n\n• Meritorious students meeting the prescribed academic percentile criteria\n• Family income and course/institution conditions apply\n• Other scholarship restrictions may apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "central-sector-scholarship-college-university",
+    "scheme_name": "Central Sector Scheme of Scholarship for College and University Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Ministry of Education",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Central Sector Scheme of Scholarship for College and University Students - How to Apply:\n\nRequired Documents:\n• class 12 academic record\n• student identity proof\n• income certificate\n• bank account details\n\nApplication Steps:\n1. Check the current National Scholarship Portal notification\n2. Register and apply through the portal\n3. Complete institution verification and track disbursement",
+    "state": "All"
+  },
+  {
+    "scheme_id": "central-sector-scholarship-college-university",
+    "scheme_name": "Central Sector Scheme of Scholarship for College and University Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Higher Education, Ministry of Education",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Ministry of Education",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Central Sector Scheme of Scholarship for College and University Students - Additional Information:\n\nOfficial Link: https://scholarships.gov.in/\nSource: National Scholarship Portal / Ministry of Education\nLast Verified: 2026-08-31\nReference: Verified against Ministry of Education scholarship information. Check the current year's notification for exact thresholds and amounts.\nRelated Schemes: national-scholarship-portal, pm-vidyalaxmi\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-yasasvi",
+    "scheme_name": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI)",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI): Scholarship and educational support framework for eligible OBC, EBC and DNT students under notified components.\n\nCategory: Education\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Educational scholarship support, School and higher-education support through applicable components",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-yasasvi",
+    "scheme_name": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI)",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI) - Eligibility Requirements:\n\n• Student belonging to an eligible OBC, EBC, or DNT category\n• Academic, income, age, and institution conditions vary by component",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-yasasvi",
+    "scheme_name": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI)",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI) - How to Apply:\n\nRequired Documents:\n• student identity proof\n• category certificate\n• income certificate\n• academic records\n• bank account details\n\nApplication Steps:\n1. Check the applicable PM-YASASVI component and current notification\n2. Apply through the designated portal\n3. Complete school/institution and document verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-yasasvi",
+    "scheme_name": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI)",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM YOUNG ACHIEVERS Scholarship Award Scheme for Vibrant India for OBCs and Others (PM-YASASVI) - Additional Information:\n\nOfficial Link: https://socialjustice.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's current scheme listings. Exact component rules should be checked before application.\nRelated Schemes: national-scholarship-portal, post-matric-obc-ebc-dnt\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "post-matric-obc-ebc-dnt",
+    "scheme_name": "Post-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Post-Matric Scholarship for OBC, EBC & DNT Students: Post-matric financial assistance for eligible OBC, EBC and DNT students pursuing recognized education.\n\nCategory: Education\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Post-matric scholarship support, Financial assistance for eligible educational expenses",
+    "state": "All"
+  },
+  {
+    "scheme_id": "post-matric-obc-ebc-dnt",
+    "scheme_name": "Post-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Post-Matric Scholarship for OBC, EBC & DNT Students - Eligibility Requirements:\n\n• Student from eligible OBC, EBC, or DNT category\n• Income, course, institution, and other conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "post-matric-obc-ebc-dnt",
+    "scheme_name": "Post-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Post-Matric Scholarship for OBC, EBC & DNT Students - How to Apply:\n\nRequired Documents:\n• student identity proof\n• category certificate\n• income certificate\n• academic admission proof\n• bank account details\n\nApplication Steps:\n1. Check the current scholarship notification\n2. Apply through the National Scholarship Portal or notified channel\n3. Complete institution and department verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "post-matric-obc-ebc-dnt",
+    "scheme_name": "Post-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Post-Matric Scholarship for OBC, EBC & DNT Students - Additional Information:\n\nOfficial Link: https://scholarships.gov.in/\nSource: National Scholarship Portal / Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's 2026 scheme listings. Confirm current state implementation and eligibility.\nRelated Schemes: pm-yasasvi, national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pre-matric-obc-ebc-dnt",
+    "scheme_name": "Pre-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Pre-Matric Scholarship for OBC, EBC & DNT Students: Pre-matric educational support for eligible students from OBC, EBC and DNT communities under current notified rules.\n\nCategory: Education\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: School-level scholarship support, Financial assistance for eligible students",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pre-matric-obc-ebc-dnt",
+    "scheme_name": "Pre-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Pre-Matric Scholarship for OBC, EBC & DNT Students - Eligibility Requirements:\n\n• Student from eligible OBC, EBC, or DNT category\n• Class, income, school, and other criteria apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pre-matric-obc-ebc-dnt",
+    "scheme_name": "Pre-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Pre-Matric Scholarship for OBC, EBC & DNT Students - How to Apply:\n\nRequired Documents:\n• student identity proof\n• category certificate\n• income certificate\n• school enrollment proof\n• bank account details\n\nApplication Steps:\n1. Check the current scholarship notification\n2. Apply through the designated scholarship portal\n3. Complete school and department verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pre-matric-obc-ebc-dnt",
+    "scheme_name": "Pre-Matric Scholarship for OBC, EBC & DNT Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "National Scholarship Portal / Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Pre-Matric Scholarship for OBC, EBC & DNT Students - Additional Information:\n\nOfficial Link: https://scholarships.gov.in/\nSource: National Scholarship Portal / Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's 2026 scheme listings. Confirm current state implementation and eligibility.\nRelated Schemes: pm-yasasvi, national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "top-class-education-sc",
+    "scheme_name": "Top Class Education for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Top Class Education for SC Students: Higher-education scholarship support for eligible Scheduled Caste students admitted to notified institutions.\n\nCategory: Education\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Financial support for eligible higher education, Scholarship assistance for notified educational expenses",
+    "state": "All"
+  },
+  {
+    "scheme_id": "top-class-education-sc",
+    "scheme_name": "Top Class Education for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Top Class Education for SC Students - Eligibility Requirements:\n\n• SC student admitted to an eligible institution\n• Family income and institutional criteria apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "top-class-education-sc",
+    "scheme_name": "Top Class Education for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Top Class Education for SC Students - How to Apply:\n\nRequired Documents:\n• SC certificate\n• admission proof\n• income certificate\n• academic records\n• bank account details\n\nApplication Steps:\n1. Check current eligible institution and income criteria\n2. Apply through the National Scholarship Portal\n3. Complete institutional verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "top-class-education-sc",
+    "scheme_name": "Top Class Education for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Top Class Education for SC Students - Additional Information:\n\nOfficial Link: https://scholarships.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's current educational scheme listings.\nRelated Schemes: national-scholarship-portal, pm-yasasvi\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "shreshta",
+    "scheme_name": "SHRESHTA",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "SHRESHTA: Residential education pathway for eligible Scheduled Caste students in targeted high-quality schools.\n\nCategory: Education\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Residential school education support, Access to selected quality schools for eligible students",
+    "state": "All"
+  },
+  {
+    "scheme_id": "shreshta",
+    "scheme_name": "SHRESHTA",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "SHRESHTA - Eligibility Requirements:\n\n• Eligible SC students meeting the current admission and selection criteria\n• Class, income, and school conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "shreshta",
+    "scheme_name": "SHRESHTA",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "SHRESHTA - How to Apply:\n\nRequired Documents:\n• student identity proof\n• SC certificate\n• academic records\n• income certificate where required\n\nApplication Steps:\n1. Check the current SHRESHTA admission notification\n2. Complete the prescribed selection or entrance process\n3. Submit documents for verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "shreshta",
+    "scheme_name": "SHRESHTA",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "SHRESHTA - Additional Information:\n\nOfficial Link: https://socialjustice.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's current scheme listings.\nRelated Schemes: top-class-education-sc, national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-overseas-scholarship-sc",
+    "scheme_name": "National Overseas Scholarship for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "National Overseas Scholarship for SC Students: Overseas higher-education scholarship support for eligible students from notified disadvantaged categories, including SC students under the applicable component.\n\nCategory: Education\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Financial support for eligible overseas higher education, Support toward notified education and living expenses",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-overseas-scholarship-sc",
+    "scheme_name": "National Overseas Scholarship for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "National Overseas Scholarship for SC Students - Eligibility Requirements:\n\n• Eligible category student meeting academic, income, age, admission, and course requirements\n• Current country and institution rules apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-overseas-scholarship-sc",
+    "scheme_name": "National Overseas Scholarship for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "National Overseas Scholarship for SC Students - How to Apply:\n\nRequired Documents:\n• category certificate\n• academic records\n• foreign university admission or offer\n• income certificate\n• passport or identity documents\n\nApplication Steps:\n1. Check the current overseas scholarship notification\n2. Apply through the designated government portal\n3. Complete document and eligibility verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "national-overseas-scholarship-sc",
+    "scheme_name": "National Overseas Scholarship for SC Students",
+    "category": "Education",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "National Overseas Scholarship for SC Students - Additional Information:\n\nOfficial Link: https://socialjustice.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's current scheme listings. Check the current cycle for exact eligibility and award limits.\nRelated Schemes: top-class-education-sc, national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "aicte-pragati",
+    "scheme_name": "AICTE Pragati Scholarship for Girl Students",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "All India Council for Technical Education",
+    "last_verified": "2026-08-31",
+    "source": "AICTE Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "AICTE Pragati Scholarship for Girl Students: Scholarship support for eligible girl students pursuing approved technical education programmes.\n\nCategory: Female Student\nDepartment: All India Council for Technical Education\nScope: All\nBenefits: Financial scholarship support for eligible technical education students, Support toward educational expenses",
+    "state": "All"
+  },
+  {
+    "scheme_id": "aicte-pragati",
+    "scheme_name": "AICTE Pragati Scholarship for Girl Students",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "All India Council for Technical Education",
+    "last_verified": "2026-08-31",
+    "source": "AICTE Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "AICTE Pragati Scholarship for Girl Students - Eligibility Requirements:\n\n• Girl student admitted to an eligible AICTE-approved technical programme\n• Family income and other scheme conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "aicte-pragati",
+    "scheme_name": "AICTE Pragati Scholarship for Girl Students",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "All India Council for Technical Education",
+    "last_verified": "2026-08-31",
+    "source": "AICTE Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "AICTE Pragati Scholarship for Girl Students - How to Apply:\n\nRequired Documents:\n• student identity proof\n• admission proof\n• income certificate\n• academic records\n• bank account details\n\nApplication Steps:\n1. Check the current AICTE scholarship notification\n2. Apply through the notified scholarship portal\n3. Complete institute and document verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "aicte-pragati",
+    "scheme_name": "AICTE Pragati Scholarship for Girl Students",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "All India Council for Technical Education",
+    "last_verified": "2026-08-31",
+    "source": "AICTE Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "AICTE Pragati Scholarship for Girl Students - Additional Information:\n\nOfficial Link: https://www.aicte-india.org/\nSource: AICTE Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed scholarship entry. Verify current academic year conditions and award limits.\nRelated Schemes: national-scholarship-portal, central-sector-scholarship-college-university\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ugc-single-girl-child-pg",
+    "scheme_name": "UGC Indira Gandhi Scholarship for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "University Grants Commission",
+    "last_verified": "2026-08-31",
+    "source": "UGC Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "UGC Indira Gandhi Scholarship for Single Girl Child: Higher-education scholarship support for eligible single girl children pursuing notified postgraduate studies.\n\nCategory: Female Student\nDepartment: University Grants Commission\nScope: All\nBenefits: Postgraduate scholarship support, Financial assistance for eligible single girl students",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ugc-single-girl-child-pg",
+    "scheme_name": "UGC Indira Gandhi Scholarship for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "University Grants Commission",
+    "last_verified": "2026-08-31",
+    "source": "UGC Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "UGC Indira Gandhi Scholarship for Single Girl Child - Eligibility Requirements:\n\n• Single girl child meeting the current UGC eligibility rules\n• Programme, age, admission, and institution conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ugc-single-girl-child-pg",
+    "scheme_name": "UGC Indira Gandhi Scholarship for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "University Grants Commission",
+    "last_verified": "2026-08-31",
+    "source": "UGC Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "UGC Indira Gandhi Scholarship for Single Girl Child - How to Apply:\n\nRequired Documents:\n• student identity proof\n• admission proof\n• single-girl-child declaration or certificate as required\n• academic records\n• bank details\n\nApplication Steps:\n1. Check the current UGC scholarship notification\n2. Apply through the designated scholarship portal\n3. Complete institution verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ugc-single-girl-child-pg",
+    "scheme_name": "UGC Indira Gandhi Scholarship for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "University Grants Commission",
+    "last_verified": "2026-08-31",
+    "source": "UGC Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "UGC Indira Gandhi Scholarship for Single Girl Child - Additional Information:\n\nOfficial Link: https://www.ugc.gov.in/\nSource: UGC Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed scheme entry. Verify current cycle-specific eligibility before application.\nRelated Schemes: aicte-pragati, national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "cbse-single-girl-child",
+    "scheme_name": "CBSE Merit Scholarship Scheme for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Central Board of Secondary Education",
+    "last_verified": "2026-08-31",
+    "source": "CBSE Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "CBSE Merit Scholarship Scheme for Single Girl Child: Merit scholarship support for eligible single girl children studying in CBSE-affiliated schools under current scheme rules.\n\nCategory: Female Student\nDepartment: Central Board of Secondary Education\nScope: All\nBenefits: School-level merit scholarship support, Financial assistance for eligible girl students",
+    "state": "All"
+  },
+  {
+    "scheme_id": "cbse-single-girl-child",
+    "scheme_name": "CBSE Merit Scholarship Scheme for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Central Board of Secondary Education",
+    "last_verified": "2026-08-31",
+    "source": "CBSE Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "CBSE Merit Scholarship Scheme for Single Girl Child - Eligibility Requirements:\n\n• Eligible single girl child studying in a CBSE-affiliated school\n• Academic, tuition-fee, and other current criteria apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "cbse-single-girl-child",
+    "scheme_name": "CBSE Merit Scholarship Scheme for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Central Board of Secondary Education",
+    "last_verified": "2026-08-31",
+    "source": "CBSE Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "CBSE Merit Scholarship Scheme for Single Girl Child - How to Apply:\n\nRequired Documents:\n• CBSE academic record\n• school certificate\n• single-girl-child declaration\n• income or fee documents where required\n• bank details\n\nApplication Steps:\n1. Check the current CBSE scholarship notification\n2. Submit the application through the CBSE process\n3. Complete school verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "cbse-single-girl-child",
+    "scheme_name": "CBSE Merit Scholarship Scheme for Single Girl Child",
+    "category": "Female Student",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Central Board of Secondary Education",
+    "last_verified": "2026-08-31",
+    "source": "CBSE Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "CBSE Merit Scholarship Scheme for Single Girl Child - Additional Information:\n\nOfficial Link: https://www.cbse.gov.in/\nSource: CBSE Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed scheme entry. Verify the current application cycle and criteria.\nRelated Schemes: aicte-pragati, national-scholarship-portal\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-u-2",
+    "scheme_name": "PMAY-U 2.0",
+    "category": "EWS / Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PMAY-U Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PMAY-U 2.0: Urban housing assistance framework for eligible urban families, including EWS and other notified income groups, under current component rules.\n\nCategory: EWS / Housing\nDepartment: Ministry of Housing and Urban Affairs\nScope: All\nBenefits: Support for eligible urban housing, Assistance through applicable housing components, Interest subsidy or other support where eligibility conditions are met",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-u-2",
+    "scheme_name": "PMAY-U 2.0",
+    "category": "EWS / Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PMAY-U Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PMAY-U 2.0 - Eligibility Requirements:\n\n• Eligible urban household\n• Income category and housing ownership conditions apply\n• Component-specific conditions must be satisfied",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-u-2",
+    "scheme_name": "PMAY-U 2.0",
+    "category": "EWS / Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PMAY-U Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PMAY-U 2.0 - How to Apply:\n\nRequired Documents:\n• identity proof\n• address proof\n• income certificate\n• property or housing documents where applicable\n• bank details\n\nApplication Steps:\n1. Identify the applicable PMAY-U 2.0 component\n2. Apply through the official urban housing channel or designated local authority\n3. Complete household and property verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmay-u-2",
+    "scheme_name": "PMAY-U 2.0",
+    "category": "EWS / Housing",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PMAY-U Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PMAY-U 2.0 - Additional Information:\n\nOfficial Link: https://pmay-urban.gov.in/\nSource: PMAY-U Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed housing scheme entry. Verify current component, income limits, and city-level implementation.\nRelated Schemes: pmay-g, pm-ujjwala-yojana\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-svanidhi",
+    "scheme_name": "PM SVANidhi",
+    "category": "Livelihood / EWS",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PM SVANidhi Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM SVANidhi: Working-capital and digital transaction support for eligible street vendors, especially useful for economically vulnerable urban workers.\n\nCategory: Livelihood / EWS\nDepartment: Ministry of Housing and Urban Affairs\nScope: All\nBenefits: Collateral-free working-capital loan support, Digital transaction incentives under applicable rules, Credit-building pathway for eligible vendors",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-svanidhi",
+    "scheme_name": "PM SVANidhi",
+    "category": "Livelihood / EWS",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PM SVANidhi Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM SVANidhi - Eligibility Requirements:\n\n• Eligible street vendor identified under the scheme's current coverage rules\n• Urban local body and vendor verification requirements apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-svanidhi",
+    "scheme_name": "PM SVANidhi",
+    "category": "Livelihood / EWS",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PM SVANidhi Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM SVANidhi - How to Apply:\n\nRequired Documents:\n• vendor identification or certificate\n• identity proof\n• bank account details\n• address information\n\nApplication Steps:\n1. Confirm vendor eligibility with the urban local body or designated channel\n2. Apply through the notified lender or digital process\n3. Complete KYC and loan documentation",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-svanidhi",
+    "scheme_name": "PM SVANidhi",
+    "category": "Livelihood / EWS",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Housing and Urban Affairs",
+    "last_verified": "2026-08-31",
+    "source": "PM SVANidhi Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM SVANidhi - Additional Information:\n\nOfficial Link: https://pmsvanidhi.mohua.gov.in/\nSource: PM SVANidhi Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed livelihood scheme entry. Verify current loan tranche and incentive rules.\nRelated Schemes: pmay-u-2, stand-up-india\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-jan-dhan",
+    "scheme_name": "Pradhan Mantri Jan-Dhan Yojana",
+    "category": "Financial Inclusion",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "PMJDY Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Pradhan Mantri Jan-Dhan Yojana: Financial inclusion programme providing access to basic banking services for eligible individuals and households.\n\nCategory: Financial Inclusion\nDepartment: Department of Financial Services, Ministry of Finance\nScope: All\nBenefits: Basic bank account access, Access to eligible financial inclusion services, Linkage to government benefit transfers and other services",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-jan-dhan",
+    "scheme_name": "Pradhan Mantri Jan-Dhan Yojana",
+    "category": "Financial Inclusion",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "PMJDY Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Pradhan Mantri Jan-Dhan Yojana - Eligibility Requirements:\n\n• Individuals eligible to open a basic bank account under applicable banking rules",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-jan-dhan",
+    "scheme_name": "Pradhan Mantri Jan-Dhan Yojana",
+    "category": "Financial Inclusion",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "PMJDY Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Pradhan Mantri Jan-Dhan Yojana - How to Apply:\n\nRequired Documents:\n• identity proof\n• address or KYC documents\n\nApplication Steps:\n1. Visit a participating bank or banking correspondent\n2. Complete KYC and account-opening formalities\n3. Link eligible services and benefits as required",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-jan-dhan",
+    "scheme_name": "Pradhan Mantri Jan-Dhan Yojana",
+    "category": "Financial Inclusion",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "PMJDY Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Pradhan Mantri Jan-Dhan Yojana - Additional Information:\n\nOfficial Link: https://pmjdy.gov.in/\nSource: PMJDY Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed financial inclusion scheme entry. Verify current account features and eligibility.\nRelated Schemes: pm-svanidhi, pm-ujjwala-yojana\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "avyay",
+    "scheme_name": "Atal Vayo Abhyuday Yojana (AVYAY)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Atal Vayo Abhyuday Yojana (AVYAY): Senior-citizen welfare framework supporting care, shelter, active ageing, and related services through eligible implementing organizations.\n\nCategory: Senior Citizen\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Support for senior citizen welfare services, Institutional care and support through eligible projects, Active ageing and related assistance",
+    "state": "All"
+  },
+  {
+    "scheme_id": "avyay",
+    "scheme_name": "Atal Vayo Abhyuday Yojana (AVYAY)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Atal Vayo Abhyuday Yojana (AVYAY) - Eligibility Requirements:\n\n• Senior citizens may benefit through eligible service institutions and programme components\n• Specific component and local implementation conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "avyay",
+    "scheme_name": "Atal Vayo Abhyuday Yojana (AVYAY)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Atal Vayo Abhyuday Yojana (AVYAY) - How to Apply:\n\nRequired Documents:\n• age proof\n• identity proof\n• residence proof\n• additional documents as required by the implementing organization\n\nApplication Steps:\n1. Identify an eligible AVYAY-supported service or institution\n2. Contact the implementing organization or relevant authority\n3. Complete beneficiary verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "avyay",
+    "scheme_name": "Atal Vayo Abhyuday Yojana (AVYAY)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Atal Vayo Abhyuday Yojana (AVYAY) - Additional Information:\n\nOfficial Link: https://socialjustice.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's current scheme listings.\nRelated Schemes: up-old-age-pension, sandhya-suraksha-karnataka\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "rashtriya-vayoshri-yojana",
+    "scheme_name": "Rashtriya Vayoshri Yojana",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Rashtriya Vayoshri Yojana: Assistive-device support for eligible senior citizens with age-related disabilities or impairments under current scheme rules.\n\nCategory: Senior Citizen\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Assistive living devices for eligible seniors, Support for improving mobility and daily functioning",
+    "state": "All"
+  },
+  {
+    "scheme_id": "rashtriya-vayoshri-yojana",
+    "scheme_name": "Rashtriya Vayoshri Yojana",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Rashtriya Vayoshri Yojana - Eligibility Requirements:\n\n• Senior citizen meeting current scheme conditions\n• Disability or impairment assessment and economic criteria may apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "rashtriya-vayoshri-yojana",
+    "scheme_name": "Rashtriya Vayoshri Yojana",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Rashtriya Vayoshri Yojana - How to Apply:\n\nRequired Documents:\n• age proof\n• identity proof\n• income or economic-status proof\n• medical/disability assessment where required\n\nApplication Steps:\n1. Check current implementation through the designated agency or camp\n2. Complete eligibility and assessment\n3. Receive eligible assistive devices through the notified process",
+    "state": "All"
+  },
+  {
+    "scheme_id": "rashtriya-vayoshri-yojana",
+    "scheme_name": "Rashtriya Vayoshri Yojana",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Rashtriya Vayoshri Yojana - Additional Information:\n\nOfficial Link: https://socialjustice.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Source-backed senior-citizen scheme entry. Verify current beneficiary criteria and implementation schedule.\nRelated Schemes: avyay, udid\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ignoaps",
+    "scheme_name": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development / State Social Welfare Departments",
+    "last_verified": "2026-08-31",
+    "source": "National Social Assistance Programme",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS): Old-age pension support under the National Social Assistance Programme for eligible economically vulnerable elderly persons.\n\nCategory: Senior Citizen\nDepartment: Ministry of Rural Development / State Social Welfare Departments\nScope: All\nBenefits: Monthly social assistance pension, Direct support for eligible elderly persons",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ignoaps",
+    "scheme_name": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development / State Social Welfare Departments",
+    "last_verified": "2026-08-31",
+    "source": "National Social Assistance Programme",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS) - Eligibility Requirements:\n\n• Senior citizen meeting current age and economic-status criteria\n• State-level verification and contribution rules may apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ignoaps",
+    "scheme_name": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development / State Social Welfare Departments",
+    "last_verified": "2026-08-31",
+    "source": "National Social Assistance Programme",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS) - How to Apply:\n\nRequired Documents:\n• age proof\n• residence proof\n• income or economic-status certificate\n• bank account proof\n\nApplication Steps:\n1. Apply through the state or local social welfare channel\n2. Submit age and economic-status documents\n3. Complete verification and track pension disbursement",
+    "state": "All"
+  },
+  {
+    "scheme_id": "ignoaps",
+    "scheme_name": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Rural Development / State Social Welfare Departments",
+    "last_verified": "2026-08-31",
+    "source": "National Social Assistance Programme",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS) - Additional Information:\n\nOfficial Link: https://nsap.nic.in/\nSource: National Social Assistance Programme\nLast Verified: 2026-08-31\nReference: Source-backed scheme entry. Verify current central and state pension amounts and eligibility.\nRelated Schemes: avyay, sandhya-suraksha-karnataka, up-old-age-pension\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "elderline-14567",
+    "scheme_name": "Elderline National Helpline for Senior Citizens",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Elderline National Helpline for Senior Citizens: National helpline service providing information, guidance, and support referrals for senior citizens.\n\nCategory: Senior Citizen\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Information and guidance, Support referrals, Help with accessing senior-citizen services",
+    "state": "All"
+  },
+  {
+    "scheme_id": "elderline-14567",
+    "scheme_name": "Elderline National Helpline for Senior Citizens",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Elderline National Helpline for Senior Citizens - Eligibility Requirements:\n\n• Senior citizens and persons seeking assistance for senior citizens",
+    "state": "All"
+  },
+  {
+    "scheme_id": "elderline-14567",
+    "scheme_name": "Elderline National Helpline for Senior Citizens",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Elderline National Helpline for Senior Citizens - How to Apply:\n\nRequired Documents:\n• Basic caller information where required\n\nApplication Steps:\n1. Call the national senior citizen helpline\n2. Explain the issue or service needed\n3. Follow the referral or assistance guidance provided",
+    "state": "All"
+  },
+  {
+    "scheme_id": "elderline-14567",
+    "scheme_name": "Elderline National Helpline for Senior Citizens",
+    "category": "Senior Citizen",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Elderline National Helpline for Senior Citizens - Additional Information:\n\nOfficial Link: https://socialjustice.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Service listing is supported by the Department's official portal. Confirm current helpline operating details before publishing.\nRelated Schemes: avyay, ignoaps\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmmvy",
+    "scheme_name": "Pradhan Mantri Matru Vandana Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Women & Child Development",
+    "last_verified": "2026-08-31",
+    "source": "PMMVY Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Pradhan Mantri Matru Vandana Yojana: Maternity benefit scheme providing financial assistance to eligible pregnant women and lactating mothers under current rules.\n\nCategory: Women and Child\nDepartment: Ministry of Women & Child Development\nScope: All\nBenefits: Maternity-related financial assistance, Support linked to pregnancy and childbirth conditions",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmmvy",
+    "scheme_name": "Pradhan Mantri Matru Vandana Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Women & Child Development",
+    "last_verified": "2026-08-31",
+    "source": "PMMVY Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Pradhan Mantri Matru Vandana Yojana - Eligibility Requirements:\n\n• Eligible pregnant women and lactating mothers meeting current scheme criteria\n• Pregnancy, parity, category, and other conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmmvy",
+    "scheme_name": "Pradhan Mantri Matru Vandana Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Women & Child Development",
+    "last_verified": "2026-08-31",
+    "source": "PMMVY Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Pradhan Mantri Matru Vandana Yojana - How to Apply:\n\nRequired Documents:\n• identity proof\n• bank account details\n• pregnancy or health records\n• child birth documents where applicable\n\nApplication Steps:\n1. Contact the local Anganwadi Centre or designated health/women-and-child-development channel\n2. Submit beneficiary and pregnancy details\n3. Complete verification and track benefit payments",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pmmvy",
+    "scheme_name": "Pradhan Mantri Matru Vandana Yojana",
+    "category": "Women and Child",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Women & Child Development",
+    "last_verified": "2026-08-31",
+    "source": "PMMVY Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Pradhan Mantri Matru Vandana Yojana - Additional Information:\n\nOfficial Link: https://pmmvy.wcd.gov.in/\nSource: PMMVY Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed maternity benefit scheme entry. Verify current eligibility and benefit stages.\nRelated Schemes: sukanya-samriddhi, vahli-dikri-gujarat\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "stand-up-india",
+    "scheme_name": "Stand-Up India",
+    "category": "Women / Entrepreneurship",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "Stand-Up India Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "Stand-Up India: Bank-loan facilitation scheme supporting eligible women and SC/ST entrepreneurs for setting up greenfield enterprises.\n\nCategory: Women / Entrepreneurship\nDepartment: Department of Financial Services, Ministry of Finance\nScope: All\nBenefits: Institutional credit for eligible greenfield enterprises, Support for entrepreneurship and business establishment",
+    "state": "All"
+  },
+  {
+    "scheme_id": "stand-up-india",
+    "scheme_name": "Stand-Up India",
+    "category": "Women / Entrepreneurship",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "Stand-Up India Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "Stand-Up India - Eligibility Requirements:\n\n• Woman entrepreneur or SC/ST entrepreneur\n• Enterprise must meet current greenfield and lending conditions\n• Borrower and project appraisal requirements apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "stand-up-india",
+    "scheme_name": "Stand-Up India",
+    "category": "Women / Entrepreneurship",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "Stand-Up India Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "Stand-Up India - How to Apply:\n\nRequired Documents:\n• identity proof\n• category certificate where applicable\n• business plan\n• address proof\n• bank and financial documents\n\nApplication Steps:\n1. Prepare an eligible business proposal\n2. Apply through a participating bank or official Stand-Up India channel\n3. Complete credit appraisal and documentation",
+    "state": "All"
+  },
+  {
+    "scheme_id": "stand-up-india",
+    "scheme_name": "Stand-Up India",
+    "category": "Women / Entrepreneurship",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Financial Services, Ministry of Finance",
+    "last_verified": "2026-08-31",
+    "source": "Stand-Up India Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "Stand-Up India - Additional Information:\n\nOfficial Link: https://www.standupmitra.in/\nSource: Stand-Up India Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed entrepreneurship scheme entry. Verify current loan limits and eligibility.\nRelated Schemes: pm-svanidhi, pm-daksh\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-daksh",
+    "scheme_name": "PM-DAKSH",
+    "category": "Skill Development",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "PM-DAKSH Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM-DAKSH: Skill development and training support for eligible disadvantaged groups to improve employability and livelihood opportunities.\n\nCategory: Skill Development\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Skill training, Employability support, Livelihood-oriented training for eligible beneficiaries",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-daksh",
+    "scheme_name": "PM-DAKSH",
+    "category": "Skill Development",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "PM-DAKSH Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM-DAKSH - Eligibility Requirements:\n\n• Eligible SC, OBC, EBC, DNT, Safai Karamchari, and other notified beneficiary groups\n• Income and age conditions may apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-daksh",
+    "scheme_name": "PM-DAKSH",
+    "category": "Skill Development",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "PM-DAKSH Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM-DAKSH - How to Apply:\n\nRequired Documents:\n• identity proof\n• category certificate where applicable\n• income certificate\n• bank account details\n\nApplication Steps:\n1. Check eligible training programmes\n2. Register through the official PM-DAKSH channel\n3. Complete beneficiary verification and training enrollment",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-daksh",
+    "scheme_name": "PM-DAKSH",
+    "category": "Skill Development",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "PM-DAKSH Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM-DAKSH - Additional Information:\n\nOfficial Link: https://pmdaksh.dosje.gov.in/\nSource: PM-DAKSH Official Portal\nLast Verified: 2026-08-31\nReference: Verified against the Department's current economic-development scheme listings.\nRelated Schemes: pm-yasasvi, stand-up-india\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-suraj",
+    "scheme_name": "PM-SURAJ",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM-SURAJ: Credit and support facilitation platform aimed at improving access to credit and livelihood opportunities for disadvantaged beneficiaries.\n\nCategory: Livelihood\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Credit facilitation, Livelihood and entrepreneurship support, Access pathway for eligible disadvantaged groups",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-suraj",
+    "scheme_name": "PM-SURAJ",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM-SURAJ - Eligibility Requirements:\n\n• Eligibility depends on the linked credit or development programme\n• Beneficiary category and lender conditions apply",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-suraj",
+    "scheme_name": "PM-SURAJ",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM-SURAJ - How to Apply:\n\nRequired Documents:\n• identity proof\n• category or beneficiary proof where applicable\n• bank documents\n• business or livelihood documents where required\n\nApplication Steps:\n1. Check the current PM-SURAJ service pathway\n2. Select the relevant linked programme\n3. Complete lender and beneficiary verification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-suraj",
+    "scheme_name": "PM-SURAJ",
+    "category": "Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "Department of Social Justice & Empowerment",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM-SURAJ - Additional Information:\n\nOfficial Link: https://socialjustice.gov.in/\nSource: Department of Social Justice & Empowerment\nLast Verified: 2026-08-31\nReference: Verified against the Department's current portal references. Confirm the current linked programme and application route.\nRelated Schemes: pm-daksh, stand-up-india\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid-card",
+    "scheme_name": "UDID Card / Disability Certificate",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-31",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "UDID Card / Disability Certificate: National digital disability identity and certification pathway used to access disability-linked welfare services.\n\nCategory: Disability\nDepartment: Department of Empowerment of Persons with Disabilities\nScope: All\nBenefits: Digital disability identity, Disability certification pathway, Improved access to disability-linked welfare services",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid-card",
+    "scheme_name": "UDID Card / Disability Certificate",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-31",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "UDID Card / Disability Certificate - Eligibility Requirements:\n\n• Person with a disability subject to assessment and certification by the designated medical authority",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid-card",
+    "scheme_name": "UDID Card / Disability Certificate",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-31",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "UDID Card / Disability Certificate - How to Apply:\n\nRequired Documents:\n• identity proof\n• address proof\n• medical records where required\n• disability-related documents\n\nApplication Steps:\n1. Register on the official UDID portal\n2. Submit personal and medical information\n3. Attend assessment by the designated medical authority and complete certification",
+    "state": "All"
+  },
+  {
+    "scheme_id": "udid-card",
+    "scheme_name": "UDID Card / Disability Certificate",
+    "category": "Disability",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Empowerment of Persons with Disabilities",
+    "last_verified": "2026-08-31",
+    "source": "UDID Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "UDID Card / Disability Certificate - Additional Information:\n\nOfficial Link: https://www.swavlambancard.gov.in/\nSource: UDID Official Portal\nLast Verified: 2026-08-31\nReference: Source-backed disability identity scheme entry.\nRelated Schemes: ayushman-bharat-pmjay, rashtriya-vayoshri-yojana\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "namaste",
+    "scheme_name": "NAMASTE",
+    "category": "Livelihood / Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "NAMASTE Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "NAMASTE: Support framework for mechanised sanitation work, safety, training, and livelihood transition for eligible sanitation workers.\n\nCategory: Livelihood / Sanitation\nDepartment: Ministry of Social Justice & Empowerment\nScope: All\nBenefits: Occupational safety support, Skill and livelihood assistance, Support for sanitation-worker welfare",
+    "state": "All"
+  },
+  {
+    "scheme_id": "namaste",
+    "scheme_name": "NAMASTE",
+    "category": "Livelihood / Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "NAMASTE Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "NAMASTE - Eligibility Requirements:\n\n• Eligible sanitation workers and identified sewer/septic tank workers under current programme criteria",
+    "state": "All"
+  },
+  {
+    "scheme_id": "namaste",
+    "scheme_name": "NAMASTE",
+    "category": "Livelihood / Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "NAMASTE Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "NAMASTE - How to Apply:\n\nRequired Documents:\n• identity proof\n• worker or occupation details\n• bank account proof\n\nApplication Steps:\n1. Complete identification or survey through the designated local authority\n2. Undergo required training or safety process\n3. Access eligible support and livelihood services",
+    "state": "All"
+  },
+  {
+    "scheme_id": "namaste",
+    "scheme_name": "NAMASTE",
+    "category": "Livelihood / Sanitation",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Social Justice & Empowerment",
+    "last_verified": "2026-08-31",
+    "source": "NAMASTE Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "NAMASTE - Additional Information:\n\nOfficial Link: https://bmsnamaste.dosje.gov.in/\nSource: NAMASTE Official Portal\nLast Verified: 2026-08-31\nReference: Verified against the Department's current economic-development scheme listings.\nRelated Schemes: pm-daksh, e-shram\nNote: Benefits, eligibility, application process, and availability must be verified against the current official government notification or portal.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-pranam",
+    "scheme_name": "PM-PRANAM",
+    "category": "Agriculture & Environment",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fertilizers, Ministry of Chemicals & Fertilizers",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Chemicals and Fertilizers",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM-PRANAM: Programme for Restoration, Awareness, Nourishment and Amelioration of Mother Earth promoting alternative and bio-fertilizer adoption among agricultural households.\n\nCategory: Agriculture & Environment\nDepartment: Department of Fertilizers, Ministry of Chemicals & Fertilizers\nScope: All\nBenefits: Financial incentives for adopting natural and bio-fertilizers, Soil fertility restoration grants and agricultural input subsidies, Reduced cost of cultivation through balanced nutrient management",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-pranam",
+    "scheme_name": "PM-PRANAM",
+    "category": "Agriculture & Environment",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fertilizers, Ministry of Chemicals & Fertilizers",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Chemicals and Fertilizers",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM-PRANAM - Eligibility Requirements:\n\n• Farmer or agricultural household actively cultivating agricultural land\n• Willingness to adopt organic or alternative bio-nutrients\n• Registered landholding or sharecropper agreement",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-pranam",
+    "scheme_name": "PM-PRANAM",
+    "category": "Agriculture & Environment",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fertilizers, Ministry of Chemicals & Fertilizers",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Chemicals and Fertilizers",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM-PRANAM - How to Apply:\n\nRequired Documents:\n• land record\n• soil health card\n• bank account proof\n\nApplication Steps:\n1. Register via state agriculture department or local Krishi Vigyan Kendra\n2. Submit soil testing report and landholding details\n3. Receive certified bio-fertilizers and direct financial incentive",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-pranam",
+    "scheme_name": "PM-PRANAM",
+    "category": "Agriculture & Environment",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fertilizers, Ministry of Chemicals & Fertilizers",
+    "last_verified": "2026-08-31",
+    "source": "Ministry of Chemicals and Fertilizers",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM-PRANAM - Additional Information:\n\nOfficial Link: https://www.fert.nic.in/\nSource: Ministry of Chemicals and Fertilizers\nLast Verified: 2026-08-31\nReference: Union Budget & Department of Fertilizers official notification.\nRelated Schemes: pm-kisan, soil-health-card-scheme\nNote: Benefits and incentive disbursal are routed through state agriculture development agencies.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-matsya-sampada",
+    "scheme_name": "PM Matsya Sampada Yojana (PMMSY)",
+    "category": "Fisheries & Animal Husbandry",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fisheries, Ministry of Fisheries, Animal Husbandry and Dairying",
+    "last_verified": "2026-08-31",
+    "source": "PMMSY National Fisheries Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "PM Matsya Sampada Yojana (PMMSY): Flagship scheme for focused and sustainable development of the fisheries sector and welfare of traditional fishers and fish farmers.\n\nCategory: Fisheries & Animal Husbandry\nDepartment: Department of Fisheries, Ministry of Fisheries, Animal Husbandry and Dairying\nScope: All\nBenefits: Up to 60% capital subsidy for women/SC/ST fishers and 40% for general category, Support for motorized boats, deep-sea fishing gear, biofloc and recirculatory aquaculture systems, Livelihood and nutritional support for fishers during fishing ban periods",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-matsya-sampada",
+    "scheme_name": "PM Matsya Sampada Yojana (PMMSY)",
+    "category": "Fisheries & Animal Husbandry",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fisheries, Ministry of Fisheries, Animal Husbandry and Dairying",
+    "last_verified": "2026-08-31",
+    "source": "PMMSY National Fisheries Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "PM Matsya Sampada Yojana (PMMSY) - Eligibility Requirements:\n\n• Fishers, fish farmers, fish workers, or members of fisheries cooperatives/SHGs\n• Possession of water bodies (owned/leased) or registered fishing vessel\n• Active engagement in freshwater, brackish water, or marine fishing",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-matsya-sampada",
+    "scheme_name": "PM Matsya Sampada Yojana (PMMSY)",
+    "category": "Fisheries & Animal Husbandry",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fisheries, Ministry of Fisheries, Animal Husbandry and Dairying",
+    "last_verified": "2026-08-31",
+    "source": "PMMSY National Fisheries Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "PM Matsya Sampada Yojana (PMMSY) - How to Apply:\n\nRequired Documents:\n• identity proof\n• fisherman registration certificate\n• bank account proof\n• land or waterbody lease record\n\nApplication Steps:\n1. Submit Detailed Project Report (DPR) to the District Fisheries Officer\n2. Verification by District Level Committee (DLC)\n3. State approval and subsidy credit via Direct Benefit Transfer",
+    "state": "All"
+  },
+  {
+    "scheme_id": "pm-matsya-sampada",
+    "scheme_name": "PM Matsya Sampada Yojana (PMMSY)",
+    "category": "Fisheries & Animal Husbandry",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Department of Fisheries, Ministry of Fisheries, Animal Husbandry and Dairying",
+    "last_verified": "2026-08-31",
+    "source": "PMMSY National Fisheries Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "PM Matsya Sampada Yojana (PMMSY) - Additional Information:\n\nOfficial Link: https://pmmsy.dof.gov.in/\nSource: PMMSY National Fisheries Portal\nLast Verified: 2026-08-31\nReference: Verified against PMMSY operational guidelines and MIS portal.\nRelated Schemes: kisan-credit-card, agriculture-infrastructure-fund\nNote: Target beneficiaries include fishers, coastal communities, and rural women self-help groups.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "nbhm-honey-mission",
+    "scheme_name": "National Beekeeping & Honey Mission (NBHM)",
+    "category": "Agriculture & Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Bee Board, Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Bee Board Official Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "National Beekeeping & Honey Mission (NBHM): Central sector mission to promote scientific beekeeping, increase crop pollination, and provide supplementary livelihood income to rural families.\n\nCategory: Agriculture & Livelihood\nDepartment: National Bee Board, Ministry of Agriculture & Farmers Welfare\nScope: All\nBenefits: Subsidies up to 80% for bee colonies, modern bee boxes, and honey extraction equipment, Custom hiring centers and testing lab support for beekeepers, Direct market access via Madhu Kranti portal with trace back authentication",
+    "state": "All"
+  },
+  {
+    "scheme_id": "nbhm-honey-mission",
+    "scheme_name": "National Beekeeping & Honey Mission (NBHM)",
+    "category": "Agriculture & Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Bee Board, Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Bee Board Official Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "National Beekeeping & Honey Mission (NBHM) - Eligibility Requirements:\n\n• Individual farmers, landless rural workers, SHGs, and Farmer Producer Organizations (FPOs)\n• Completion of basic scientific beekeeping orientation or training\n• Designated apiary site or agricultural land for box placement",
+    "state": "All"
+  },
+  {
+    "scheme_id": "nbhm-honey-mission",
+    "scheme_name": "National Beekeeping & Honey Mission (NBHM)",
+    "category": "Agriculture & Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Bee Board, Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Bee Board Official Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "National Beekeeping & Honey Mission (NBHM) - How to Apply:\n\nRequired Documents:\n• identity proof\n• bank account proof\n• residence proof\n• training completion certificate\n\nApplication Steps:\n1. Register on the Madhu Kranti portal or visit National Bee Board nodal officer\n2. Select approved bee manufacturer and equipment package\n3. Inspection and direct subsidy transfer to beneficiary account",
+    "state": "All"
+  },
+  {
+    "scheme_id": "nbhm-honey-mission",
+    "scheme_name": "National Beekeeping & Honey Mission (NBHM)",
+    "category": "Agriculture & Livelihood",
+    "state_scope": [
+      "All"
+    ],
+    "department": "National Bee Board, Ministry of Agriculture & Farmers Welfare",
+    "last_verified": "2026-08-31",
+    "source": "National Bee Board Official Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "National Beekeeping & Honey Mission (NBHM) - Additional Information:\n\nOfficial Link: https://nbb.gov.in/\nSource: National Bee Board Official Portal\nLast Verified: 2026-08-31\nReference: Verified from National Beekeeping and Honey Mission operational guidelines.\nRelated Schemes: pm-vishwakarma, paramparagat-krishi-vikas-yojana\nNote: Aims to achieve the Sweet Revolution across smallholder farming belts.\n",
+    "state": "All"
+  },
+  {
+    "scheme_id": "svamitva",
+    "scheme_name": "SVAMITVA Scheme",
+    "category": "Rural Property & Governance",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Panchayati Raj",
+    "last_verified": "2026-08-31",
+    "source": "SVAMITVA National Portal",
+    "language": "en",
+    "chunk_type": "overview",
+    "text": "SVAMITVA Scheme: Survey of Villages and Mapping with Improvised Technology in Village Areas to provide rural citizens with official digitized Property Cards (Sampatti Card).\n\nCategory: Rural Property & Governance\nDepartment: Ministry of Panchayati Raj\nScope: All\nBenefits: Issuance of legal, geo-referenced Property Card (Sampatti Patrika), Financial monetization of rural residential property to secure institutional bank loans, Minimization of rural property boundary disputes with Survey of India drone accuracy",
+    "state": "All"
+  },
+  {
+    "scheme_id": "svamitva",
+    "scheme_name": "SVAMITVA Scheme",
+    "category": "Rural Property & Governance",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Panchayati Raj",
+    "last_verified": "2026-08-31",
+    "source": "SVAMITVA National Portal",
+    "language": "en",
+    "chunk_type": "eligibility",
+    "text": "SVAMITVA Scheme - Eligibility Requirements:\n\n• Owners of residential properties in rural Abadi (inhabited) areas of surveyed villages\n• Citizens residing in notification-notified gram panchayats",
+    "state": "All"
+  },
+  {
+    "scheme_id": "svamitva",
+    "scheme_name": "SVAMITVA Scheme",
+    "category": "Rural Property & Governance",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Panchayati Raj",
+    "last_verified": "2026-08-31",
+    "source": "SVAMITVA National Portal",
+    "language": "en",
+    "chunk_type": "application",
+    "text": "SVAMITVA Scheme - How to Apply:\n\nRequired Documents:\n• identity proof\n• panchayat property tax receipt or family record\n• aadhaar\n\nApplication Steps:\n1. Drone flying conducted by Survey of India in coordination with Gram Panchayat\n2. Ground verification of spatial property boundaries and objection redressal\n3. Distribution of digital Property Card via Digilocker and physical registry",
+    "state": "All"
+  },
+  {
+    "scheme_id": "svamitva",
+    "scheme_name": "SVAMITVA Scheme",
+    "category": "Rural Property & Governance",
+    "state_scope": [
+      "All"
+    ],
+    "department": "Ministry of Panchayati Raj",
+    "last_verified": "2026-08-31",
+    "source": "SVAMITVA National Portal",
+    "language": "en",
+    "chunk_type": "metadata",
+    "text": "SVAMITVA Scheme - Additional Information:\n\nOfficial Link: https://svamitva.nic.in/\nSource: SVAMITVA National Portal\nLast Verified: 2026-08-31\nReference: Ministry of Panchayati Raj official framework and drone survey guidelines.\nRelated Schemes: pmay-g, swachh-bharat-mission-gramin\nNote: Eliminates ambiguity in village residential rights and empowers rural financial inclusion.\n",
+    "state": "All"
+  }
+]
