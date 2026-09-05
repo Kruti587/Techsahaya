@@ -138,7 +138,25 @@ export function Footer() {
             {notified && (
               <div className="flex items-center gap-2 text-xs sm:text-sm text-emerald-300 font-semibold animate-fade-in bg-emerald-900/50 border border-emerald-600/40 p-2.5 rounded-xl">
                 <CheckCircle2 size={16} className="shrink-0 text-emerald-400" />
-                <span>Subscription confirmed! An official confirmation email has been sent to your inbox.</span>
+                <span>
+                  {language === "hi"
+                    ? "सदस्यता की पुष्टि हो गई! आपके इनबॉक्स में एक आधिकारिक पुष्टि ईमेल भेजा गया है।"
+                    : language === "kn"
+                    ? "ಚಂದಾದಾರಿಕೆ ದೃಢೀಕರಿಸಲಾಗಿದೆ! ನಿಮ್ಮ ಇನ್‌ಬಾಕ್ಸ್‌ಗೆ ಅಧಿಕೃತ ದೃಢೀಕರಣ ಇಮೇಲ್ ಕಳುಹಿಸಲಾಗಿದೆ."
+                    : language === "te"
+                    ? "సభ్యత్వం నిర్ధారించబడింది! మీ ఇన్‌బాక్స్‌కు అధికారిక నిర్ధారణ ఈమెయిల్ పంపబడింది."
+                    : language === "ta"
+                    ? "சந்தா உறுதிசெய்யப்பட்டது! உங்கள் இன்பாக்ஸுக்கு அதிகாரப்பூர்வ உறுதிப்படுத்தல் மின்னஞ்சல் அனுப்பப்பட்டுள்ளது."
+                    : language === "ml"
+                    ? "വരിക്കാരായത് സ്ഥിരീകരിച്ചു! നിങ്ങളുടെ ഇൻബോക്സിലേക്ക് ഔദ്യോഗിക സ്ഥിരീകരണ ഇമെയിൽ അയച്ചിട്ടുണ്ട്."
+                    : language === "bn"
+                    ? "সাবস্ক্রিপশন নিশ্চিত করা হয়েছে! আপনার ইনবক্সে একটি অফিসিয়াল নিশ্চিতকরণ ইমেল পাঠানো হয়েছে।"
+                    : language === "mr"
+                    ? "सदस्यत्व पुष्टी झाले! आपल्या इनबॉक्समध्ये अधिकृत पुष्टीकरण ईमेल पाठवला आहे."
+                    : language === "gu"
+                    ? "સબ્સ્ક્રિપ્શન કન્ફર્મ થયું! તમારા ઇનબૉક્સમાં સત્તાવાર પુષ્ટિ ઇમેઇલ મોકલવામાં આવ્યો છે."
+                    : "Subscription confirmed! An official confirmation email has been sent to your inbox."}
+                </span>
               </div>
             )}
             <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-300 pt-1">
@@ -233,7 +251,23 @@ export function Footer() {
         {/* Bottom bar with Social Icons and Legal Links (No duplicate back to top!) */}
         <div className="flex flex-col sm:flex-row items-center justify-between py-6 gap-4 text-xs text-slate-400">
           <p className="text-center sm:text-left">
-            &copy; 2026 Tech Sahaya. Digital Public Good for Citizen Welfare &amp; Cybersecurity.
+            {language === "hi"
+              ? "© 2026 टेक सहाय। नागरिक कल्याण और साइबर सुरक्षा के लिए डिजिटल सार्वजनिक मंच।"
+              : language === "kn"
+              ? "© 2026 ಟೆಕ್ ಸಹಾಯ. ನಾಗರಿಕ ಕಲ್ಯಾಣ ಮತ್ತು ಸೈಬರ್ ಭದ್ರತೆಗಾಗಿ ಡಿಜಿಟಲ್ ಸಾರ್ವಜನಿಕ ಸೇವೆ."
+              : language === "te"
+              ? "© 2026 టెక్ సహాయ. పౌర సంక్షేమం మరియు సైబర్ భద్రత కోసం డిజిటల్ ప్రజా వేదిక."
+              : language === "ta"
+              ? "© 2026 டெக் சகாயா. குடிமக்கள் நலம் மற்றும் சைபர் பாதுகாப்பிற்கான டிஜிட்டல் பொது சேவை."
+              : language === "ml"
+              ? "© 2026 ടെക് സഹായ. പൗരക്ഷേമത്തിനും സൈബർ സുരക്ഷയ്ക്കുമായുള്ള ഡിജിറ്റൽ പബ്ലിക് ഗുഡ്."
+              : language === "bn"
+              ? "© 2026 টেক সহায়। নাগরিক কল্যাণ ও সাইবার নিরাপত্তার জন্য ডিজিটাল পাবলিক প্ল্যাটফর্ম।"
+              : language === "mr"
+              ? "© 2026 टेक सहाया. नागरिक कल्याण आणि सायबर सुरक्षेसाठी डिजिटल सार्वजनिक व्यासपीठ."
+              : language === "gu"
+              ? "© 2026 ટેક સહાય. નાગરિક કલ્યાણ અને સાયબર સુરક્ષા માટે ડિજિટલ સાર્વજનિક મંચ."
+              : "© 2026 Tech Sahaya. Digital Public Good for Citizen Welfare & Cybersecurity."}
           </p>
 
           <div className="flex flex-wrap items-center gap-5">
