@@ -1,7 +1,19 @@
 import axios from "axios";
 
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_BASE_URL) return import.meta.env.VITE_API_BASE_URL;
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host !== "localhost" && host !== "127.0.0.1") {
+      return "https://techsahaya-backend.onrender.com";
+    }
+  }
+  return "http://127.0.0.1:8000";
+};
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000",
+  baseURL: getBaseUrl(),
 });
 
 api.interceptors.request.use((config) => {

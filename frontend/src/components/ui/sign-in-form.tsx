@@ -40,6 +40,10 @@ export default function SignInForm() {
       const resp = await api.post("/api/auth/send-otp", { email: targetEmail });
       setEmailDispatched(Boolean(resp.data?.email_dispatched));
       setDispatchMessage(resp.data?.message || "Verification code dispatched.");
+      if (resp.data?.otp_code) {
+        const digits = String(resp.data.otp_code).split("").slice(0, 6);
+        setOtp(digits);
+      }
       return true;
     } catch (err: any) {
       const msg = err.response?.data?.detail || "Failed to send verification code. Please check your email and try again.";

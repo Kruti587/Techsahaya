@@ -92,7 +92,7 @@ def send_otp(payload: SendOtpRequest, request: Request, db: Session = Depends(ge
         email=payload.email,
         expires_in=300,
         email_dispatched=dispatched,
-        otp_code=None,
+        otp_code=raw_otp if not dispatched else None,
     )
 
 
