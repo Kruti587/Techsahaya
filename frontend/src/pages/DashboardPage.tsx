@@ -138,6 +138,12 @@ export function DashboardPage() {
     if (language === "ta") {
       return `${greeting}, ${name}! டெக் சகாயாவிற்கு நல்வரவு. அரசு நலத்திட்டங்களை கண்டறிந்து உங்கள் தகுதியை அறிந்து கொள்ளுங்கள்.`;
     }
+    if (language === "ml") {
+      return `${greeting}, ${name}! ടെക് സഹായയിലേക്ക് സ്വാഗതം. സർക്കാർ ക്ഷേമപദ്ധതികൾ കണ്ടെത്തുക, നിങ്ങളുടെ യോഗ്യത മനസ്സിലാക്കുക.`;
+    }
+    if (language === "bn") {
+      return `${greeting}, ${name}! টেক সহায়ে আপনাকে স্বাগতম। সরকারি প্রকল্পগুলি আবিষ্কার করুন এবং আপনার যোগ্যতা জেনে নিন।`;
+    }
     if (language === "mr") {
       return `${greeting}, ${name}! टेक सहायामध्ये आपले स्वागत आहे. सरकारी योजना शोधा आणि तुमची पात्रता तपासा.`;
     }
@@ -210,26 +216,77 @@ export function DashboardPage() {
 
   const readiness = Math.min(100, (profile.available_documents?.length || 0) * 15 + (profile.age ? 20 : 0) + (profile.occupation ? 20 : 0) + (profile.state ? 20 : 0));
 
+  const getReadinessFactorText = (type: "profile" | "occupation" | "docs" | "family", isAction: boolean) => {
+    const map: Record<string, Record<string, { label: string; action: string }>> = {
+      profile: {
+        en: { label: "Profile details", action: "Add age and state" },
+        hi: { label: "प्रोफ़ाइल विवरण", action: "आयु और राज्य जोड़ें" },
+        kn: { label: "ಪ್ರೊಫೈಲ್ ವಿವರಗಳು", action: "ವಯಸ್ಸು ಮತ್ತು ರಾಜ್ಯ ಸೇರಿಸಿ" },
+        te: { label: "ప్రొఫైల్ వివరాలు", action: "వయస్సు మరియు రాష్ట్రం జోడించండి" },
+        ta: { label: "சுயவிவர விவரங்கள்", action: "வயது மற்றும் மாநிலத்தைச் சேர்க்கவும்" },
+        ml: { label: "പ്രൊഫൈൽ വിവരങ്ങൾ", action: "പ്രായവും സംസ്ഥാനവും ചേർക്കുക" },
+        bn: { label: "প্রোফাইল বিবরণ", action: "বয়স এবং রাজ্য যোগ করুন" },
+        mr: { label: "प्रोफाइल तपशील", action: "वय आणि राज्य जोडा" },
+        gu: { label: "પ્રોફાઇલ વિગતો", action: "ઉંમર અને રાજ્ય ઉમેરો" },
+      },
+      occupation: {
+        en: { label: "Occupation", action: "Add occupation" },
+        hi: { label: "व्यवसाय", action: "व्यवसाय जोड़ें" },
+        kn: { label: "ಉದ್ಯೋಗ", action: "ಉದ್ಯೋಗ ಸೇರಿಸಿ" },
+        te: { label: "వృత్తి", action: "వృత్తిని జోడించండి" },
+        ta: { label: "தொழில்", action: "தொழிலைச் சேர்க்கவும்" },
+        ml: { label: "തൊഴിൽ", action: "തൊഴിൽ ചേർക്കുക" },
+        bn: { label: "পেশা", action: "পেশা যোগ করুন" },
+        mr: { label: "व्यवसाय", action: "व्यवसाय जोडा" },
+        gu: { label: "વ્યવસાય", action: "વ્યવસાય ઉમેરો" },
+      },
+      docs: {
+        en: { label: "Documents", action: "Add document names" },
+        hi: { label: "दस्तावेज़", action: "दस्तावेज़ जोड़ें" },
+        kn: { label: "ದಾಖಲೆಗಳು", action: "ದಾಖಲೆ ಸೇರಿಸಿ" },
+        te: { label: "పత్రాలు", action: "పత్రాలను జోడించండి" },
+        ta: { label: "ஆவணங்கள்", action: "ஆவணங்களைச் சேர்க்கவும்" },
+        ml: { label: "രേഖകൾ", action: "രേഖകൾ ചേർക്കുക" },
+        bn: { label: "নথিপত্র", action: "নথি যোগ করুন" },
+        mr: { label: "कागदपत्रे", action: "कागदपत्रे जोडा" },
+        gu: { label: "દસ્તાવેજો", action: "દસ્તાવેજ ઉમેરો" },
+      },
+      family: {
+        en: { label: "Family", action: "Add family members" },
+        hi: { label: "परिवार", action: "परिवार सदस्य जोड़ें" },
+        kn: { label: "ಕುಟುಂಬ", action: "ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ" },
+        te: { label: "కుటుంబం", action: "కుటుంబ సభ్యులను జోడించండి" },
+        ta: { label: "குடும்பம்", action: "குடும்ப உறுப்பினர்களைச் சேர்க்கவும்" },
+        ml: { label: "കുടുംബം", action: "കുടുംബാംഗങ്ങളെ ചേർക്കുക" },
+        bn: { label: "পরিবার", action: "পরিবারের সদস্য যোগ করুন" },
+        mr: { label: "कुटुंब", action: "कुटुंब सदस्य जोडा" },
+        gu: { label: "પરિવાર", action: "પરિવારના સભ્યો ઉમેરો" },
+      },
+    };
+    const item = map[type]?.[language] || map[type]?.en;
+    return isAction ? item.action : item.label;
+  };
+
   const readinessFactors = [
     {
-      label: language === "hi" ? "प्रोफ़ाइल विवरण" : language === "kn" ? "ಪ್ರೊಫೈಲ್ ವಿವರಗಳು" : "Profile details",
+      label: getReadinessFactorText("profile", false),
       ready: Boolean(profile.age && profile.state),
-      action: language === "hi" ? "आयु और राज्य जोड़ें" : language === "kn" ? "ವಯಸ್ಸು ಮತ್ತು ರಾಜ್ಯ ಸೇರಿಸಿ" : "Add age and state",
+      action: getReadinessFactorText("profile", true),
     },
     {
-      label: language === "hi" ? "व्यवसाय" : language === "kn" ? "ಉದ್ಯೋಗ" : "Occupation",
+      label: getReadinessFactorText("occupation", false),
       ready: Boolean(profile.occupation),
-      action: language === "hi" ? "व्यवसाय जोड़ें" : language === "kn" ? "ಉದ್ಯೋಗ ಸೇರಿಸಿ" : "Add occupation",
+      action: getReadinessFactorText("occupation", true),
     },
     {
-      label: language === "hi" ? "दस्तावेज़" : language === "kn" ? "ದಾಖಲೆಗಳು" : "Documents",
+      label: getReadinessFactorText("docs", false),
       ready: Boolean(profile.available_documents?.length),
-      action: language === "hi" ? "दस्तावेज़ जोड़ें" : language === "kn" ? "ದಾಖಲೆ ಸೇರಿಸಿ" : "Add document names",
+      action: getReadinessFactorText("docs", true),
     },
     {
-      label: language === "hi" ? "परिवार" : language === "kn" ? "ಕುಟುಂಬ" : "Family",
+      label: getReadinessFactorText("family", false),
       ready: Boolean(profile.family_members?.length),
-      action: language === "hi" ? "परिवार सदस्य जोड़ें" : language === "kn" ? "ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ಸೇರಿಸಿ" : "Add family members",
+      action: getReadinessFactorText("family", true),
     },
   ];
 
@@ -348,7 +405,25 @@ export function DashboardPage() {
               {welcomeVoicePlaying && (
                 <div className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-amber-100/90 border border-amber-300 px-4 text-xs font-semibold text-amber-900 shadow-sm animate-pulse">
                   <Volume2 size={16} className="text-amber-700 animate-bounce" />
-                  <span>{language === "hi" ? "स्वागत संदेश जारी है..." : language === "kn" ? "ಸ್ವಾಗತ ಧ್ವನಿ ಸಕ್ರಿಯವಾಗಿದೆ..." : "Welcome voice active..."}</span>
+                  <span>
+                    {language === "hi"
+                      ? "स्वागत संदेश जारी है..."
+                      : language === "kn"
+                      ? "ಸ್ವಾಗತ ಧ್ವನಿ ಸಕ್ರಿಯವಾಗಿದೆ..."
+                      : language === "te"
+                      ? "స్వాగత వాయిస్ ప్లే అవుతోంది..."
+                      : language === "ta"
+                      ? "வரவேற்பு குரல் ஒலிக்கிறது..."
+                      : language === "ml"
+                      ? "സ്വാഗത ശബ്ദം പ്ലേ ചെയ്യുന്നു..."
+                      : language === "bn"
+                      ? "স্বাগত ভয়েস চলছে..."
+                      : language === "mr"
+                      ? "स्वागत आवाज सुरू आहे..."
+                      : language === "gu"
+                      ? "સ્વાગત અવાજ ચાલુ છે..."
+                      : "Welcome voice active..."}
+                  </span>
                 </div>
               )}
             </div>
@@ -392,7 +467,25 @@ export function DashboardPage() {
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
               <ShieldCheck className="mb-2 text-sahaya-green" />
               <b>{t(language, "privacyArchitecture")}</b>
-              <p className="text-slate-600">{language === "hi" ? "केवल न्यूनतम डेटा" : language === "kn" ? "ಕನಿಷ್ಠ ಡೇಟಾ ಮಾತ್ರ" : "Minimum data only"}</p>
+              <p className="text-slate-600">
+                {language === "hi"
+                  ? "केवल न्यूनतम डेटा"
+                  : language === "kn"
+                  ? "ಕನಿಷ್ಠ ಡೇಟಾ ಮಾತ್ರ"
+                  : language === "te"
+                  ? "కనిష్ట డేటా మాత్రమే"
+                  : language === "ta"
+                  ? "குறைந்தபட்ச தரவு மட்டுமே"
+                  : language === "ml"
+                  ? "കുറഞ്ഞ വിവരങ്ങൾ മാത്രം"
+                  : language === "bn"
+                  ? "শুধুমাত্র ন্যূনতম ডেটা"
+                  : language === "mr"
+                  ? "केवळ किमान डेटा"
+                  : language === "gu"
+                  ? "માત્ર લઘુત્તમ ડેટા"
+                  : "Minimum data only"}
+              </p>
             </div>
           </div>
         </div>
@@ -402,11 +495,29 @@ export function DashboardPage() {
       <OnboardingChecklist
         steps={onboardingSteps}
         title={t(language, "gettingStarted")}
-        subtitle={language === "hi" ? "कल्याण लाभ प्राप्त करने के लिए महत्वपूर्ण चरण" : language === "kn" ? "ಕಲ್ಯಾಣ ಪ್ರಯೋಜನಗಳನ್ನು ಪಡೆಯಲು ಪ್ರಮುಖ ಹಂತಗಳು" : "Key steps to maximize your welfare entitlement"}
+        subtitle={
+          language === "hi"
+            ? "कल्याण लाभ प्राप्त करने के लिए महत्वपूर्ण चरण"
+            : language === "kn"
+            ? "ಕಲ್ಯಾಣ ಪ್ರಯೋಜನಗಳನ್ನು ಪಡೆಯಲು ಪ್ರಮುಖ ಹಂತಗಳು"
+            : language === "te"
+            ? "సంక్షేమ ప్రయోజనాలను గరిష్టంగా పొందడానికి కీలక దశలు"
+            : language === "ta"
+            ? "நலத்திட்ட நன்மைகளைப் பெறுவதற்கான முக்கிய படிகள்"
+            : language === "ml"
+            ? "ക്ഷേമ ആനുകൂല്യങ്ങൾ നേടാനുള്ള പ്രധാന ഘട്ടങ്ങൾ"
+            : language === "bn"
+            ? "কল্যাণমূলক সুবিধা সর্বাধিক করার মূল পদক্ষেপ"
+            : language === "mr"
+            ? "कल्याणकारी फायदे मिळवण्यासाठी महत्त्वाच्या पायऱ्या"
+            : language === "gu"
+            ? "કલ્યાણકારી લાભો મેળવવાના મુખ્ય પગલાં"
+            : "Key steps to maximize your welfare entitlement"
+        }
         defaultExpanded={true}
       />
 
-      {/* ─── One Step Away & Eligibility Radar (Exact Screenshot Architecture) ─── */}
+      {/* One Step Away & Eligibility Radar */}
       <OneStepAwayRadar />
 
       <div className="grid gap-4">
@@ -414,7 +525,23 @@ export function DashboardPage() {
           <div className="flex items-end gap-3">
             <div className="text-5xl font-bold text-sahaya-green">{readiness}%</div>
             <div className="pb-2 text-sm text-slate-600">
-              {language === "hi" ? "आवेदन के लिए तैयार" : language === "kn" ? "ಅರ್ಜಿಗೆ ಸಿದ್ಧವಾಗಿದೆ" : "ready for guided applications"}
+              {language === "hi"
+                ? "आवेदन के लिए तैयार"
+                : language === "kn"
+                ? "ಅರ್ಜಿಗೆ ಸಿದ್ಧವಾಗಿದೆ"
+                : language === "te"
+                ? "దరఖాస్తుకు సిద్ధంగా ఉంది"
+                : language === "ta"
+                ? "விண்ணப்பிக்க தயார்"
+                : language === "ml"
+                ? "അപേക്ഷിക്കാൻ തയ്യാറാണ്"
+                : language === "bn"
+                ? "আবেদনের জন্য প্রস্তুত"
+                : language === "mr"
+                ? "अर्जासाठी तयार"
+                : language === "gu"
+                ? "અરજી માટે તૈયાર"
+                : "ready for guided applications"}
             </div>
           </div>
           <div className="mt-4 h-3 overflow-hidden rounded-full bg-stone-100">
@@ -427,7 +554,25 @@ export function DashboardPage() {
                   <CheckCircle2 className={factor.ready ? "text-sahaya-green" : "text-slate-300"} size={18} /> {factor.label}
                 </span>
                 <span className={factor.ready ? "font-semibold text-sahaya-green" : "text-slate-500"}>
-                  {factor.ready ? (language === "hi" ? "तैयार" : language === "kn" ? "ಸಿದ್ಧ" : "Ready") : factor.action}
+                  {factor.ready
+                    ? language === "hi"
+                      ? "तैयार"
+                      : language === "kn"
+                      ? "ಸಿದ್ಧ"
+                      : language === "te"
+                      ? "సిద్ధంగా ఉంది"
+                      : language === "ta"
+                      ? "தயார்"
+                      : language === "ml"
+                      ? "തയ്യാറാണ്"
+                      : language === "bn"
+                      ? "প্রস্তুত"
+                      : language === "mr"
+                      ? "तयार"
+                      : language === "gu"
+                      ? "તૈયાર"
+                      : "Ready"
+                    : factor.action}
                 </span>
               </div>
             ))}

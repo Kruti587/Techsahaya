@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
 import { t } from "@/utils/i18n";
 import { api } from "@/services/api";
+import { languageToBCP47 } from "@/utils/speechUtils";
 
 export default function SignInForm() {
   const { login, language } = useAppContext();
@@ -121,17 +122,30 @@ export default function SignInForm() {
         return;
       }
 
-      // Automatically speak the official bilingual welcome voice immediately upon login without requiring any button
+      // 3. Spoken Audio Welcome
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
-        const welcomeSpeech =
-          language === "hi"
-            ? "टेक सहाय में आपका स्वागत है। सरकारी योजनाओं का लाभ लेने के लिए कृपया पहले अपनी प्रोफ़ाइल विवरण भरें।"
-            : language === "kn"
-            ? "ಟೆಕ್ ಸಹಾಯಕ್ಕೆ ಸುಸ್ವಾಗತ. ಸರ್ಕಾರಿ ಯೋಜನೆಗಳ ಸೌಲಭ್ಯ ಪಡೆಯಲು ದಯವಿಟ್ಟು ಮೊದಲು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ."
-            : "Welcome to Tech Sahaya. Please complete your citizen profile details to discover and claim your eligible welfare schemes.";
+        let welcomeSpeech = "Welcome to Tech Sahaya. Please complete your citizen profile details to discover and claim your eligible welfare schemes.";
+        if (language === "hi") {
+          welcomeSpeech = "टेक सहाय में आपका स्वागत है। सरकारी योजनाओं का लाभ लेने के लिए कृपया पहले अपनी प्रोफ़ाइल विवरण भरें।";
+        } else if (language === "kn") {
+          welcomeSpeech = "ಟೆಕ್ ಸಹಾಯಕ್ಕೆ ಸುಸ್ವಾಗತ. ಸರ್ಕಾರಿ ಯೋಜನೆಗಳ ಸೌಲಭ್ಯ ಪಡೆಯಲು ದಯವಿಟ್ಟು ಮೊದಲು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ.";
+        } else if (language === "te") {
+          welcomeSpeech = "టెక్ సహాయకు స్వాగతం. ప్రభుత్వ సంక్షేమ పథకాలను కనుగొనడానికి దయచేసి మీ ప్రొఫైల్ వివరాలను పూర్తి చేయండి.";
+        } else if (language === "ta") {
+          welcomeSpeech = "டெக் சகாயாவிற்கு நல்வரவு. அரசு நலத்திட்டங்களை கண்டறிய உங்கள் சுயவிவர விவரங்களை நிறைவு செய்யவும்.";
+        } else if (language === "ml") {
+          welcomeSpeech = "ടെക് സഹായയിലേക്ക് സ്വാഗതം. സർക്കാർ ക്ഷേമപദ്ധതികൾ കണ്ടെത്താൻ നിങ്ങളുടെ പ്രൊഫൈൽ പൂർത്തിയാക്കുക.";
+        } else if (language === "bn") {
+          welcomeSpeech = "টেক সহায়ে আপনাকে স্বাগতম। সরকারি প্রকল্পগুলি আবিষ্কার করতে আপনার প্রোফাইল সম্পূর্ণ করুন।";
+        } else if (language === "mr") {
+          welcomeSpeech = "टेक सहायामध्ये आपले स्वागत आहे. सरकारी योजनांचा लाभ घेण्यासाठी कृपया आपली प्रोफाईल पूर्ण करा.";
+        } else if (language === "gu") {
+          welcomeSpeech = "ટેક સહાયમાં સ્વાગત છે. સરકારી કલ્યાણકારી યોજનાઓ મેળવવા માટે કૃપા કરીને તમારી પ્રોફાઇલ પૂર્ણ કરો.";
+        }
+
         const utterance = new SpeechSynthesisUtterance(welcomeSpeech);
-        utterance.lang = language === "hi" ? "hi-IN" : language === "kn" ? "kn-IN" : "en-IN";
+        utterance.lang = languageToBCP47(language || "en");
         utterance.rate = 0.95;
         utterance.pitch = 1.0;
         window.speechSynthesis.speak(utterance);

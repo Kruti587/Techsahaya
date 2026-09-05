@@ -34,6 +34,18 @@ export function WelcomeVoiceBanner({ autoPlay = true, className = "" }: WelcomeV
     if (language === "ta") {
       return `${greeting}, ${name}! டெக் சகாயாவிற்கு நல்வரவு. அரசு நலத்திட்டங்களை கண்டறிந்து உங்கள் தகுதியை அறிந்து கொள்ளுங்கள்.`;
     }
+    if (language === "ml") {
+      return `${greeting}, ${name}! ടെക് സഹായയിലേക്ക് സ്വാഗതം. സർക്കാർ ക്ഷേമപദ്ധതികൾ കണ്ടെത്തുക, നിങ്ങളുടെ യോഗ്യത മനസ്സിലാക്കുക.`;
+    }
+    if (language === "bn") {
+      return `${greeting}, ${name}! টেক সহায়ে আপনাকে স্বাগতম। সরকারি কল্যাণমূলক প্রকল্পগুলি আবিষ্কার করুন এবং আপনার যোগ্যতা জেনে নিন।`;
+    }
+    if (language === "mr") {
+      return `${greeting}, ${name}! टेक सहायामध्ये आपले स्वागत आहे. सरकारी योजना शोधा आणि आपली पात्रता जाणून घ्या.`;
+    }
+    if (language === "gu") {
+      return `${greeting}, ${name}! ટેક સહાયમાં તમારું સ્વાગત છે. સરકારી કલ્યાણકારી યોજનાઓ શોધો અને તમારી પાત્રતા તપાસો.`;
+    }
     return `${greeting}, ${name}! Welcome to Tech Sahaya. Discover verified government schemes, check your eligibility in simple language, and claim your welfare benefits safely.`;
   };
 
