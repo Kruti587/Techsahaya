@@ -164,12 +164,14 @@ export function AutoFilledApplicationModal({
   const handleApply = async () => {
     setSubmitted(true);
     try {
-      await api.post("/api/schemes/apply", {
-        scheme_id: scheme.id,
-        scheme_name: scheme.name,
-        applicant_name: user?.full_name || (profile as any)?.name || "Citizen",
-        email: user?.email || "kranbadsh@gmail.com",
-      });
+      if (user?.email) {
+        await api.post("/api/schemes/apply", {
+          scheme_id: scheme.id,
+          scheme_name: scheme.name,
+          applicant_name: user?.full_name || (profile as any)?.name || "Citizen",
+          email: user.email,
+        });
+      }
     } catch (err) {
       console.error("Failed to register scheme application:", err);
     }

@@ -183,7 +183,11 @@ export function NotificationsPage() {
   const [isSending, setIsSending] = useState(false);
 
   const handleEmailUpdates = async () => {
-    const targetEmail = user?.email || "kranbadsh@gmail.com";
+    const targetEmail = user?.email;
+    if (!targetEmail) {
+      setEmailStatus("Please log in to receive email updates.");
+      return;
+    }
     setIsSending(true);
     try {
       await api.post("/api/schemes/apply", {

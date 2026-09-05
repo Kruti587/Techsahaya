@@ -319,8 +319,10 @@ If you did not request this code, you can safely ignore this email or contact ou
 
     def _send_smtp_payload(self, msg: MIMEMultipart, recipient_email: str) -> Tuple[bool, str]:
         """
-        Sends an email message via Gmail SMTP with dual-port fallback (Port 587 STARTTLS -> Port 465 SSL)
-        to guarantee delivery across diverse cloud and network environments.
+        Sends an email message via Gmail SMTP with dual-port fallback (Port 587 STARTTLS -> Port 465 SSL).
+        Uses explicit sendmail(from, to_addrs, raw_bytes) so the SMTP envelope recipient is always
+        the intended address — NOT inferred from the To header (which send_message() relies on).
+        Supports a single address string or a list of addresses.
         """
         settings = get_settings()
         pwd = (
@@ -335,38 +337,55 @@ If you did not request this code, you can safely ignore this email or contact ou
             or getattr(settings, "gmail_user", None)
             or os.environ.get("SMTP_USER")
             or os.environ.get("GMAIL_USER")
-            or "techsahaya.support@gmail.com"
+            or ""
         ).strip()
 
-        if not pwd:
-            logger.warning("SMTP_PASSWORD is not configured in .env.")
+        if not pwd or not usr:
+            logger.warning("SMTP credentials (SMTP_USER / SMTP_PASSWORD) are not configured in .env.")
             return False, "SMTP credentials not configured."
 
-        # Attempt 1: Port 587 with STARTTLS
+        # Normalize recipients: accept str or list, strip whitespace, drop empty strings
+        if isinstance(recipient_email, list):
+            to_addrs = [r.strip() for r in recipient_email if r.strip()]
+        else:
+            to_addrs = [r.strip() for r in recipient_email.split(",") if r.strip()]
+
+        if not to_addrs:
+            logger.error("No valid recipient addresses provided.")
+            return False, "No valid recipient email address."
+
+        raw_msg = msg.as_bytes()
+        log_recipients = ", ".join(to_addrs)
+
+        # Attempt 1: Port 587 STARTTLS
         try:
-            server = smtplib.SMTP(settings.smtp_host, 587, timeout=8)
+            server = smtplib.SMTP(settings.smtp_host, 587, timeout=10)
             server.ehlo()
             server.starttls()
             server.ehlo()
             server.login(usr, pwd)
-            server.send_message(msg)
+            refused = server.sendmail(usr, to_addrs, raw_msg)  # explicit envelope recipients
             server.quit()
-            logger.info("Successfully dispatched email via Port 587 STARTTLS to %s", recipient_email)
+            if refused:
+                logger.warning("Port 587: some recipients refused: %s", refused)
+            logger.info("Dispatched via Port 587 STARTTLS to %s", log_recipients)
             return True, "Verification email successfully dispatched to your inbox."
         except Exception as e587:
             logger.warning("Port 587 STARTTLS failed (%s). Falling back to Port 465 SSL...", str(e587))
 
-        # Attempt 2: Port 465 with SSL
+        # Attempt 2: Port 465 SSL
         try:
             context = ssl.create_default_context()
-            server = smtplib.SMTP_SSL(settings.smtp_host, 465, context=context, timeout=8)
+            server = smtplib.SMTP_SSL(settings.smtp_host, 465, context=context, timeout=10)
             server.login(usr, pwd)
-            server.send_message(msg)
+            refused = server.sendmail(usr, to_addrs, raw_msg)  # explicit envelope recipients
             server.quit()
-            logger.info("Successfully dispatched email via Port 465 SSL to %s", recipient_email)
+            if refused:
+                logger.warning("Port 465: some recipients refused: %s", refused)
+            logger.info("Dispatched via Port 465 SSL to %s", log_recipients)
             return True, "Verification email successfully dispatched to your inbox."
         except Exception as e465:
-            logger.error("Both Port 587 and Port 465 failed for %s. Error: %s", recipient_email, str(e465))
+            logger.error("Both ports failed for %s: %s", log_recipients, str(e465))
             return False, f"SMTP dispatch error: {str(e465)}"
 
     def send_newsletter_subscription_email(self, recipient_email: str) -> Tuple[bool, str]:
@@ -578,32 +597,21 @@ If you have any questions, reach out to us at techsahaya.support@gmail.com.
         return self._send_custom_email(clean_email, subject, text_body, html_body)
 
     def _send_custom_email(self, recipient_email: str, subject: str, text_content: str, html_content: str) -> Tuple[bool, str]:
-        """Internal helper to dispatch formatted transactional emails."""
+        """Internal helper to dispatch formatted transactional emails to any recipient."""
         settings = get_settings()
-        pwd = (
-            settings.smtp_password
-            or getattr(settings, "gmail_app_password", None)
-            or os.environ.get("SMTP_PASSWORD")
-            or os.environ.get("GMAIL_APP_PASSWORD")
-            or ""
-        ).strip()
         usr = (
             settings.smtp_user
             or getattr(settings, "gmail_user", None)
             or os.environ.get("SMTP_USER")
             or os.environ.get("GMAIL_USER")
-            or "techsahaya.support@gmail.com"
+            or ""
         ).strip()
-
-        if not pwd:
-            logger.warning("SMTP_PASSWORD missing. Cannot dispatch email to %s", recipient_email)
-            return False, "SMTP password not set in environment."
 
         try:
             msg = MIMEMultipart("alternative")
             msg["Subject"] = subject
             msg["From"] = settings.smtp_from or f"Tech Sahaya Support <{usr}>"
-            msg["To"] = recipient_email
+            msg["To"] = recipient_email  # header for display; envelope set explicitly in _send_smtp_payload
 
             msg.attach(MIMEText(text_content, "plain"))
             msg.attach(MIMEText(html_content, "html"))

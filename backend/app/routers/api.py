@@ -139,7 +139,9 @@ def apply_scheme(payload: SchemeApplyRequest, request: Request, db: Session = De
     official_link = str(scheme.official_link) if scheme and scheme.official_link else "https://techsahaya.in/"
 
     applicant = payload.applicant_name or "Citizen"
-    target_email = (payload.email or "kranbadsh@gmail.com").strip().lower()
+    if not payload.email:
+        raise HTTPException(status_code=400, detail="Email address is required to receive application confirmation.")
+    target_email = payload.email.strip().lower()
 
     import hashlib
     ref_hash = hashlib.sha256(f"{payload.scheme_id}-{applicant}-{target_email}".encode()).hexdigest()[:6].upper()
