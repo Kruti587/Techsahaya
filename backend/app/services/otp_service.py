@@ -1,7 +1,9 @@
 import hashlib
 import logging
+import os
 import secrets
 import smtplib
+import ssl
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -309,36 +311,63 @@ If you did not request this code, you can safely ignore this email or contact ou
             msg.attach(MIMEText(text_content, "plain"))
             msg.attach(MIMEText(html_content, "html"))
 
-            # Connect and send via Gmail SMTP
-            server = smtplib.SMTP(settings.smtp_host, settings.smtp_port, timeout=10)
-            if settings.smtp_use_tls:
-                server.starttls()
-            
-            pwd = (
-                settings.smtp_password
-                or getattr(settings, "gmail_app_password", None)
-                or os.environ.get("SMTP_PASSWORD")
-                or os.environ.get("GMAIL_APP_PASSWORD")
-                or ""
-            ).strip()
-            usr = (
-                settings.smtp_user
-                or getattr(settings, "gmail_user", None)
-                or os.environ.get("SMTP_USER")
-                or os.environ.get("GMAIL_USER")
-                or "techsahaya.support@gmail.com"
-            ).strip()
+            return self._send_smtp_payload(msg, recipient_email)
 
+        except Exception as exc:
+            logger.error("Failed to prepare OTP email for %s: %s", recipient_email, str(exc))
+            return False, f"Email preparation error: {str(exc)}"
+
+    def _send_smtp_payload(self, msg: MIMEMultipart, recipient_email: str) -> Tuple[bool, str]:
+        """
+        Sends an email message via Gmail SMTP with dual-port fallback (Port 587 STARTTLS -> Port 465 SSL)
+        to guarantee delivery across diverse cloud and network environments.
+        """
+        settings = get_settings()
+        pwd = (
+            settings.smtp_password
+            or getattr(settings, "gmail_app_password", None)
+            or os.environ.get("SMTP_PASSWORD")
+            or os.environ.get("GMAIL_APP_PASSWORD")
+            or ""
+        ).strip()
+        usr = (
+            settings.smtp_user
+            or getattr(settings, "gmail_user", None)
+            or os.environ.get("SMTP_USER")
+            or os.environ.get("GMAIL_USER")
+            or "techsahaya.support@gmail.com"
+        ).strip()
+
+        if not pwd:
+            logger.warning("SMTP_PASSWORD is not configured in .env.")
+            return False, "SMTP credentials not configured."
+
+        # Attempt 1: Port 587 with STARTTLS
+        try:
+            server = smtplib.SMTP(settings.smtp_host, 587, timeout=8)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
             server.login(usr, pwd)
             server.send_message(msg)
             server.quit()
-
-            logger.info("Successfully dispatched OTP email via Gmail to %s", recipient_email)
+            logger.info("Successfully dispatched email via Port 587 STARTTLS to %s", recipient_email)
             return True, "Verification email successfully dispatched to your inbox."
+        except Exception as e587:
+            logger.warning("Port 587 STARTTLS failed (%s). Falling back to Port 465 SSL...", str(e587))
 
-        except Exception as exc:
-            logger.error("Failed to send OTP email via SMTP to %s: %s", recipient_email, str(exc))
-            return False, f"SMTP dispatch error: {str(exc)}"
+        # Attempt 2: Port 465 with SSL
+        try:
+            context = ssl.create_default_context()
+            server = smtplib.SMTP_SSL(settings.smtp_host, 465, context=context, timeout=8)
+            server.login(usr, pwd)
+            server.send_message(msg)
+            server.quit()
+            logger.info("Successfully dispatched email via Port 465 SSL to %s", recipient_email)
+            return True, "Verification email successfully dispatched to your inbox."
+        except Exception as e465:
+            logger.error("Both Port 587 and Port 465 failed for %s. Error: %s", recipient_email, str(e465))
+            return False, f"SMTP dispatch error: {str(e465)}"
 
     def send_newsletter_subscription_email(self, recipient_email: str) -> Tuple[bool, str]:
         """
@@ -579,18 +608,10 @@ If you have any questions, reach out to us at techsahaya.support@gmail.com.
             msg.attach(MIMEText(text_content, "plain"))
             msg.attach(MIMEText(html_content, "html"))
 
-            server = smtplib.SMTP(settings.smtp_host, settings.smtp_port, timeout=10)
-            if settings.smtp_use_tls:
-                server.starttls()
-            server.login(usr, pwd)
-            server.send_message(msg)
-            server.quit()
-
-            logger.info("Successfully dispatched email '%s' to %s", subject, recipient_email)
-            return True, "Email successfully sent to your inbox."
+            return self._send_smtp_payload(msg, recipient_email)
         except Exception as exc:
-            logger.error("Failed to send email to %s: %s", recipient_email, str(exc))
-            return False, f"SMTP error: {str(exc)}"
+            logger.error("Failed to prepare email to %s: %s", recipient_email, str(exc))
+            return False, f"Email preparation error: {str(exc)}"
 
 
 otp_service = OTPService()

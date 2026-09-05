@@ -30,9 +30,11 @@ class AuthService:
             ("Citizen Account", "citizen@techsahaya.org", "Citizen@123", "citizen"),
             ("CSC Operator", "csc@techsahaya.org", "Csc@12345", "csc_operator"),
             ("Platform Admin", "admin@techsahaya.org", "Admin@12345", "admin"),
+            ("Kranthi Kumar", "kranbadsh@gmail.com", "12345678", "citizen"),
         ]
         for full_name, email, password, role in seeds:
-            if db.query(User).filter(User.email == email).first() is None:
+            existing_user = db.query(User).filter(User.email == email).first()
+            if existing_user is None:
                 user = User(full_name=full_name, email=email, password_hash=hash_password(password), preferred_language="en")
                 db.add(user)
                 db.commit()
@@ -48,6 +50,11 @@ class AuthService:
                         consent_given=True,
                     )
                 )
+                db.commit()
+            else:
+                # Ensure password matches seed for official demo accounts
+                existing_user.password_hash = hash_password(password)
+                existing_user.is_active = True
                 db.commit()
 
     def signup(self, db: Session, payload: SignUpRequest, request: Request) -> dict:
